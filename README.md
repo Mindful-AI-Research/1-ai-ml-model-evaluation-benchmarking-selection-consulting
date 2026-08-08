@@ -5,19 +5,35 @@
 <!--END 🇬🇧English LANGUAGE BUTTON  --  -
 
 
-<!-- ======================================= Start Institutional INFO ===========================================  -->
-# 🔬 1. [ Data Science & Machine Learning]() - [ Model Evaluation, Comparison & Selection Hub]()
-
-
-
-
-
-
-
+<!-- ======================================= Start Tittke===========================================  -->
+# <p align="center">  1. [Data Science & Machine Learning]() 🔬
+###  <p align="center">  [Model Evaluation, Comparison & Selection Hub]()
 
 <br><br>
+<!-- ======================================= End Tittke===========================================  -->
 
 
+
+<!-- ========= START SPONSORT BADGE ========= -->
+ <!--### <p align="center">  <img src="https://github.githubassets.com/images/icons/emoji/octocat.png" width="46">  -->
+
+#### <p align="center"> [![Sponsor Mindful AI Assistants](https://img.shields.io/badge/Sponsor-%C2%B7%C2%B7%C2%B7%20Mindful%20AI%20Assistants%20%C2%B7%C2%B7%C2%B7-brightgreen?logo=GitHub)](https://github.com/sponsors/Mindful-AI-Assistants)
+
+<br><br>
+<!-- ========= END SPONSORTBADGE ========= -->
+
+
+<!-- =========  START PUC HEADER GIF ========= -->
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/791a69e2-d09a-429f-9257-f6667fff5c04 ">
+ </p>
+
+<br><br><br><br>
+<!-- =========  END PUC HEADER GIF ========= -->
+
+
+
+<!-- ======================================= Start Institutional INFO ===========================================  -->
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP) — Human-Centered AI & Data Science • 6th Semester • 2026 <br>
 [**School:**]() FACEI — Faculty of Interdisciplinary Studies <br>
 [**Course Repo:**]() Data Science — Model Evaluation and Comparative Analysis Hub - PUC-SP 6th Semester (2026) <br>
@@ -26,10 +42,10 @@
 **Author:** [Fabiana ⚡️ Campnari]() 
 
 <br><br><br><br>
-<!-- ========= END Institutional INFO ========= -->
+<!-- ======================================= SZEnd Institutional INFO ===========================================  -->
 
 
-<!-- ========= START Confidentiality statement ========= -->
+<!-- ========= START Warnng========= -->
 > [!NOTE]
 >
 > ⚠️ Heads Up
@@ -42,7 +58,7 @@
 > <br>
 
 <br><br><br><br>
-<!-- ========= End Confidentiality statement ========= -->
+<!-- ========= End Warnng========= -->
 
 
 
