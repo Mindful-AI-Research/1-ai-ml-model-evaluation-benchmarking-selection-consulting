@@ -1,3 +1,10 @@
+<!--START  🇬🇧English LANGUAGE BUTTON  -->
+##### \[[🇧🇷 Português](README.pt_BR.md)\] \[**[🇬🇧 English](README.md)**\]   
+
+<br>
+<!--END 🇬🇧English LANGUAGE BUTTON  --  -
+
+
 <!-- ======================================= Start Institutional INFO ===========================================  -->
 ## [Data Science — Model Evaluation and Comparative Analysis Hub | PUC-SP 6th Semester (2026)]()
 
@@ -6,7 +13,9 @@
 [**Course Repo:**]() Data Science — Model Evaluation and Comparative Analysis Hub - PUC-SP 6th Semester (2026) <br>
 **Professor:** ✨ Giovani Giulio Tristão Thibes Vieira <br>
 [**Extensionist Activities:**]() Social projects with open-source software for community support <br>
-**Author:** [Fabiana ⚡️ Campnari]() <br><br><br><br>
+**Author:** [Fabiana ⚡️ Campnari]() 
+
+<br><br><br><br>
 <!-- ========= END Institutional INFO ========= -->
 
 
