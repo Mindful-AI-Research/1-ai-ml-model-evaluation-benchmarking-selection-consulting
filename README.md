@@ -6,7 +6,7 @@
 
 
 <!-- ======================================= Start Institutional INFO ===========================================  -->
-# [# Data Science & Machine Learning — Model Evaluation, Comparison & Selection Hub]()
+# [ Data Science & Machine Learning — Model Evaluation, Comparison & Selection Hub]()
 
 
 
@@ -14,6 +14,8 @@
 
 
 
+
+<br><br>
 
 
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP) — Human-Centered AI & Data Science • 6th Semester • 2026 <br>
