@@ -36,7 +36,6 @@
 [**School:**]() FACEI — Faculty of Interdisciplinary Studies <br>
 [**Course Repo:**]() Data Science — Model Evaluation and Comparative Analysis Hub - PUC-SP 6th Semester (2026) <br>
 **Professor:** [✨ Giovani Giulio Tristão Thibes Vieira]() <br>
-[**Extensionist Activities:**]() Social projects with open-source software for community support <br>
 **Author:** [Fabiana ⚡️ Campnari]() 
 
 <br><br><br><br>
