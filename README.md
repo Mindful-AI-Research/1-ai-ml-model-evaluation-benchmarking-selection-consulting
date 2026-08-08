@@ -6,7 +6,15 @@
 
 
 <!-- ======================================= Start Institutional INFO ===========================================  -->
-## [Data Science — Model Evaluation and Comparative Analysis Hub | PUC-SP 6th Semester (2026)]()
+# [Data Science & Machine Learning — Model Evaluation, Comparison & Selection]()
+
+
+
+
+
+
+
+
 
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP) — Human-Centered AI & Data Science • 6th Semester • 2026 <br>
 [**School:**]() FACEI — Faculty of Interdisciplinary Studies <br>
