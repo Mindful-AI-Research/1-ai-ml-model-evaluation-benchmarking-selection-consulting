@@ -46,8 +46,15 @@
 
 
 
+<!-- ========= Start  TIPs Ref  ========= 
+> [!NOTE]
+v *Not every model deserves a production job.*
+>
+>  ***We test them, compare them, audit them, tune them — then let the data decide who gets promoted.***
+>
 
-
+<br><br><br><br>
+<!-- ========= End   TIPs Ref  ========= -->
 
 
 
