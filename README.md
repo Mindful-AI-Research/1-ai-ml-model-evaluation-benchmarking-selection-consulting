@@ -97,5 +97,4 @@
   
 #
  
-##### <p align="center">Copyright 2026 Mindful-AI-Assistants. Code released under the  [MIT license.](
-https://github.com/Mindful-AI-Research/model-evaluation-hub/blob/cf8bf0392253d4d1c9b187eac7b55527efae4c9e/LICENSE)
+##### <p align="center">Copyright 2026 Mindful-AI-Assistants. Code released under the  [MIT license.](https://github.com/Mindful-AI-Research/model-evaluation-hub/blob/cf8bf0392253d4d1c9b187eac7b55527efae4c9e/LICENSE)
