@@ -31,8 +31,6 @@
 <br><br><br><br>
 <!-- =========  END PUC HEADER GIF ========= -->
 
-
-
 <!-- ======================================= Start Institutional INFO ===========================================  -->
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP) — Human-Centered AI & Data Science • 6th Semester • 2026 <br>
 [**School:**]() FACEI — Faculty of Interdisciplinary Studies <br>
@@ -45,20 +43,16 @@
 <!-- ======================================= SZEnd Institutional INFO ===========================================  -->
 
 
-<!-- ========= START Warnng========= -->
-> [!NOTE]
+<!-- ========= START NOTE ========= -->
+> [!WARNING]
 >
-> ⚠️ Heads Up
+> ⚠️ Projects may be publicly shared when permitted.  
+> The focus is on applied, hands-on learning with real datasets in AI governance and security contexts.  
+> All sensitive content remains protected in private repositories when required.
 >
-> * Projects may be made [publicly available]() whenever possible
-> * The course emphasizes **hands-on experience** with real datasets
-> * Activities follow [**PUC-SP academic and ethical guidelines**]()
-> * Restricted material remains **confidential**
-> * Extension activities are part of the course design and connect technical work to community-facing impact
-> <br>
 
-<br><br><br><br>
-<!-- ========= End Warnng========= -->
+<br><br>
+<!-- ========= END NOTE ========= -->
 
 
 
