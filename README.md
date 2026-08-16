@@ -6,8 +6,9 @@
 
 
 <!-- ======================================= Start Tittke===========================================  -->
-# <p align="center">  1. [Data Science & Machine Learning]() 🔬
-###  <p align="center">  [Model Evaluation, Comparison & Selection Hub]()
+# <p align="center">   🔬 [Data Science & Machine Learning]() — [Model Evaluation, Benchmarking & Selection Hub]()
+### <p align="center"> This repository presents a structured journey through **machine learning model evaluation, benchmarking, comparison, and selection**, combining theoretical foundations, hands-on experimentation, and practical decision-making across diverse datasets and real-world scenarios.
+
 
 <br><br>
 <!-- ======================================= End Tittke===========================================  -->
