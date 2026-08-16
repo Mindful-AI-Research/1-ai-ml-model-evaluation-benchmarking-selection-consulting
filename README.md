@@ -9,22 +9,22 @@
 # <p align="center">   🔬 [Data Science & Machine Learning]() - [Model Evaluation, Benchmarking & Selection]() -[ Hub]()
 ### <p align="center"> This repository presents a structured journey through **machine learning model evaluation, benchmarking, comparison, and selection**, combining theoretical foundations, hands-on experimentation, and practical decision-making across diverse datasets and real-world scenarios.
 
+<p align="center">
+PUC-SP • 6th Semester • 2026<br>
+Performance Analysis • Model Benchmarking • Data-Driven Selection
+</p>
 
 <br><br>
-<!-- ======================================= End Tittke===========================================  -->
+<!-- ========= END REPO TITLE ========= -->
 
-
-
-<!-- ========= START SPONSORT BADGE ========= -->
- <!--### <p align="center">  <img src="https://github.githubassets.com/images/icons/emoji/octocat.png" width="46">  -->
-
-#### <p align="center"> [![Sponsor Mindful AI Assistants](https://img.shields.io/badge/Sponsor-%C2%B7%C2%B7%C2%B7%20Mindful%20AI%20Assistants%20%C2%B7%C2%B7%C2%B7-brightgreen?logo=GitHub)](https://github.com/sponsors/Mindful-AI-Assistants)
+<!-- ========= START SPONSOR BADGE ========= -->
+#### <p align="center">[![Sponsor ॐ ⋆ ⋆ ⋆ ⋆ Mindful AI ⋆ ⋆ ⋆ ⋆ 𖤐](https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20%F0%96%A4%90-brightgreen?logo=github)](https://github.com/sponsors/Mindful-AI-Research)
 
 <br><br>
-<!-- ========= END SPONSORTBADGE ========= -->
-
+<!-- ========= END SPONSOR BADGE ========= -->
 
 <!-- =========  START PUC HEADER GIF ========= -->
+
 <p align="center">
    <img src="https://github.com/user-attachments/assets/791a69e2-d09a-429f-9257-f6667fff5c04 ">
  </p>
@@ -32,16 +32,17 @@
 <br><br><br><br>
 <!-- =========  END PUC HEADER GIF ========= -->
 
-<!-- ======================================= Start Institutional INFO ===========================================  -->
-[**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP) — Human-Centered AI & Data Science • 6th Semester • 2026 <br>
-[**School:**]() FACEI — Faculty of Interdisciplinary Studies <br>
-[**Course Repo:**]() Data Science — Model Evaluation and Comparative Analysis Hub - PUC-SP 6th Semester (2026) <br>
+
+<!-- ======================================= Start nstitucional INFOR ===========================================  -->
+[**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP)  <br>
+[**School:**]() FACEI — Computer Science Department  <br>
+[**Course:**]() BSc in Human-Centered AI & Data Science •  6th Semester • 2026 <br>
+[**Subject:**]() Data Science  & Machine Learning — Model Evaluation, Benchmarking & Selection - PUC-SP 6th Semester (2026) <br>
 **Professor:** [✨ Giovani Giulio Tristão Thibes Vieira]() <br>
 **Author:** [Fabiana ⚡️ Campnari]() 
 
 <br><br><br><br>
 <!-- ======================================= SZEnd Institutional INFO ===========================================  -->
-
 
 <!-- ========= START NOTE ========= -->
 > [!WARNING]
@@ -55,16 +56,6 @@
 <!-- ========= END NOTE ========= -->
 
 
-
-<!-- ========= Start  TIPs Ref  ========= 
-> [!NOTE]
-v *Not every model deserves a production job.*
->
->  ***We test them, compare them, audit them, tune them — then let the data decide who gets promoted.***
->
-
-<br><br><br><br>
-<!-- ========= End   TIPs Ref  ========= -->
 
 
 
