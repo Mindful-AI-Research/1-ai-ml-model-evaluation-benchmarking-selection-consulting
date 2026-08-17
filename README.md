@@ -15,12 +15,9 @@
 <br><br>
 
 
-
 ######  <p align="center"> ***Training models is easy. Choosing the winner is where the fun begins.***
 
 #### <p align="center">   ⚡️
-
-
 
 <br><br>
 <!-- ========= END REPO TITLE ========= -->
@@ -32,14 +29,12 @@
 <!-- ========= END SPONSOR BADGE ========= -->
 
 <!-- =========  START PUC HEADER GIF ========= -->
-
 <p align="center">
    <img src="https://github.com/user-attachments/assets/791a69e2-d09a-429f-9257-f6667fff5c04 ">
  </p>
 
 <br><br><br><br>
 <!-- =========  END PUC HEADER GIF ========= -->
-
 
 <!-- ======================================= Start nstitucional INFOR ===========================================  -->
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP)  <br>
