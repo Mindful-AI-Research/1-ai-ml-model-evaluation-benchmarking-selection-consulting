@@ -7,12 +7,18 @@
 
 <!-- ======================================= Start Tittke===========================================  -->
 # <p align="center">   🔬 [Data Science & Machine Learning]() - [Model Evaluation, Benchmarking & Selection]() -[ Hub]()
-### <p align="center"> This repository presents a structured journey through **machine learning model evaluation, benchmarking, comparison, and selection**, combining theoretical foundations, hands-on experimentation, and practical decision-making across diverse datasets and real-world scenarios.
+#### <p align="center"> This repository presents a structured journey through **machine learning model evaluation, benchmarking, comparison, and selection**, combining theoretical foundations, hands-on experimentation, and practical decision-making across diverse datasets and real-world scenarios.
 
-<p align="center">
-PUC-SP • 6th Semester • 2026<br>
-Performance Analysis • Model Benchmarking • Data-Driven Selection
-</p>
+
+<br><br>
+
+
+
+######  <p align="center"> ***Training models is easy. Choosing the winner is where the fun begins.***
+
+#### <p align="center">   ⚡️
+
+
 
 <br><br>
 <!-- ========= END REPO TITLE ========= -->
