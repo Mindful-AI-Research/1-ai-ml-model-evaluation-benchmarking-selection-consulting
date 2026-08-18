@@ -2,7 +2,7 @@
 
 # ⚠️ Cuidado com o AUC em Bases Desbalanceadas
 
-## ROC-AUC, Precision-Recall, AP, Log-Loss e Matriz de Confusão
+### ROC-AUC, Precision-Recall, AP, Log-Loss e Matriz de Confusão
 
 Quando avaliamos um modelo de classificação, é importante não olhar apenas para uma métrica. Em problemas nos quais a **classe positiva é rara**, como a identificação de spam, uma métrica pode transmitir uma impressão melhor do que o desempenho real do modelo.
 
