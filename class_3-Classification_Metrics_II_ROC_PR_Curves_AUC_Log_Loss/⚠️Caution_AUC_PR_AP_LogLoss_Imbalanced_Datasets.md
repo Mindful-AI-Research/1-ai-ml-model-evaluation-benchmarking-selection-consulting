@@ -312,9 +312,11 @@ $$
 
 Portanto:
 
+
 $$
-\boxed{Baseline = 20\%}
+\boxed{\text{Baseline} = 20\%}
 $$
+
 
 No exemplo de spam:
 
