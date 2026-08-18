@@ -797,4 +797,8 @@ $$
 }
 $$
 
-**A métrica deve responder à pergunta do negócio ou da aplicação — e não o contrário.**
+
+<br>
+
+### <p align="center"> A métrica deve responder à pergunta do negócio ou da aplicação e não o contrário. 
+###  <p align="center"> The metric should answer the business or application question, not the other way round.
