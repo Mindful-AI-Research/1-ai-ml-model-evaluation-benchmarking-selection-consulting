@@ -312,9 +312,8 @@ $$
 
 Portanto:
 
-
 $$
-\boxed{\text{Baseline} = 20\%}
+Baseline = 20\%
 $$
 
 
