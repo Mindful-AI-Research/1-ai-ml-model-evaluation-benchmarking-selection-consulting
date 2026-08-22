@@ -93,7 +93,9 @@ $$
 e_i = y_i - \hat{y}_i
 $$
 
-Where:<br><br>
+Where:
+
+<br>
 
 - $y_i$ is the actual value.<br><br>
 - $\hat{y}_i$ is the predicted value.<br><br>
@@ -109,14 +111,43 @@ The R² metric compares a model against a simple baseline: predict the target me
 
 ## [Metrics and Mathematics]()
 
-| Metric | Mathematical definition | What it measures | Why it matters | Main limitation in the lecture |
-|---|---|---|---|---|
-| MAE | $\mathrm{MAE}=\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat{y}_i|$ | Average absolute error | Directly communicates typical error in target units | Does not disproportionately emphasize extreme errors |
-| RMSE | $\mathrm{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}$ | Root mean squared error | Makes severe prediction mistakes carry more weight | Sensitive to outliers by design |
-| R² | $R^2=1-\frac{\sum_i(y_i-\hat{y}_i)^2}{\sum_i(y_i-\bar{y})^2}$ | Performance relative to mean baseline | Establishes whether the model beats predicting the mean | Unitless; should not be reported alone |
-| MAPE | $\mathrm{MAPE}=\frac{1}{n}\sum_i\left|\frac{y_i-\hat{y}_i}{y_i}\right|\times100\%$ | Mean absolute percentage error | Expresses relative error as a percentage | Unstable when actual values are near zero |
+| Metric | What it measures | Why it matters | Main limitation in the lecture |
+|---|---|---|---|
+| **MAE** | Average absolute error | Directly communicates typical error in target units | Does not disproportionately emphasize extreme errors |
+| **RMSE** | Root mean squared error | Makes severe prediction mistakes carry more weight | Sensitive to outliers by design |
+| **R²** | Performance relative to mean baseline | Establishes whether the model beats predicting the mean | Unitless; should not be reported alone |
+| **MAPE** | Mean absolute percentage error | Expresses relative error as a percentage | Unstable when actual values are near zero |
 
-<br><br>
+<br>
+
+### [Mathematical Definitions]()
+
+**MAE — Mean Absolute Error**
+
+$$
+\mathrm{MAE}=\frac{1}{n}\sum_{i=1}^{n}\left|y_i-\hat{y}_i\right|
+$$
+
+**RMSE — Root Mean Squared Error**
+
+$$
+\mathrm{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}\left(y_i-\hat{y}_i\right)^2}
+$$
+
+**R² — Coefficient of Determination**
+
+$$
+R^2=1-\frac{\sum_i\left(y_i-\hat{y}_i\right)^2}{\sum_i\left(y_i-\bar{y}\right)^2}
+$$
+
+**MAPE — Mean Absolute Percentage Error**
+
+$$
+\mathrm{MAPE}=\frac{1}{n}\sum_i\left|\frac{y_i-\hat{y}_i}{y_i}\right|\times100\%
+$$
+
+<br>
+
 
 ### [MAE — Mean Absolute Error]()
 
@@ -128,7 +159,7 @@ The R² metric compares a model against a simple baseline: predict the target me
 
 **Limitation:** an unusually large delay enters linearly rather than being extra-penalized.
 
-<br><br>
+<br>
 
 ### [RMSE — Root Mean Squared Error]()
 
@@ -140,7 +171,7 @@ The R² metric compares a model against a simple baseline: predict the target me
 
 **Limitation:** a small number of extreme errors can dominate the value, which may or may not reflect the intended business cost.
 
-<br><br>
+<br>
 
 ### [R² — Coefficient of Determination]()
 
@@ -158,7 +189,7 @@ The R² metric compares a model against a simple baseline: predict the target me
 
 **Limitation:** R² is not measured in minutes or another target unit. It should be reported together with MAE or RMSE. It is also not directly comparable across arbitrary problems with different target variance.
 
-<br><br>
+<br>=
 
 ### [MAPE — Mean Absolute Percentage Error]()
 
@@ -184,7 +215,7 @@ The R² metric compares a model against a simple baseline: predict the target me
 | #4 | 20 min | 26 min | +6 min |
 | #5 | 30 min | 74 min | +44 min — motorcycle broke |
 
-<br><br>
+<br>
 
 ### [Demonstrated MAE Calculation]()
 
@@ -196,7 +227,7 @@ $$
 
 The lecture interprets this value as a typical error of 12 minutes for the demonstrated delivery scenario.
 
-<br><br>
+<br>
 
 ### [Demonstrated RMSE Interpretation]()
 
@@ -208,7 +239,7 @@ $$
 
 This single quantity heavily influences the squared-error total. The class reports $\mathrm{RMSE}\approx20$ minutes, compared with MAE = 12 minutes. The gap demonstrates why RMSE is more sensitive to unusually large delays.
 
-<br><br>
+<br>
 
 ### [Demonstrated R² Calculation]()
 
@@ -218,13 +249,19 @@ $$
 \sum_i(y_i-\hat{y}_i)^2=2010
 $$
 
+<br>
+
 $$
 \sum_i(y_i-\bar{y})^2=1700
 $$
 
+<br>
+
 $$
 R^2=1-\frac{2010}{1700}\approx-0.18
 $$
+
+<br>
 
 The negative R² means that, for this specific demonstrated example, the model is worse than always predicting 39 minutes for every delivery order.
 
@@ -252,7 +289,7 @@ A scalar metric summarizes error, but residual diagnostics show where and how th
 | Is the model better than mean prediction? | R² | Explicit mean-baseline comparison |
 | What is the average relative error? | MAPE | Percentage interpretation, if values are not near zero |
 
-<br><br>
+<br>
 
 **Recommended** — The lecture advises reporting a pair of measures: MAE or RMSE in target units plus R² for baseline-relative context.
 
@@ -264,13 +301,19 @@ A scalar metric summarizes error, but residual diagnostics show where and how th
 
 **Demonstrated** — The lecture performs hand calculations using five delivery observations. It calculates absolute errors, interprets squared errors, compares the model against a mean baseline, and discusses percentage error and residual patterns.<br><br>
 
+<br>
+
 ### [Metrics]()
 
-The class introduces MAE, RMSE, R², and MAPE.<br><br>
+The class introduces MAE, RMSE, R², and MAPE.
+
+<br>
 
 ### [Experiments]()
 
-Not provided in the supplied class materials.<br><br>
+Not provided in the supplied class materials.
+
+<br>
 
 ### [Results]()
 
