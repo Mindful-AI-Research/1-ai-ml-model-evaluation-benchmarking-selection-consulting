@@ -7,4 +7,4 @@
 
 [class_3](https://lovely-salamander-c0ee0f.netlify.app/) - Classification Metrics II
 
-[class_4]() -
+[class_4]() - Regression Metrics
