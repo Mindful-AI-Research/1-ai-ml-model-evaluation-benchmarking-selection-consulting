@@ -53,7 +53,12 @@
 **Professor:** [✨ Giovani Giulio Tristão Thibes Vieira]() <br>
 **Author:** [Fabiana ⚡️ Campnari]() 
 
-<br><br><br><br>
+
+<br><br>
+
+#
+
+<br><br>
 <!-- ======================================= SZEnd Institutional INFO ===========================================  -->
 
 <!-- ========= START NOTE ========= -->
@@ -63,6 +68,10 @@
 > The focus is on applied, hands-on learning with real datasets in AI governance and security contexts.  
 > All sensitive content remains protected in private repositories when required.
 >
+
+<br><br>
+
+#
 
 <br><br>
 <!-- ========= END NOTE ========= -->
