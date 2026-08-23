@@ -5,25 +5,34 @@
 <!--END 🇬🇧English LANGUAGE BUTTON  --  -
 
 
-<!-- ======================================= Start Tittke===========================================  -->
-
-# <p align="center">  [Data Science & AI/ML]()   🎯 [Model Evaluation, Benchmarking & Selection]() ➝ [Research & Consulting Hub]()
-
-#### <p align="center"> This repository presents a structured journey through **machine learning model evaluation, benchmarking, comparison, and selection**, combining theoretical foundations, hands-on experimentation, and practical decision-making across diverse datasets and real-world scenarios.
 
 
-<br><br>
+<!-- ======================================= Start Title ======================================= -->
+# <p align="center">[Data Science & AI/ML]() 🎯 [Model Evaluation, Benchmarking & Selection]() ➝ [Research & Consulting Hub]()</p>
 
-
-######  <p align="center"> ***Training models is easy. Choosing the winner is where the fun begins.***
-
-#### <p align="center">   ⚡️
+#### <p align="center">This repository presents a structured journey through **machine learning model evaluation, benchmarking, comparison, and selection**, combining theoretical foundations, hands-on experimentation, and practical decision-making across diverse datasets and real-world scenarios.</p>
 
 <br><br>
-<!-- ========= END REPO TITLE ========= -->
+
+<!-- ========= START TEASER ========= -->
+<p align="center"><em>Training models is easy ... Choosing the winner is where the fun begins.</em></p>
+
+### <p align="center">⚡️</p>
+<br>
+
+#
+
+<br><br>
+<!-- ========= END TEASER ========= -->
+
 
 <!-- ========= START SPONSOR BADGE ========= -->
-#### <p align="center">[![Sponsor ॐ ⋆ ⋆ ⋆ ⋆ Mindful AI ⋆ ⋆ ⋆ ⋆ 𖤐](https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20%E2%8B%86%20%F0%96%A4%90-brightgreen?logo=github)](https://github.com/sponsors/Mindful-AI-Research)
+<p align="center">
+  <a href="https://github.com/sponsors/Mindful-AI-Research">
+    <img src="https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90%20%E2%8B%86-00FFFF?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0a1f44" alt="Sponsor ॐ ⋆ Mindful AI ⋆ Research & Consulting 𖤐 ⋆">
+  </a>
+</p>
+
 
 <br><br>
 <!-- ========= END SPONSOR BADGE ========= -->
@@ -33,9 +42,8 @@
    <img src="https://github.com/user-attachments/assets/791a69e2-d09a-429f-9257-f6667fff5c04 ">
  </p>
 
-<br><br><br><br>
+<br><br>
 <!-- =========  END PUC HEADER GIF ========= -->
-
 <!-- ======================================= Start nstitucional INFOR ===========================================  -->
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP)  <br>
 [**School:**]() FACEI — Computer Science Department  <br>
