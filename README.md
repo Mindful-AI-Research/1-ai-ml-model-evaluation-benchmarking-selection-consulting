@@ -15,9 +15,16 @@
 <br><br>
 
 <!-- ========= START TEASER ========= -->
-###### <p align="center"><em>Training models is easy ... Choosing the winner is where the fun begins.</em></p>
+###### <p align="center"><em>Train it. Break it. Stress it. Test it.</em></p>
+
+###### <p align="center"><em>Good models learn. Great models survive evaluation.</em></p>
+
+###### <p align="center"><em>Because “trust me, bro” is not evidence. “It works” is not a metric.</em></p>
+
+###### <p align="center"><em>Reproduce it. Then we’ll talk.</em> 🔬</p>
 
 ### <p align="center">⚡️</p>
+
 <br>
 
 #
@@ -611,6 +618,44 @@ This course naturally aligns with a practical Python-based workflow.
 
 ## [AI Resources]()
 
+> [!TIP]
+> \#\#\# 🦾👽🪽 AI/ML & Data Science Resources
+>
+> High-signal resources for learning, evaluating, comparing, and improving machine learning systems.
+>
+> **Core Reading**
+> - [*Hands-On Machine Learning with Scikit-Learn, Keras \& TensorFlow* — Aurélien Géron](https://github.com/Mindful-AI-Assistants/1-AI-MachineLearning_Main_Repository-PUCSP/blob/592fb02bd2868e9342d8584d57dcded7c15f41d1/Hands%20On%20Machine%20Learning%20with%20Scikit%20Learn%20and%20TensorFlow.pdf)
+> - [*Artificial Intelligence: A Modern Approach* — Stuart Russell \& Peter Norvig](https://github.com/Mindful-AI-Assistants/1-AI_Machine-Learning_Hub/blob/67b85178e068072f89a4b6d0fc2d58daba0c08b4/AI_MLPapers_%20Books_Etc/AI_A_Modern_Approach-Peter-Norvig_Stuart-Russell.pdf)
+> - [*Introduction to Data Science and Machine Learning*](https://www.intechopen.com/books/introduction-to-data-science-and-machine-learning)
+> - [*Automated Machine Learning* — Hutter, Kotthoff, Vanschoren](https://link.springer.com/book/10.1007/978-3-030-05318-5)
+>
+> <br>
+>
+> **🔗 References**
+> - [scikit-learn — Model Selection](https://scikit-learn.org/stable/model_selection.html)
+> - [scikit-learn — Metrics and Scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+> - [scikit-learn — Calibration](https://scikit-learn.org/stable/modules/calibration.html)
+> - [Google Developers — Machine Learning Glossary](https://developers.google.com/machine-learning/glossary)
+> - [CS229: Machine Learning — Stanford](https://cs229.stanford.edu)
+> - [StatQuest — Machine Learning playlists](https://www.youtube.com/@statquest)
+> - [Kaggle Learn](https://www.kaggle.com/learn)
+>
+> **🛠 Tools**
+> - [Teachable Machine](https://teachablemachine.withgoogle.com)
+> - [Google Colab](https://colab.research.google.com)
+> - [Jupyter](https://jupyter.org)
+> - [Weights \& Biases](https://wandb.ai/site)
+>
+> <br><br>
+>
+> [_Signal]() > noise. [Rigor]() > hype. [Reproducibility]() > guesswork.
+> ***Good models are trained. Great models are also evaluated carefully.*** <br>
+> ***Clear experiments turn confusion into evidence.*** <br>
+> ⚡️
+>
+> <br>
+
+<br><br>
 
 
 
