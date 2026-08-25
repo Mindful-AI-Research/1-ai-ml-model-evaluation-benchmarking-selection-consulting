@@ -452,7 +452,35 @@ Useful failure categories include:
 
 ### [***Evaluation Pipelines and Trace Analysis***](#advanced-evaluation--agentic-ai-systems)
 
+An evaluation pipeline should preserve enough evidence to make a result auditable. For an agent, this commonly means storing the task input, model and prompt versions, tool calls, intermediate outputs, final answer, evaluator result, runtime, and cost.
 
+A trace records an end-to-end agent run, including model calls, tool calls, guardrails, and handoffs. Inspecting traces helps identify where failures happen: planning, retrieval, tool use, routing, final synthesis, or safety controls. [4]
+
+```mermaid
+%%{init:{'theme':'dark','themeVariables':{'background':'#090d13','primaryTextColor':'#F5F7FA','lineColor':'#2dd4bf'}}}%%
+graph LR
+
+A["EVALUATION DATASET<br/>Tasks -  Constraints<br/>Expected Outcomes"]:::setup
+B["AGENT EXECUTION<br/>Planning -  Tools<br/>Retrieval -  Actions"]:::llm
+C["TRACE CAPTURE<br/>Inputs -  Steps -  Tools<br/>Outputs -  Latency"]:::silver
+D["GRADERS<br/>Code -  LLM Judge<br/>Human Review"]:::gold
+E["ANALYSIS<br/>Success -  Safety -  Cost<br/>Robustness -  Failure Modes"]:::bronze
+F["IMPROVEMENT LOOP<br/>Prompts -  Tools -  Policies<br/>Regression Tests"]:::dash
+
+A --> B --> C --> D --> E --> F
+F --> A
+
+classDef setup fill:#0d2137,stroke:#00d2ff,color:#F5F7FA,stroke-width:2.5px;
+classDef bronze fill:#2a1512,stroke:#a85a4a,color:#F5F7FA,stroke-width:2.5px;
+classDef silver fill:#1b2430,stroke:#b0b7c3,color:#F5F7FA,stroke-width:2.5px;
+classDef gold fill:#2a2208,stroke:#e6c35a,color:#F5F7FA,stroke-width:2.5px;
+classDef dash fill:#06363d,stroke:#2dd4bf,color:#F5F7FA,stroke-width:2.5px;
+classDef llm fill:#231433,stroke:#b56cff,color:#F5F7FA,stroke-width:2.5px;
+```
+
+<br><br>
+
+### [***Benchmark Design***](#advanced-evaluation--agentic-ai-systems)
 
 
 
