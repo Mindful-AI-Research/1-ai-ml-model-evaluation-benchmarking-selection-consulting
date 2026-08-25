@@ -655,6 +655,7 @@ This course naturally aligns with a practical Python-based workflow.
 - FERREIRA, Rogério G. C. et al. (org.). *Preparação e análise exploratória de dados*. Porto Alegre: Sagah, 2021.
 - SUD, K.; ERDOGMUS, P.; KADRY, S. *Introduction to Data Science and Machine Learning*. London: IntechOpen, 2020.
 
+<br>
 
 ### [***Complementary Bibliography***]
 
@@ -669,41 +670,11 @@ This course naturally aligns with a practical Python-based workflow.
 ## [Final Notes]()
 
 
+This hub is designed to be both **academic** and **practical**. It documents not only what was taught, but how the concepts connect across the semester and translate into real-world, responsible machine learning practice.
+
+In other words, this repository is more than a collection of materials. It captures how **model evaluation becomes scientific judgment, engineering discipline, and responsible impact**.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
 <br><br>
 
 
