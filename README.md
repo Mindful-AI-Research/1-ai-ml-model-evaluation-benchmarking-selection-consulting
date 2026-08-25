@@ -577,7 +577,39 @@ ds-model-eval-advanced-agentic-ai-evaluation/
 
 ### [***Key Takeaway***](#advanced-evaluation--agentic-ai-systems)
 
+A traditional model is often judged by whether it predicts well. An agentic system must also be judged by **how reliably it completes a task, uses tools, handles uncertainty, respects boundaries, and remains auditable over time**.
 
+
+<br><br>
+
+
+## [Recommended Tooling]()
+
+This course naturally aligns with a practical Python-based workflow.
+
+**Core stack**
+
+- Python
+- Jupyter Notebook / JupyterLab
+- scikit-learn
+- pandas
+- numpy
+- matplotlib / seaborn / plotly
+- Git + GitHub
+
+**Good engineering practices**
+
+- `Pipeline`
+- `ColumnTransformer`
+- versioned notebooks and scripts
+- reproducible train/validation/test splits
+- fixed random seeds
+- serialized artifacts with `joblib`
+- model cards and experiment logs
+
+<br><br>
+
+## [AI Resources]()
 
 
 
