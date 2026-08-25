@@ -482,6 +482,22 @@ classDef llm fill:#231433,stroke:#b56cff,color:#F5F7FA,stroke-width:2.5px;
 
 ### [***Benchmark Design***](#advanced-evaluation--agentic-ai-systems)
 
+ benchmark is a curated set of test cases used to compare versions of an AI system. Start small with realistic tasks, especially tasks based on real failures or important user scenarios. Expand the benchmark as the project matures.
+
+| Benchmark component | What to document |
+|---|---|
+| Task ID | Stable identifier, such as `agent-eval-001` |
+| Task scenario | User goal, context, and expected difficulty |
+| Input and constraints | Full request, tools allowed, policies, and boundaries |
+| Reference outcome | Expected answer, expected tool call, or acceptance criteria |
+| Grader | Code-based, model-based, human, or hybrid |
+| Metrics | Success rate, groundedness, safety, latency, cost, and consistency |
+| Versioning | Dataset, agent, prompt, tool schema, model, and rubric versions |
+| Regression status | Whether the case must continue passing in future releases |
+
+<br><br>
+
+### [***LLM-as-a-Judge***](#advanced-evaluation--agentic-ai-systems)
 
 
 
