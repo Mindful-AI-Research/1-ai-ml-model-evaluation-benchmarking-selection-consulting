@@ -435,6 +435,22 @@ High-quality task definitions make evaluation more consistent. Anthropic recomme
 
 ### [***Robustness and Failure Analysis***](#advanced-evaluation--agentic-ai-systems)
 
+A strong evaluation suite does not test only easy “happy path” examples. It should include ambiguous requests, missing information, conflicting instructions, unavailable tools, malformed inputs, safety-sensitive requests, and tasks requiring the agent to stop and ask for clarification.
+
+Useful failure categories include:
+
+- Incorrect final result despite a plausible explanation.
+- Hallucinated sources, tool outputs, citations, or files.
+- Incorrect tool selection or malformed tool parameters.
+- Unsafe execution beyond the user’s intended scope.
+- Infinite or unnecessarily long execution loops.
+- Failure to recognize uncertainty or request needed clarification.
+- Leakage of confidential, private, or restricted information.
+- High variance across repeated executions of the same task.
+
+<br><br>
+
+### [***Evaluation Pipelines and Trace Analysis***](#advanced-evaluation--agentic-ai-systems)
 
 
 
