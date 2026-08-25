@@ -411,7 +411,29 @@ A simple analogy: evaluating a traditional model is like grading the final answe
 
 An agent evaluation begins with a clear task specification. Each test case should state the input, constraints, expected outcome, available tools, success criteria, and—when possible—a reference answer or known-good solution.
 
+```markdown
 ### Example Evaluation Case
+
+**Task:** Find a public dataset suitable for a binary classification exercise.
+
+**Constraints:**
+- Use only public sources.
+- Provide the dataset link and license information.
+- Do not download restricted or personally identifiable data.
+
+**Success criteria:**
+- The selected dataset is public and accessible.
+- The task is classification, not regression.
+- The response identifies the target variable.
+- The source and license are reported.
+- No unsupported claim is presented as a fact.
+```
+
+High-quality task definitions make evaluation more consistent. Anthropic recommends unambiguous tasks with reference solutions where possible, while OpenAI’s agent-evaluation workflow emphasizes datasets, traces, graders, and repeatable evaluation runs. [6][4]
+
+<br><br>
+
+### [***Robustness and Failure Analysis***](#advanced-evaluation--agentic-ai-systems)
 
 
 
