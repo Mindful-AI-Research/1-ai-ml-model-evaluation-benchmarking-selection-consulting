@@ -226,9 +226,192 @@ The semester follows a logical progression:
 | — | **Advanced Evaluation — Agentic AI Systems** | **Supplementary advanced module.** Extend model-evaluation principles to adaptive systems that plan, call tools, retrieve information, and may produce different execution paths across runs. Covers task success, robustness, failure analysis, trace evaluation, LLM-as-a-Judge, human review, and evaluation governance. | `[Planned link](#)` |
 | 14 | **Advanced Leakage Prevention and Reproducibility** | Random seeds, `joblib`, experiment consistency, and model cards. | `[Planned link](#)` |
 | 15 | **Feature Selection Inside Validation** | Run feature selection within the cross-validation workflow to avoid inflated results. | `[Planned link](#)` |
+
+
 <br><br>
 
 
+## [Assessment Structure]()
+
+The course combines weekly practical activity, challenge-based evaluation, and an extension project.
+
+
+| Component | Description | Weighting logic |
+| :-- | :-- | :-- |
+| P1 | Weekly activities + Challenges 1 and 2, with substitute Challenge 3 on 2026-10-06 | 30% activities + 70% challenges |
+| P2 | Weekly activities + Challenges 4 and 5, with substitute Challenge 6 on 2026-11-24 | 30% activities + 70% challenges |
+| PE | Extension project, combining group evaluation, self-evaluation, and peer evaluation | 40% group + 20% self + 40% peer |
+| Final Average | Course average formula | `1.5 * P1 + 1.5 * P2 + PE` all divided by 4 conceptually in weighted composition |
+
+[***Important note***] <br>
+Activities and challenges are individual, while the extension project combines individual and group responsibility. This structure rewards both technical discipline and collaborative maturity.
+
+<br><br>
+
+## [Extension Project]()
+
+A distinctive feature of this course is its **extensionist** dimension. The syllabus states that students are expected to apply model evaluation and selection skills in projects with community relevance, with partnership references including Hospital Santa Lucinda and social-facing initiatives.
+
+That means this is not only a classroom subject. It is also a bridge between:
+
+- academic learning,
+- open-source practice,
+- ethical responsibility,
+- and real institutional or social needs.
+
+Possible extension outputs may include:
+
+- workshops,
+- diagnostic studies,
+- educational materials,
+- public repositories,
+- software artifacts,
+- community-support tools.
+
+<br><br>
+
+## [Repository Architecture]()
+
+A clean hub structure can look like this:
+
+```text
+Data-Science-Model-Evaluation-Comparative-Analysis-Hub/
+├── README.md
+├── assets/
+│   ├── banners/
+│   ├── diagrams/
+│   └── badges/
+├── weeks/
+│   ├── week-01-model-evaluation-foundations/
+│   ├── week-02-classification-metrics-1/
+│   ├── week-03-classification-metrics-2/
+│   └── ...
+├── projects/
+│   ├── extension-project/
+│   └── case-studies/
+├── references/
+│   ├── papers/
+│   ├── books/
+│   ├── slides/
+│   └── links.md
+└── templates/
+    ├── weekly-readme-template.md
+    └── model-card-template.md
+```
+
+<br><br>
+
+## [Suggested Sub-Repository Pattern]()
+
+If you prefer separate repositories instead of folders, each weekly repository can follow a naming standard such as:
+
+- `ds-model-eval-week-01-foundations`
+- `ds-model-eval-week-02-classification-metrics`
+- `ds-model-eval-week-08-grid-search`
+- `ds-model-eval-project-extension`
+- `ds-model-eval-case-study-final`
+
+This makes the hub repository act like a **control tower**, while each sub-repository becomes a specialized workspace for code, notebooks, datasets, and reports.
+
+<br><br>
+
+## [How to Use This Hub]()
+
+1. Start with the weekly table to understand the semester flow.
+2. Open the relevant week repository or folder.
+3. Study the concepts before coding.
+4. Reproduce the lab or notebook.
+5. Document findings in clear markdown.
+6. Link outputs back to this master hub.
+7. Publish responsibly, especially when datasets or partner organizations involve confidentiality.
+
+<br><br>
+
+## [Advanced Evaluation — Agentic AI Systems](#advanced-evaluation--agentic-ai-systems)
+
+[***From evaluating a model to evaluating an AI system***] <br>
+
+Traditional machine learning evaluation asks whether a model predicts accurately on unseen data. Agentic AI evaluation asks a broader question:
+
+> **How do we establish that an AI system remains reliable when its behavior is adaptive, non-deterministic, tool-using, and autonomous?**
+
+An agentic system may plan several steps, retrieve documents, call APIs, use external tools, hand work to another agent, recover from an error, or stop at the wrong moment. Therefore, evaluating only its final textual answer is often insufficient. We must also inspect whether the system completed the task safely, used the right tools, respected constraints, and produced a useful result.
+
+This advanced module extends—not replaces—the course foundations in metrics, validation, comparative analysis, calibration, leakage prevention, reproducibility, and responsible publication.
+
+<br><br>
+
+
+```mermaid
+%%{init:{
+  'theme':'dark',
+  'themeVariables':{
+    'background':'#090d13',
+    'primaryTextColor':'#F5F7FA',
+    'lineColor':'#2dd4bf'
+  }
+}}%%
+
+graph LR
+
+TASKS["EVALUATION DATASET<br/>Tasks -  Constraints<br/>Expected Outcomes"]:::setup
+
+AGENT["AGENT EXECUTION<br/>Planning -  Reasoning<br/>Tools -  Retrieval -  Actions"]:::llm
+
+TRACE["TRACE CAPTURE<br/>Inputs -  Tool Calls<br/>Steps -  Outputs -  Latency"]:::silver
+
+GRADERS["MULTI-LAYER GRADERS<br/>Code-Based -  LLM-as-a-Judge<br/>Human Review"]:::gold
+
+ANALYSIS["EVALUATION ANALYSIS<br/>Success -  Groundedness -  Safety<br/>Robustness -  Cost -  Failures"]:::bronze
+
+IMPROVE["IMPROVEMENT LOOP<br/>Prompts -  Tools -  Policies<br/>Regression Tests"]:::dash
+
+TASKS --> AGENT
+AGENT --> TRACE
+TRACE --> GRADERS
+GRADERS --> ANALYSIS
+ANALYSIS --> IMPROVE
+IMPROVE -. New benchmark cases .-> TASKS
+
+classDef setup fill:#0d2137,stroke:#00d2ff,color:#F5F7FA,stroke-width:2.5px;
+classDef bronze fill:#2a1512,stroke:#a85a4a,color:#F5F7FA,stroke-width:2.5px;
+classDef silver fill:#1b2430,stroke:#b0b7c3,color:#F5F7FA,stroke-width:2.5px;
+classDef gold fill:#2a2208,stroke:#e6c35a,color:#F5F7FA,stroke-width:2.5px;
+classDef dash fill:#06363d,stroke:#2dd4bf,color:#F5F7FA,stroke-width:2.5px;
+classDef llm fill:#231433,stroke:#b56cff,color:#F5F7FA,stroke-width:2.5px;
+```
+
+
+<br><br>
+
+
+### [***Evaluation Beyond Deterministic Testing***](#advanced-evaluation--agentic-ai-systems)
+
+A classical classifier usually receives the same input and returns a predictable type of output. An AI agent can take different routes even when it receives the same task. For this reason, evaluation should account for repeated runs, outcome quality, tool behavior, latency, cost, safety, and robustness.
+
+A simple analogy: evaluating a traditional model is like grading the final answer to a math problem. Evaluating an agent is like observing whether a student understood the problem, chose appropriate tools, followed the rules, checked their work, and reached a correct answer without causing harm.
+
+<br><br>
+
+### [***Multidimensional Evaluation***](#advanced-evaluation--agentic-ai-systems)
+
+| Evaluation dimension | Central question | Example evidence |
+|---|---|---|
+| Task success | Did the agent complete the requested task correctly? | Final answer, generated file, completed workflow, correct tool result |
+| Groundedness | Is the answer supported by approved sources or tool outputs? | Citations, retrieved evidence, trace inspection |
+| Tool-use quality | Did the agent select and use tools correctly? | Correct API call, valid parameters, successful execution |
+| Robustness | Does the system behave reliably with difficult, incomplete, or adversarial inputs? | Edge-case suite, repeated runs, failure-rate report |
+| Safety and governance | Did the agent respect permissions, privacy, scope, and human controls? | Guardrail logs, approval records, policy checks |
+| Efficiency | Is the workflow practical in time, cost, and number of steps? | Latency, token usage, tool-call count, cost per task |
+| Reproducibility | Can another person rerun and audit the evaluation? | Versioned dataset, prompt, model, rubric, trace, and code |
+
+<br><br>
+
+### [***Agentic Task Evaluation***](#advanced-evaluation--agentic-ai-systems)
+
+An agent evaluation begins with a clear task specification. Each test case should state the input, constraints, expected outcome, available tools, success criteria, and—when possible—a reference answer or known-good solution.
+
+### Example Evaluation Case
 
 
 
