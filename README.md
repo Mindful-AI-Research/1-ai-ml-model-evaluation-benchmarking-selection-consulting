@@ -14,6 +14,17 @@
 
 <br><br>
 
+<!-- ========= START SPONSOR BADGE ========= -->
+<p align="center">
+  <a href="https://github.com/sponsors/Mindful-AI-Research">
+    <img src="https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90%20%E2%8B%86-00FFFF?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0a1f44" alt="Sponsor ॐ ⋆ Mindful AI ⋆ Research & Consulting 𖤐 ⋆">
+  </a>
+</p>
+
+
+<br><br>
+<!-- ========= END SPONSOR BADGE ========= -->
+
 <!-- ========= START TEASER ========= -->
 ###### <p align="center"><em>Train it. Break it. Stress it. Test it.</em></p>
 
@@ -33,16 +44,7 @@
 <!-- ========= END TEASER ========= -->
 
 
-<!-- ========= START SPONSOR BADGE ========= -->
-<p align="center">
-  <a href="https://github.com/sponsors/Mindful-AI-Research">
-    <img src="https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90%20%E2%8B%86-00FFFF?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0a1f44" alt="Sponsor ॐ ⋆ Mindful AI ⋆ Research & Consulting 𖤐 ⋆">
-  </a>
-</p>
 
-
-<br><br>
-<!-- ========= END SPONSOR BADGE ========= -->
 
 <!-- =========  START PUC HEADER GIF ========= -->
 <p align="center">
