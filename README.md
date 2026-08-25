@@ -15,7 +15,7 @@
 <br><br>
 
 <!-- ========= START TEASER ========= -->
-<p align="center"><em>Training models is easy ... Choosing the winner is where the fun begins.</em></p>
+###### <p align="center"><em>Training models is easy ... Choosing the winner is where the fun begins.</em></p>
 
 ### <p align="center">⚡️</p>
 <br>
