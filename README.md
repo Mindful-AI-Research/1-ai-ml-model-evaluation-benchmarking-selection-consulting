@@ -549,6 +549,34 @@ For each evaluation run, record:
 ### [***Suggested Advanced Sub-Repository***](#advanced-evaluation--agentic-ai-systems)
 
 
+```text
+ds-model-eval-advanced-agentic-ai-evaluation/
+├── README.md
+├── datasets/
+│   ├── benchmark-tasks.jsonl
+│   └── task-schema.md
+├── agents/
+│   └── baseline-agent/
+├── graders/
+│   ├── code-graders/
+│   ├── llm-judge-rubrics/
+│   └── human-review-template.md
+├── traces/
+│   └── .gitkeep
+├── reports/
+│   ├── benchmark-results.md
+│   └── failure-analysis.md
+├── notebooks/
+│   └── agent-evaluation-analysis.ipynb
+└── reproducibility/
+    ├── environment.yml
+    └── evaluation-manifest.yaml
+```
+
+<br><br>
+
+### [***Key Takeaway***](#advanced-evaluation--agentic-ai-systems)
+
 
 
 
