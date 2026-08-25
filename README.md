@@ -524,7 +524,13 @@ Return:
 
 ### [***Human-in-the-Loop Validation***](#advanced-evaluation--agentic-ai-systems)
 
+Human review remains essential when tasks are high-stakes, subjective, context-dependent, or difficult to verify automatically. Human evaluators are especially valuable for calibrating LLM judges, reviewing borderline cases, identifying user-experience failures, and deciding whether an agent’s behavior is acceptable in a real organizational context.
 
+For projects involving health, education, public services, vulnerable populations, or confidential organizational data, a human approval checkpoint should be designed before consequential actions are taken.
+
+<br><br>
+
+### [***Reproducibility and Evaluation Governance***](#advanced-evaluation--agentic-ai-systems)
 
 
 
