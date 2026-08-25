@@ -532,7 +532,21 @@ For projects involving health, education, public services, vulnerable population
 
 ### [***Reproducibility and Evaluation Governance***](#advanced-evaluation--agentic-ai-systems)
 
+Agent evaluation must be treated like any other scientific experiment: someone else should be able to understand what was tested, reproduce the setup as closely as possible, and audit the conclusion.
 
+For each evaluation run, record:
+
+- Agent version, model version, system prompt, and generation parameters.
+- Task-dataset version and evaluation-case identifiers.
+- Tool schemas, tool versions, permissions, and external dependencies.
+- Grader type, rubric, judge-model version, and scoring prompt.
+- Raw traces or appropriately redacted summaries of tool use and intermediate steps.
+- Final metrics, failure categories, cost, latency, and known limitations.
+- Human-review decisions and calibration notes when applicable.
+
+<br><br>
+
+### [***Suggested Advanced Sub-Repository***](#advanced-evaluation--agentic-ai-systems)
 
 
 
