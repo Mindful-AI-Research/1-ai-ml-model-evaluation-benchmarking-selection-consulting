@@ -647,15 +647,7 @@ This course naturally aligns with a practical Python-based workflow.
 > - [Google Colab](https://colab.research.google.com)
 > - [Jupyter](https://jupyter.org)
 > - [Weights \& Biases](https://wandb.ai/site)
->
-> <br><br>
->
-> [_Signal]() > noise. [Rigor]() > hype. [Reproducibility]() > guesswork.
-> ***Good models are trained. Great models are also evaluated carefully.*** <br>
-> ***Clear experiments turn confusion into evidence.*** <br>
-> ⚡️
->
-> <br>
+
 
 <br><br>
 
