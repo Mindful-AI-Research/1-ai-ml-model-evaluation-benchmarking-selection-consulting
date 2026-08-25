@@ -647,7 +647,26 @@ This course naturally aligns with a practical Python-based workflow.
 
 <br><br>
 
+## [Bibliographic References]()
 
+### [***Basic Bibliography***]
+
+- CASTRO, Leandro Nunes de. *Introdução à mineração de dados: conceitos básicos, algoritmos e aplicações*. São Paulo: Saraiva, 2016.
+- FERREIRA, Rogério G. C. et al. (org.). *Preparação e análise exploratória de dados*. Porto Alegre: Sagah, 2021.
+- SUD, K.; ERDOGMUS, P.; KADRY, S. *Introduction to Data Science and Machine Learning*. London: IntechOpen, 2020.
+
+
+### [***Complementary Bibliography***]
+
+- BELUSSI, A. et al. *Distributed and Parallel Architectures for Spatial Data*. Basel: MDPI, 2020.
+- HUTTER, F.; KOTTHOFF, L.; VANSCHOREN, J. (eds.). *Automated Machine Learning*. London: Springer, 2019.
+- OLIVEIRA, C. L. V.; ZANETTI, H. A. P. *Projetos com Python e Arduino*. São Paulo: Érica, 2020.
+- SOLOMON, C.; VILLAMARÍN, R.; MENDOZA, E. *Statistical Machine Learning for Human Behaviour Analysis*. Basel: MDPI, 2020.
+- SOUZA, V. F. de. Mineração de dados educacionais com aprendizagem de máquina. *Revista Educar*, Curitiba, v. 5, n. 2, 2021.
+
+<br><br>
+
+## [Final Notes]()
 
 
 
