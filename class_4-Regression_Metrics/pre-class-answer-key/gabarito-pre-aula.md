@@ -29,7 +29,7 @@ Resposta: A) a média dos erros sem sinal (em módulo).
 
 Resposta: D) porque eleva cada erro ao quadrado antes de somar.
 
-⸻
+#
 
 4) Sobre a faixa de valores do R², é correto afirmar:
 
@@ -40,7 +40,7 @@ Resposta: D) porque eleva cada erro ao quadrado antes de somar.
 
 Resposta: C) vale no máximo 1 e pode ser negativo.
 
-⸻
+#
 
 5) Um R² negativo significa que o modelo:
 
@@ -51,7 +51,7 @@ Resposta: C) vale no máximo 1 e pode ser negativo.
 
 Resposta: B) é pior do que simplesmente prever sempre a média.
 
-⸻
+V
 
 6) O MAPE expressa o erro:
 
@@ -60,9 +60,8 @@ Resposta: B) é pior do que simplesmente prever sempre a média.
 * C) como fração da variância
 * D) em porcentagem do valor real ✅
 
-Resposta: D) em porcentagem do valor real.
+#
 
-⸻
 
 7) A principal armadilha do MAPE aparece quando:
 
@@ -84,7 +83,8 @@ Resposta: C) há valores reais próximos de zero.
 
 Resposta: D) o R² ou o MAPE (métricas sem unidade).
 
-⸻
+#
+
 
 9) No cálculo do R², a “soma dos desvios² da média” representa:
 
@@ -95,7 +95,8 @@ Resposta: D) o R² ou o MAPE (métricas sem unidade).
 
 Resposta: A) o quanto os valores reais se espalham em torno da média.
 
-⸻
+#
+
 
 💡 Dúvida pertinente para levar à aula
 
