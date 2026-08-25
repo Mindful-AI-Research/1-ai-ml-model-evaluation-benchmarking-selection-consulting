@@ -78,29 +78,25 @@
 > All sensitive content remains protected in private repositories when required.
 >
 
-<br><br>
+<br>
 
 #
 
-<br><br>
+<br><br><br>
 <!-- ========= END NOTE ========= -->
 
-
-
-<br><br><br><br>
-
-<!-- ========= End Confidentiality statement ========= -->
 <!-- ========= START BADGES ========= -->
 <p align="center">
-  <img src="https://img.shields.io/badge/Focus-Model%20Evaluation-1ABC9C" />
-  <img src="https://img.shields.io/badge/Validation-Cross--Validation-16A085" />
-  <img src="https://img.shields.io/badge/Tuning-Hyperparameter%20Search-48C9B0" />
-  <img src="https://img.shields.io/badge/Selection-Comparative%20Analysis-20B2AA" />
-  <img src="https://img.shields.io/badge/Reproducibility-Pipelines%20%26%20Model%20Cards-76D7C4" />
-  <img src="https://img.shields.io/badge/Tools-Python%20%7C%20scikit--learn%20%7C%20GitHub-0E7490" />
+  <img src="https://img.shields.io/badge/Focus-Model%20Evaluation-0f172a?style=flat-square&logoColor=white" />
+  <img src="https://img.shields.io/badge/Validation-Cross--Validation-101f2f?style=flat-square&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tuning-Hyperparameter%20Search-112a3a?style=flat-square&logoColor=white" />
+  <img src="https://img.shields.io/badge/Benchmarking-Model%20Comparison-123445?style=flat-square&logoColor=white" />
+  <img src="https://img.shields.io/badge/Reproducibility-Pipelines%20%26%20Model%20Cards-124050?style=flat-square&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tools-Python%20%7C%20scikit--learn%20%7C%20GitHub-134a4a?style=flat-square&logoColor=white" />
 </p>
-<br><br><br><br>
 
+
+<br><br>
 <!-- ========= END BADGES ========= -->
 
 ## [Overview]()
