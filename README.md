@@ -158,8 +158,6 @@ A machine learning model is not useful just because it runs. A model is useful w
 
 This discipline helps students move from “I trained a model” to “I can defend why this model should be trusted.” That difference is what turns experimentation into professional data science practice.
 
-For a child-friendly explanation:
-
 - A model is like a student taking a test.
 - Evaluation metrics are the teacher’s grading rules.
 - Validation checks whether the student really learned, or just memorized the homework.
@@ -206,8 +204,7 @@ The semester follows a logical progression:
 
 ## [Weekly Course Map](#weekly-course-map)
 
-> [!TIP]
-> Use this table as the semester’s living index. Replace each **Planned link** with the future GitHub repository, folder, notebook, slides, or report created for that class. A relative path works well for folders in this hub; an absolute URL works well for independent repositories.
+<br>
 
 | [Week]() | [Topic Summary]() | [Notes/Files]() |
 | :-- | :-- | :-- |
