@@ -209,28 +209,29 @@ The semester follows a logical progression:
 > [!TIP]
 > Use this table as the semester’s living index. Replace each **Planned link** with the future GitHub repository, folder, notebook, slides, or report created for that class. A relative path works well for folders in this hub; an absolute URL works well for independent repositories.
 
-| Week | Topic summary | Core ideas and expected artifact | Notes / files |
-|---:|---|---|---|
-|  | 🧠 **Part I — Evaluation Foundations and Metrics** |  |  |
-| 1 | **Fundamentals of Model Evaluation** | Generalization, overfitting, underfitting, bias–variance trade-off, and data leakage. Create a concept-and-diagnostics notebook. | `[Planned link](#)` |
-| 2 | **Classification Metrics I** | Confusion matrix, accuracy, precision, recall, F1-score, and imbalanced classes. Extension project launch and group formation. | `[Planned link](#)` |
-| 3 | **Classification Metrics II** | ROC-AUC, precision–recall curves, log loss, macro/micro/weighted averaging. Build a classifier evaluation report. | `[Planned link](#)` |
-| 4 | **Regression Metrics** | MAE, MSE, RMSE, R², MAPE, and residual analysis. Deliver a regression diagnostics notebook. | `[Planned link](#)` |
-|  | 🧪 **Part II — Validation and Hyperparameter Search** |  |  |
-| 5 | **Hold-Out Validation and Safe Pipelines** | Train/validation/test roles; `Pipeline` and `ColumnTransformer` as protections against leakage. | `[Planned link](#)` |
-| 6 | **Cross-Validation I** | K-fold, stratified K-fold, leave-one-out, and repeated cross-validation. Compare validation estimates. | `[Planned link](#)` |
-| 7 | **Cross-Validation II** | Group-based, time-series, and nested cross-validation. Choose a validation strategy that respects the data-generating process. | `[Planned link](#)` |
-| 8 | **Exhaustive Hyperparameter Search** | Define search spaces and use `GridSearchCV`. Extension project data milestone. | `[Planned link](#)` |
-| 9 | **Randomized Search and AutoML Overview** | Use `RandomizedSearchCV`; compare exhaustive and random search trade-offs; introduce AutoML. | `[Planned link](#)` |
-| 10 | **Validation Curves** | Read performance versus hyperparameter values; diagnose overfitting and underfitting. **Challenge 3 substitute.** | `[Planned link](#)` |
-| 11 | **Learning Curves** | Interpret performance versus training-set size; reason about bias and variance. | `[Planned link](#)` |
-| — | **Academic Week** | Institutional academic activities; no regular weekly topic listed in the official schedule. | `[Calendar / notes](#)` |
-|  | ⚖️ **Part III — Comparative Analysis, Reliability, and Delivery** |  |  |
-| 12 | **Model Selection and Comparison** | One-standard-error rule, paired tests, and McNemar-style comparison logic. Produce a fair comparison report. | `[Planned link](#)` |
-| 13 | **Decision Thresholds and Calibration** | Threshold tuning, calibration curves, and Brier score. Evaluate probability quality, not only class labels. | `[Planned link](#)` |
-| — | **Advanced Evaluation — Agentic AI Systems** | **Supplementary advanced module.** Extend model-evaluation principles to adaptive systems that plan, call tools, retrieve information, and may produce different execution paths across runs. Covers task success, robustness, failure analysis, trace evaluation, LLM-as-a-Judge, human review, and evaluation governance. | `[Planned link](#)` |
-| 14 | **Advanced Leakage Prevention and Reproducibility** | Random seeds, `joblib`, experiment consistency, and model cards. | `[Planned link](#)` |
-| 15 | **Feature Selection Inside Validation** | Run feature selection within the cross-validation workflow to avoid inflated results. | `[Planned link](#)` |
+| [Week]() | [Topic Summary]() | [Notes/Files]() |
+| :-- | :-- | :-- |
+|  | 🧠 **Part I — Model Evaluation Foundations** |  |
+| 1 | [Fundamentals of Model Evaluation]() | `/week-01-model-evaluation-foundations/` |
+| 2 | [Classification Metrics I — Confusion Matrix, Accuracy, Precision, Recall, F1]() | `/week-02-classification-metrics-1/` |
+| 3 | [Classification Metrics II — ROC-AUC, PR Curve, Log-Loss, Averaging Methods]() | `/week-03-classification-metrics-2/` |
+| 4 | [Regression Metrics — MAE, MSE, RMSE, R², MAPE, Residual Analysis]() | `/week-04-regression-metrics/` |
+| 5 | [Hold-out Validation, Pipelines, and Leakage Prevention]() | `/week-05-holdout-validation/` |
+| 6 | [Cross-Validation I — K-Fold, Stratified, Leave-One-Out, Repeated CV]() | `/week-06-cross-validation-1/` |
+| 7 | [Cross-Validation II — Grouped, Time Series, and Nested CV]() | `/week-07-cross-validation-2/` |
+| 8 | [Grid Search with GridSearchCV]() | `/week-08-grid-search/` |
+| 9 | [Randomized Search with RandomizedSearchCV and AutoML Overview]() | `/week-09-randomized-search/` |
+| 10 | [Validation Curves — Diagnosing Overfitting and Underfitting]() | `/week-10-validation-curves/` |
+| 11 | [Learning Curves — Data Size, Bias, and Variance]() | `/week-11-learning-curves/` |
+|  | 🧪 **Part II — Comparative Analysis and Model Selection** |  |
+| 12 | [Model Selection and Comparison — One-Standard-Error Rule, Paired Tests, McNemar]() | `/week-12-model-selection-comparison/` |
+| 13 | [Decision Thresholds and Probability Calibration]() | `/week-13-thresholds-calibration/` |
+| 14 | [Advanced Leakage Prevention and Reproducibility]() | `/week-14-leakage-reproducibility/` |
+| 15 | [Feature Selection Correctly Applied Inside Cross-Validation]() | `/week-15-feature-selection-validation/` |
+| 16 | [Integrated Case Study — End-to-End Evaluation and Selection Pipeline]() | `/week-16-integrated-case-study/` |
+| 17 | [Communicating Results and Publishing the Repository]() | `/week-17-results-publication/` |
+| 18 | [Integrated Review and Final Project Presentations]() | `/week-18-final-presentations/` |
+
 
 
 <br><br>
@@ -649,7 +650,7 @@ This course naturally aligns with a practical Python-based workflow.
 
 ## [Bibliographic References]()
 
-### [***Basic Bibliography***]
+### [***Basic Bibliography***]()
 
 - CASTRO, Leandro Nunes de. *Introdução à mineração de dados: conceitos básicos, algoritmos e aplicações*. São Paulo: Saraiva, 2016.
 - FERREIRA, Rogério G. C. et al. (org.). *Preparação e análise exploratória de dados*. Porto Alegre: Sagah, 2021.
@@ -657,7 +658,7 @@ This course naturally aligns with a practical Python-based workflow.
 
 <br>
 
-### [***Complementary Bibliography***]
+### [***Complementary Bibliography***]()
 
 - BELUSSI, A. et al. *Distributed and Parallel Architectures for Spatial Data*. Basel: MDPI, 2020.
 - HUTTER, F.; KOTTHOFF, L.; VANSCHOREN, J. (eds.). *Automated Machine Learning*. London: Springer, 2019.
