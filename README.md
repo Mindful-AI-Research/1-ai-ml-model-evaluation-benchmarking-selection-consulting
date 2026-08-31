@@ -124,6 +124,7 @@ This hub is designed to:
 - [Learning Goals](#learning-goals)
 - [Semester Roadmap](#semester-roadmap)
 - [Weekly Course Table](#weekly-course-table)
+- [Pre-Class Online Preparatory Videos](#pre-class-online-preparatory-videos)
 - [Advanced Evaluation — Agentic AI Systems](#advanced-evaluation--agentic-ai-systems)
 - [Assessment Structure](#assessment-structure)
 - [Extension Project](#extension-project)
