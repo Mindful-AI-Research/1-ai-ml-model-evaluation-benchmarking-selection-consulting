@@ -14,15 +14,18 @@
 
 <br><br>
 
-<!-- ========= START SPONSOR BADGE ========= -->
+
+<!-- ♡ Sponsor ····· ॐ Mindful AI -->
 <p align="center">
   <a href="https://github.com/sponsors/Mindful-AI-Research">
-    <img src="https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90%20%E2%8B%86-00FFFF?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0a1f44" alt="Sponsor ॐ ⋆ Mindful AI ⋆ Research & Consulting 𖤐 ⋆">
-  </a>
+    <img
+      src="https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90%20%E2%8B%86-3A424C?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=07111F"
+      alt="Sponsor ॐ ⋆ Mindful AI ⋆ Research & Consulting 𖤐 ⋆"
+      height="36"
+    >
 </p>
 
-
-<br><br>
+<br><br>    
 <!-- ========= END SPONSOR BADGE ========= -->
 
 <!-- ========= START TEASER ========= -->
@@ -329,7 +332,22 @@ This makes the hub repository act like a **control tower**, while each sub-repos
 6. Link outputs back to this master hub.
 7. Publish responsibly, especially when datasets or partner organizations involve confidentiality.
 
+
 <br><br>
+
+## [Pre-Class Online Preparatory Videos](#pre-class-online-preparatory-videos)
+
+
+Access the collection of online preparatory videos designed to support in-person classes and lab sessions.
+
+<br>
+
+- [Open the video page](Pre-Class_Video-Links.md)
+
+
+
+<br><br>
+
 
 ## [Advanced Evaluation — Agentic AI Systems](#advanced-evaluation--agentic-ai-systems)
 
