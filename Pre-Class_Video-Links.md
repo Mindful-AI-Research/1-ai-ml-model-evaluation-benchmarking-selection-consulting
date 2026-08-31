@@ -25,7 +25,7 @@ Students are encouraged to watch the materials in advance so that face-to-face m
 
 
 
-- [You Tube](https://youtu.be/c2KzvB0Zwys?si=p6HN9wzyWXAIreU)
+- [You Tube](https://youtu.be/dBwNRAgSKms)
 
 
 <br>
