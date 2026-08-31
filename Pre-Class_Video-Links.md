@@ -39,7 +39,7 @@ Students are encouraged to watch the materials in advance so that face-to-face m
 <br>
 
 
-## Week 5 — Hold-out and Pipeline Validation
+## Week 5 — Hold-out and Pipeline Validation - The subtle leakage in preprocessing
 
 
 
