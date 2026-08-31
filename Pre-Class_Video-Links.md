@@ -1,17 +1,69 @@
 
+# Pre-Class Online Preparatory Videos
 
-### **Note:** Class 1 did not have a pre class video.
+This page gathers the online preparatory videos assigned before the in-person classes and lab sessions.
+
+Students are encouraged to watch the materials in advance so that face-to-face meetings can focus on discussion, guided practice, experimentation, and applied problem-solving.
+
+<br><br>
+
+## Week 1 - Class 1 - Fundamentals of Model Evaluation, did not have a pre class video.
 
 <br>
 
-➠ [class_2-Classif-Metrics-I_ConfMatrix_Accuracy_Precision_Recall_F1_Imbalanced](https://youtu.be/c2KzvB0Zwys)
+## Week 2 —   Classification Metrics I - _ConfMatrix_Accuracy_Precision_Recall_F1_Imbalanced
+
+
+
+
+- [You Tube](https://youtu.be/c2KzvB0Zwys)
 
 <br>
 
-➠ [class_3-Classification_Metrics_II_ROC_PR_Curves_AUC_Log_Loss](https://youtu.be/c2KzvB0Zwys?si=p6HN9wzyWXAIreU)
+
+## Week 3 — Classification Metrics II - RO, PR Curves, AUC,m Log, Loss
+
+
+
+- [You Tube](https://youtu.be/c2KzvB0Zwys?si=p6HN9wzyWXAIreU)
+
 
 <br>
 
-➠ [class_4-Regression_Metrics](Classification(https://aesthetic-cocada-c4703b.netlify.app/)
+
+## Week 4 — Regression Metrics
+
+- [You Tube](https://youtu.be/4JcKAmHgDqM)
+
+  
+<br>
+
+
+## Week 5 — Hold-out and Pipeline Validation
+
+
+
+- [You Tube](https://youtu.be/6GC26-kKNus)
+
+
+<br>
+
+
+
+
+<!--
+## Week 3 — Classification Metrics I
+
+
+- [You Tube](LINK)
+
+<br>
+
+-->
+
+
+
+
+
 
 
