@@ -14,9 +14,11 @@ Students are encouraged to watch the materials in advance so that face-to-face m
 ## Week 2 —   Classification Metrics I - _ConfMatrix_Accuracy_Precision_Recall_F1_Imbalanced
 
 
+https://github.com/user-attachments/assets/ba5ce062-6bb3-4725-9c06-e350f35b1589
 
 
 - [You Tube](https://youtu.be/c2KzvB0Zwys)
+
 
 <br>
 
@@ -25,7 +27,10 @@ Students are encouraged to watch the materials in advance so that face-to-face m
 
 
 
+
+
 - [You Tube](https://youtu.be/dBwNRAgSKms)
+
 
 
 <br>
