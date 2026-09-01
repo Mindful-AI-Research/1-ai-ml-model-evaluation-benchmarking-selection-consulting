@@ -26,6 +26,7 @@ https://github.com/user-attachments/assets/ba5ce062-6bb3-4725-9c06-e350f35b1589
 ## Week 3 — Classification Metrics II - RO, PR Curves, AUC,m Log, Loss
 
 
+https://github.com/user-attachments/assets/4124637f-e627-45be-8b27-36efcaa92eec
 
 
 
