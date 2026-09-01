@@ -1,11 +1,12 @@
 
-# Pre-Class Online Preparatory Videos
+# [Pre-Class Online Preparatory Videos]()
 
 This page gathers the online preparatory videos assigned before the in-person classes and lab sessions.
 
 Students are encouraged to watch the materials in advance so that face-to-face meetings can focus on discussion, guided practice, experimentation, and applied problem-solving.
 
 <br><br>
+
 
 ## [Week 1]() - Class 1 - Fundamentals of Model Evaluation, did not have a pre class video.
 
