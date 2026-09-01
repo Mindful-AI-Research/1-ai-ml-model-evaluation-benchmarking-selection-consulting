@@ -38,6 +38,10 @@ https://github.com/user-attachments/assets/ba5ce062-6bb3-4725-9c06-e350f35b1589
 
 ## Week 4 — Regression Metrics
 
+
+https://github.com/user-attachments/assets/2781d825-1b3b-462d-b7ee-8e1963a1dd70
+
+
 - [You Tube](https://youtu.be/4JcKAmHgDqM)
 
   
