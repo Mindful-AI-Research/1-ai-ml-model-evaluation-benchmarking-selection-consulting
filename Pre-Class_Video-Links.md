@@ -7,11 +7,12 @@ Students are encouraged to watch the materials in advance so that face-to-face m
 
 <br><br>
 
-## Week 1 - Class 1 - Fundamentals of Model Evaluation, did not have a pre class video.
+## [Week 1]() - Class 1 - Fundamentals of Model Evaluation, did not have a pre class video.
 
-<br>
+<br><br>
 
-## Week 2 —   Classification Metrics I - _ConfMatrix_Accuracy_Precision_Recall_F1_Imbalanced
+
+## [Week 2]() —   Classification Metrics I - _ConfMatrix_Accuracy_Precision_Recall_F1_Imbalanced
 
 
 https://github.com/user-attachments/assets/ba5ce062-6bb3-4725-9c06-e350f35b1589
@@ -23,7 +24,7 @@ https://github.com/user-attachments/assets/ba5ce062-6bb3-4725-9c06-e350f35b1589
 <br>
 
 
-## Week 3 — Classification Metrics II - RO, PR Curves, AUC,m Log, Loss
+## [Week 3]() — Classification Metrics II - RO, PR Curves, AUC,m Log, Loss
 
 
 https://github.com/user-attachments/assets/4124637f-e627-45be-8b27-36efcaa92eec
@@ -37,7 +38,7 @@ https://github.com/user-attachments/assets/4124637f-e627-45be-8b27-36efcaa92eec
 <br>
 
 
-## Week 4 — Regression Metrics
+## [Week 4]() — Regression Metrics
 
 
 https://github.com/user-attachments/assets/2781d825-1b3b-462d-b7ee-8e1963a1dd70
@@ -49,11 +50,22 @@ https://github.com/user-attachments/assets/2781d825-1b3b-462d-b7ee-8e1963a1dd70
 <br>
 
 
-## Week 5 — Hold-out and Pipeline Validation - The subtle leakage in preprocessing
+## [Week 5]() — Hold-out and Pipeline Validation - The subtle leakage in preprocessing
 
 
 
 - [You Tube](https://youtu.be/6GC26-kKNus)
+
+
+<br>
+
+
+
+## [Week 6 and 7]() — 
+
+
+
+- [You Tube]()
 
 
 <br>
