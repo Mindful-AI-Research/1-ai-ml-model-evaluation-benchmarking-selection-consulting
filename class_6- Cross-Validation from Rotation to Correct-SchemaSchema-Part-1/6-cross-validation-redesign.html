@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cross-Validation — Class 06</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --bg: #f6f4ef;
+      --surface: rgba(255,255,255,0.74);
+      --surface-strong: #ffffff;
+      --surface-soft: #ece7dd;
+      --text: #1f2a2c;
+      --muted: #677377;
+      --faint: #8f9a9d;
+      --primary: #0d6b72;
+      --primary-2: #155e75;
+      --accent: #d88a18;
+      --border: rgba(20, 32, 36, 0.12);
+      --shadow: 0 20px 60px rgba(21, 34, 38, 0.10);
+      --radius: 22px;
+    }
+    [data-theme="dark"] {
+      --bg: #111716;
+      --surface: rgba(26, 33, 32, 0.72);
+      --surface-strong: #1a2120;
+      --surface-soft: #232b2a;
+      --text: #edf1ee;
+      --muted: #b9c4bf;
+      --faint: #8f9a95;
+      --primary: #58a6a4;
+      --primary-2: #79b8c0;
+      --accent: #f0b35c;
+      --border: rgba(240, 245, 242, 0.10);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(90,166,164,.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(216,138,24,.14), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .shell { max-width: 1240px; margin: 0 auto; padding: 24px; }
+    .topbar {
+      position: sticky; top: 16px; z-index: 20;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+      padding: 14px 16px; margin-bottom: 22px;
+      background: var(--surface); backdrop-filter: blur(18px);
+      border: 1px solid var(--border); border-radius: 999px; box-shadow: var(--shadow);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 14px;
+      display: grid; place-items: center; color: white;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      font-weight: 800;
+    }
+    .brand-copy { min-width: 0; }
+    .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+    .brand-title { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; }
+    button, .navlink {
+      border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+      border-radius: 999px; padding: 11px 14px; font: inherit; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px; transition: .22s ease;
+    }
+    button:hover, .navlink:hover { transform: translateY(-1px); border-color: rgba(88,166,164,.45); }
+    .hero {
+      display: grid; grid-template-columns: 1.25fr .9fr; gap: 20px; align-items: stretch;
+      margin-bottom: 20px;
+    }
+    .panel {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      backdrop-filter: blur(18px); box-shadow: var(--shadow);
+    }
+    .hero-main { padding: clamp(24px, 4vw, 48px); position: relative; overflow: hidden; }
+    .hero-main::after {
+      content: ""; position: absolute; inset: auto -10% -35% auto; width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(88,166,164,.16), transparent 70%);
+      pointer-events: none;
+    }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
+      background: rgba(88,166,164,.12); color: var(--primary); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.04; }
+    h1 { font-family: 'Fraunces', serif; font-size: clamp(2.4rem, 5vw, 4.6rem); max-width: 10ch; }
+    .lead { font-size: clamp(1rem, 1.4vw, 1.15rem); color: var(--muted); max-width: 60ch; }
+    .hero-side { padding: 24px; display: grid; gap: 14px; }
+    .stat-card { padding: 18px; border-radius: 18px; background: var(--surface-strong); border: 1px solid var(--border); }
+    .stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--faint); margin-bottom: 8px; }
+    .stat-value { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; }
+    .stat-note { color: var(--muted); font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+    .section { grid-column: span 12; padding: clamp(20px, 3vw, 30px); }
+    .section-header { display: flex; justify-content: space-between; gap: 12px; align-items: end; margin-bottom: 16px; }
+    .section-title { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 2.4vw, 2.2rem); }
+    .section-desc { color: var(--muted); max-width: 68ch; }
+    .cards-2, .cards-3, .cards-4 { display: grid; gap: 14px; }
+    .cards-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .cards-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .cards-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .card {
+      background: var(--surface-strong); border: 1px solid var(--border); border-radius: 18px; padding: 18px;
+      min-height: 100%;
+    }
+    .card h3 { font-size: 1.06rem; margin-bottom: 10px; }
+    .card p, .card li { color: var(--muted); }
+    ul { margin: 10px 0 0; padding-left: 18px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; overflow: hidden; border-radius: 16px; }
+    th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 12px; text-transform: uppercase; letter-spacing: .10em; color: var(--faint); }
+    tr:last-child td { border-bottom: 0; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .94em; }
+    .timeline { display: grid; gap: 12px; }
+    .timeline-item {
+      display: grid; grid-template-columns: 110px 1fr; gap: 12px; align-items: start;
+      padding: 14px 0; border-bottom: 1px dashed var(--border);
+    }
+    .timeline-item:last-child { border-bottom: 0; }
+    .tag {
+      display: inline-flex; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      background: rgba(216,138,24,.12); color: var(--accent);
+    }
+    .footer-note { color: var(--faint); font-size: 13px; text-align: center; padding: 22px 0 12px; }
+    [data-lang] { display: none; }
+    html.lang-pt [data-lang="pt"], html.lang-en [data-lang="en"] { display: block; }
+    html.lang-pt [data-lang-inline="pt"], html.lang-en [data-lang-inline="en"] { display: inline; }
+    [data-lang-inline] { display: none; }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .cards-4, .cards-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 720px) {
+      .shell { padding: 14px; }
+      .topbar { border-radius: 24px; position: static; }
+      .cards-2, .cards-3, .cards-4 { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; }
+      h1 { max-width: none; }
+      .controls { width: 100%; }
+      .controls > * { flex: 1 1 auto; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar panel">
+      <div class="brand">
+        <div class="brand-mark">CV</div>
+        <div class="brand-copy">
+          <div class="eyebrow">Validation Systems</div>
+          <div class="brand-title">Cross-Validation — Class 06</div>
+        </div>
+      </div>
+      <div class="controls">
+        <a class="navlink" href="#overview">⌂ <span data-lang-inline="pt">Início</span><span data-lang-inline="en">Home</span></a>
+        <a class="navlink" href="#schemes">◫ <span data-lang-inline="pt">Esquemas</span><span data-lang-inline="en">Schemes</span></a>
+        <a class="navlink" href="#leakage">⚑ <span data-lang-inline="pt">Leakage</span><span data-lang-inline="en">Leakage</span></a>
+        <button id="langToggle">PT / EN</button>
+        <button id="themeToggle">☾ / ☀</button>
+      </div>
+    </div>
+
+    <section class="hero" id="overview">
+      <div class="hero-main panel">
+        <div class="kicker">
+          <span data-lang-inline="pt">Por que validação muda</span>
+          <span data-lang-inline="en">Why validation changes</span>
+        </div>
+        <div data-lang="pt">
+          <h1>Cross-validation: da rotação ao esquema correto.</h1>
+          <p class="lead">Uma única divisão treino/validação é frágil. Ao trocar apenas a semente aleatória, a acurácia pode oscilar bastante; a validação cruzada substitui um único número por uma distribuição mais confiável de resultados.</p>
+        </div>
+        <div data-lang="en">
+          <h1>Cross-validation: from rotation to the right scheme.</h1>
+          <p class="lead">A single train/validation split is fragile. Changing only the random seed can move accuracy noticeably; cross-validation replaces one isolated score with a more reliable distribution of results.</p>
+        </div>
+      </div>
+      <aside class="hero-side panel">
+        <div class="stat-card">
+          <div class="stat-label"><span data-lang-inline="pt">Mesma base, sementes diferentes</span><span data-lang-inline="en">Same data, different seeds</span></div>
+          <div class="stat-value">0.8750 → 0.9219</div>
+          <div class="stat-note"><span data-lang-inline="pt">Variação observada mudando apenas o split aleatório.</span><span data-lang-inline="en">Observed variation when only the random split changes.</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span data-lang-inline="pt">Lição</span><span data-lang-inline="en">Lesson</span></div>
+          <div class="stat-value">0.8906 ± 0.0171</div>
+          <div class="stat-note"><span data-lang-inline="pt">Média resume; desvio-padrão expõe instabilidade.</span><span data-lang-inline="en">The mean summarizes; the standard deviation exposes instability.</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span data-lang-inline="pt">Meta</span><span data-lang-inline="en">Goal</span></div>
+          <div class="stat-note"><span data-lang-inline="pt">Escolher o esquema de validação que imita o mundo real dos dados.</span><span data-lang-inline="en">Choose the validation scheme that mirrors the real behavior of the data.</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <main class="grid">
+      <section class="section panel" id="rotation">
+        <div class="section-header">
+          <div>
+            <div class="tag"><span data-lang-inline="pt">Mecânica central</span><span data-lang-inline="en">Core mechanics</span></div>
+            <h2 class="section-title"><span data-lang-inline="pt">Como o k-fold funciona</span><span data-lang-inline="en">How k-fold works</span></h2>
+          </div>
+        </div>
+        <div class="cards-4">
+          <article class="card"><h3>1</h3><p data-lang="pt">Particione os dados de desenvolvimento em k folds.</p><p data-lang="en">Partition the development data into k folds.</p></article>
+          <article class="card"><h3>2</h3><p data-lang="pt">Cada fold vira validação uma vez; os outros k−1 treinam.</p><p data-lang="en">Each fold becomes validation once; the other k−1 folds train.</p></article>
+          <article class="card"><h3>3</h3><p data-lang="pt">Repita até todos os folds ocuparem o papel de validação.</p><p data-lang="en">Repeat until every fold has served as the validation fold.</p></article>
+          <article class="card"><h3>4</h3><p data-lang="pt">Reporte média e desvio-padrão, não um número solto.</p><p data-lang="en">Report mean and standard deviation, not an isolated number.</p></article>
+        </div>
+      </section>
+
+      <section class="section panel" id="schemes">
+        <div class="section-header">
+          <div>
+            <div class="tag"><span data-lang-inline="pt">Esquemas</span><span data-lang-inline="en">Schemes</span></div>
+            <h2 class="section-title"><span data-lang-inline="pt">Qual esquema usar</span><span data-lang-inline="en">Which scheme to use</span></h2>
+            <p class="section-desc" data-lang="pt">A regra prática é simples: escolha o método que protege o padrão de dependência dos seus dados e evita otimismos artificiais.</p>
+            <p class="section-desc" data-lang="en">The practical rule is simple: choose the method that protects the dependency structure in your data and avoids artificial optimism.</p>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th><span data-lang-inline="pt">Situação</span><span data-lang-inline="en">Situation</span></th>
+              <th><span data-lang-inline="pt">Esquema</span><span data-lang-inline="en">Scheme</span></th>
+              <th><span data-lang-inline="pt">Por quê</span><span data-lang-inline="en">Why</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span data-lang-inline="pt">Classificação</span><span data-lang-inline="en">Classification</span></td>
+              <td class="mono">StratifiedKFold</td>
+              <td><span data-lang-inline="pt">Preserva proporções de classe por fold.</span><span data-lang-inline="en">Preserves class proportions in each fold.</span></td>
+            </tr>
+            <tr>
+              <td><span data-lang-inline="pt">Regressão / dados independentes</span><span data-lang-inline="en">Regression / independent data</span></td>
+              <td class="mono">KFold</td>
+              <td><span data-lang-inline="pt">Rotação simples costuma ser adequada.</span><span data-lang-inline="en">Simple rotation is usually appropriate.</span></td>
+            </tr>
+            <tr>
+              <td><span data-lang-inline="pt">Observações por entidade</span><span data-lang-inline="en">Repeated entity observations</span></td>
+              <td class="mono">GroupKFold</td>
+              <td><span data-lang-inline="pt">Impede a mesma entidade de aparecer dos dois lados.</span><span data-lang-inline="en">Prevents the same entity from appearing on both sides.</span></td>
+            </tr>
+            <tr>
+              <td><span data-lang-inline="pt">Dados temporais</span><span data-lang-inline="en">Time-ordered data</span></td>
+              <td class="mono">TimeSeriesSplit</td>
+              <td><span data-lang-inline="pt">Treina no passado e testa no futuro, sem vazamento temporal.</span><span data-lang-inline="en">Trains on the past and tests the future, without temporal leakage.</span></td>
+            </tr>
+            <tr>
+              <td><span data-lang-inline="pt">Dados muito limitados</span><span data-lang-inline="en">Very limited data</span></td>
+              <td class="mono">LOO / RepeatedStratifiedKFold</td>
+              <td><span data-lang-inline="pt">Usa os exemplos mais intensamente, com custo computacional.</span><span data-lang-inline="en">Uses examples more intensively, with computational trade-offs.</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section panel">
+        <div class="section-header">
+          <div>
+            <div class="tag"><span data-lang-inline="pt">Comparação</span><span data-lang-inline="en">Comparison</span></div>
+            <h2 class="section-title"><span data-lang-inline="pt">5 folds vs 10 folds</span><span data-lang-inline="en">5 folds vs 10 folds</span></h2>
+          </div>
+        </div>
+        <div class="cards-2">
+          <article class="card">
+            <h3 class="mono">k = 5</h3>
+            <ul>
+              <li><span data-lang-inline="pt">80% dos dados em cada rodada de treino.</span><span data-lang-inline="en">80% of data in each training round.</span></li>
+              <li><span data-lang-inline="pt">5 ajustes do modelo.</span><span data-lang-inline="en">5 model fits.</span></li>
+              <li><span data-lang-inline="pt">Resultado observado: 0.8938 ± 0.0117.</span><span data-lang-inline="en">Observed result: 0.8938 ± 0.0117.</span></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3 class="mono">k = 10</h3>
+            <ul>
+              <li><span data-lang-inline="pt">90% dos dados em cada rodada de treino.</span><span data-lang-inline="en">90% of data in each training round.</span></li>
+              <li><span data-lang-inline="pt">10 ajustes do modelo.</span><span data-lang-inline="en">10 model fits.</span></li>
+              <li><span data-lang-inline="pt">Resultado observado: 0.8938 ± 0.0286.</span><span data-lang-inline="en">Observed result: 0.8938 ± 0.0286.</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <div class="section-header">
+          <div>
+            <div class="tag"><span data-lang-inline="pt">Leitura conceitual</span><span data-lang-inline="en">Conceptual read</span></div>
+            <h2 class="section-title"><span data-lang-inline="pt">O que cada variação ensina</span><span data-lang-inline="en">What each variation teaches</span></h2>
+          </div>
+        </div>
+        <div class="cards-3">
+          <article class="card">
+            <h3 class="mono">StratifiedKFold</h3>
+            <p data-lang="pt">Distribui os positivos de forma mais uniforme entre os folds. Isso estabiliza a avaliação, mas não cria exemplos minoritários inexistentes.</p>
+            <p data-lang="en">Distributes positive cases more evenly across folds. This stabilizes evaluation, but it does not create missing minority examples.</p>
+          </article>
+          <article class="card">
+            <h3 class="mono">GroupKFold</h3>
+            <p data-lang="pt">Mantém cada entidade inteira de um lado só. É a defesa certa quando diferentes linhas pertencem à mesma pessoa, paciente, cliente ou dispositivo.</p>
+            <p data-lang="en">Keeps each entity entirely on one side. It is the right defense when different rows belong to the same person, patient, customer, or device.</p>
+          </article>
+          <article class="card">
+            <h3 class="mono">RepeatedStratifiedKFold</h3>
+            <p data-lang="pt">Repete a validação estratificada com várias partições aleatórias, tornando a estimativa mais informativa sobre a incerteza.</p>
+            <p data-lang="en">Repeats stratified validation with multiple random partitions, making the estimate more informative about uncertainty.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section panel" id="leakage">
+        <div class="section-header">
+          <div>
+            <div class="tag"><span data-lang-inline="pt">Leakage-safe</span><span data-lang-inline="en">Leakage-safe</span></div>
+            <h2 class="section-title"><span data-lang-inline="pt">Vazamento: o erro que infla métricas</span><span data-lang-inline="en">Leakage: the error that inflates metrics</span></h2>
+          </div>
+        </div>
+        <div class="cards-2">
+          <article class="card">
+            <h3><span data-lang-inline="pt">Seleção de atributos antes da CV</span><span data-lang-inline="en">Feature selection before CV</span></h3>
+            <p class="mono">0.8906 ± 0.0140</p>
+            <p data-lang="pt">Esse valor parece melhor, mas é otimista demais porque a seleção viu informação que deveria permanecer restrita ao treino de cada fold.</p>
+            <p data-lang="en">This value looks better, but it is overly optimistic because selection saw information that should have remained restricted to each fold's training data.</p>
+          </article>
+          <article class="card">
+            <h3><span data-lang-inline="pt">Seleção dentro de Pipeline</span><span data-lang-inline="en">Feature selection inside Pipeline</span></h3>
+            <p class="mono">0.8812 ± 0.0125</p>
+            <p data-lang="pt">Esse é o procedimento correto: cada transformação aprende apenas com o treino da rodada, reduzindo vazamento e aproximando a estimativa da realidade.</p>
+            <p data-lang="en">This is the correct procedure: each transformation learns only from that round's training set, reducing leakage and bringing the estimate closer to reality.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <div class="section-header">
+          <div>
+            <div class="tag"><span data-lang-inline="pt">Ordem prática</span><span data-lang-inline="en">Practical order</span></div>
+            <h2 class="section-title"><span data-lang-inline="pt">Fluxo recomendado</span><span data-lang-inline="en">Recommended flow</span></h2>
+          </div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="tag">01</div>
+            <div><strong data-lang="pt">Separe o teste final.</strong><strong data-lang="en">Hold out the final test set.</strong><div class="section-desc" data-lang="pt">O conjunto de teste final não participa do ajuste nem da seleção de modelos.</div><div class="section-desc" data-lang="en">The final test set does not participate in tuning or model selection.</div></div>
+          </div>
+          <div class="timeline-item">
+            <div class="tag">02</div>
+            <div><strong data-lang="pt">Desenvolva com CV.</strong><strong data-lang="en">Develop with CV.</strong><div class="section-desc" data-lang="pt">Compare modelos, hiperparâmetros e pipelines usando o esquema de validação apropriado.</div><div class="section-desc" data-lang="en">Compare models, hyperparameters, and pipelines using the appropriate validation scheme.</div></div>
+          </div>
+          <div class="timeline-item">
+            <div class="tag">03</div>
+            <div><strong data-lang="pt">Refaça no conjunto de desenvolvimento completo.</strong><strong data-lang="en">Refit on the full development set.</strong><div class="section-desc" data-lang="pt">Após decidir o pipeline final, treine com todos os dados de desenvolvimento disponíveis.</div><div class="section-desc" data-lang="en">After choosing the final pipeline, train with all available development data.</div></div>
+          </div>
+          <div class="timeline-item">
+            <div class="tag">04</div>
+            <div><strong data-lang="pt">Meça uma vez no teste.</strong><strong data-lang="en">Measure once on the test set.</strong><div class="section-desc" data-lang="pt">A nota final é uma avaliação isolada e honesta de generalização.</div><div class="section-desc" data-lang="en">The final score is a one-time, honest evaluation of generalization.</div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer-note">
+      <span data-lang-inline="pt">Design bilíngue, tema alternável e layout responsivo preparados para uso em aula e publicação web.</span>
+      <span data-lang-inline="en">Bilingual design, theme toggle, and responsive layout prepared for classroom use and web publishing.</span>
+    </div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    root.classList.add('lang-pt');
+    document.getElementById('langToggle').addEventListener('click', () => {
+      root.classList.toggle('lang-pt');
+      root.classList.toggle('lang-en');
+    });
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+</body>
+</html>
