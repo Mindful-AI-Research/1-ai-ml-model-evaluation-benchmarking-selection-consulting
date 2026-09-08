@@ -1,5 +1,36 @@
 # [Class 06]: [Cross-Validation — From Rotation to the Right Scheme]()
 
+
+<br><br>
+
+<!-- ========= START SPONSOR BADGE ========= -->
+<p align="center">
+
+  <a href="https://github.com/sponsors/Mindful-AI-Research">
+    <img
+      src="https://img.shields.io/badge/Sponsor-%E0%A5%90%20%E2%8B%86%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90%20%E2%8B%86-3A424C?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=07111F"
+      alt="Sponsor ॐ ⋆ Mindful AI ⋆ Research & Consulting 𖤐 ⋆"
+      height="36"
+    >
+  </a>
+
+  
+<br><br>
+<!-- ========= END SPONSOR BADGE ========= -->
+
+
+<!-- ========= START PUC GIF ========= -->
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/791a69e2-d09a-429f-9257-f6667fff5c04 ">
+ </p>
+
+ <br>
+<!-- ========= END PUC GIF ========= -->
+
+
+
+<br>
+
 > **Course context:** Data Science & Machine Learning — Model Evaluation, Benchmarking & Selection  
 > **Institution:** Pontifical Catholic University of São Paulo (PUC-SP)  
 > **School:** FACEI — Computer Science Department  
@@ -7,10 +38,18 @@
 > **Professor:** ✨ Giovani Giulio Tristão Thibes Vieira  
 > **Author:** Fabiana ⚡️ Campanari
 
+
+
+<br><br>
+
 <p align="center">
   <img src="https://img.shields.io/badge/Class-06-0f766e?style=for-the-badge&labelColor=022c22" alt="Class 06" />
   <img src="https://img.shields.io/badge/Topic-Cross--Validation-134a4a?style=for-the-badge&labelColor=022c22" alt="Cross-Validation" />
   <img src="https://img.shields.io/badge/Focus-Leakage--Safe%20Evaluation-14532d?style=for-the-badge&labelColor=022c22" alt="Leakage-Safe Evaluation" />
+</p>
+  
+ 
+<p align="center">  
   <img src="https://img.shields.io/badge/Library-scikit--learn-0f766e?style=for-the-badge&labelColor=022c22" alt="scikit-learn" />
   <img src="https://img.shields.io/badge/Splitters-KFold%20%7C%20GroupKFold%20%7C%20TimeSeriesSplit-124050?style=for-the-badge&labelColor=022c22" alt="Validation splitters" />
   <img src="https://img.shields.io/badge/Status-Class%20Material-101f2f?style=for-the-badge&labelColor=022c22" alt="Class Material" />
@@ -79,17 +118,29 @@ The supplied materials establish this progression:
 The supplied handout identifies this as **Class 06**, covering the mechanics of cross-validation and the selection of a suitable splitter for each data structure. The class focuses on:
 
 - Standard `KFold` evaluation and the meaning of fold-level scores.
+
 - Reporting the cross-validation mean and standard deviation.
+
 - `StratifiedKFold` for classification and class imbalance.
+
 - The practical limit imposed by a rare positive class.
+
 - Leave-One-Out (LOO) for very small datasets.
+
 - Repeated cross-validation using `RepeatedStratifiedKFold`.
 - `GroupKFold` when rows repeat across people, stores, sensors, or other entities.
+
 - `TimeSeriesSplit` when the prediction task moves from past to future.
+
 - `Pipeline`-based cross-validation to prevent preprocessing and feature-selection leakage.
+
 - A protected final test set that remains outside cross-validation.
 
+<br>
+
 The class introduces the **winner’s curse** and **Nested CV** as material for **Class 07**. They are not implemented in the supplied Class 06 notebook.
+
+<br>
 
 | Course stage | Relationship to this class |
 |---|---|
@@ -106,18 +157,31 @@ The class introduces the **winner’s curse** and **Nested CV** as material for 
 By the end of this class, the learner should be able to:
 
 - Explain why a single train/validation split can produce a variable performance estimate.
+
 - Describe the k-fold rotation mechanism: each fold is used for validation once and training \(k-1\) times.
+
 - Compute and report a cross-validation result as mean ± standard deviation.
+
 - Use `cross_val_score` without manually separating fold-level train and validation data.
+
 - Compare practical trade-offs between \(k=5\) and \(k=10\).
+
 - Use `StratifiedKFold` to preserve class proportions in a classification task.
+
 - Recognize that stratification distributes rare examples but does not create more examples.
+
 - Apply the practical constraint \(k \leq\) the number of examples in the rarest class.
+
 - Explain the cost and fold-level instability of Leave-One-Out validation.
+
 - Use `RepeatedStratifiedKFold` to average over multiple randomized fold assignments.
+
 - Identify group leakage and use `GroupKFold` to ensure that an entity is only on one side of a split.
+
 - Identify temporal leakage and use `TimeSeriesSplit` to train on the past and test on the future.
+
 - Put preprocessing and feature selection inside a `Pipeline` so every fold fits transformations using training data only.
+
 - Keep the final test set separate and evaluate it only after the final workflow is chosen.
 
 <br><br>
@@ -168,6 +232,8 @@ The mean expresses the average score across folds. The standard deviation expres
 
 The notebook first reads `dados_aula06.csv`, separates the feature matrix and target vector, and creates a stratified 80/20 development/test split. Cross-validation then operates on the development block only.
 
+<br>
+
 ```python
 import numpy as np, pandas as pd
 from sklearn.model_selection import train_test_split
@@ -186,13 +252,21 @@ X_dev, X_test, y_dev, y_test = train_test_split(
 )
 ```
 
+<br><br>
+
 The executed notebook output reports:
+
+<br>
 
 ```text
 dev: (320, 8) | test: (80, 8) | positives in dev: 34
 ```
 
+<br>
+
 This is an **implemented and demonstrated** setup in the supplied notebook. The CSV file itself was referenced by the notebook but was not included among the supplied files.
+
+<br>
 
 ```mermaid
 %%{init:{'theme':'dark','themeVariables':{'background':'#0f172a','primaryTextColor':'#F8FAFC','lineColor':'#2dd4bf'}}}%%
@@ -223,6 +297,10 @@ flowchart LR
     classDef model fill:#101f2f,stroke:#a78bfa,color:#F8FAFC,stroke-width:2px;
 ```
 
+<br>
+
+
+
 ### [***Correct decision flow***]()
 
 1. Reserve a final test set before cross-validation and development decisions.
@@ -239,7 +317,9 @@ flowchart LR
 
 [***Every fold is validation once***]()
 
-In k-fold cross-validation, the development data are divided into \(k\) partitions. Each round uses one fold for validation and the remaining \(k-1\) folds for training. When all rounds finish, every observation has been used for validation once and for model training \(k-1\) times.
+In k-fold cross-validation, the development data are divided into \(k\) partitions. Each round uses one fold for validn and the remaining \(k-1\) folds for training. When all rounds finish, every observation has been used for validation once and for model training \(k-1\) times.
+
+<br>
 
 ```mermaid
 %%{init:{'theme':'dark','themeVariables':{'background':'#0f172a','primaryTextColor':'#F8FAFC','lineColor':'#2dd4bf'}}}%%
@@ -261,6 +341,8 @@ flowchart TB
     classDef model fill:#101f2f,stroke:#a78bfa,color:#F8FAFC,stroke-width:2px;
 ```
 
+<br>
+
 ### [***The handout example***]()
 
 The handout presents a five-fold illustration with accuracies:
@@ -280,6 +362,10 @@ The handout reports an approximate standard deviation of 0.07, summarized as:
 \]
 
 This is a **conceptual handout illustration**, not the result from the supplied notebook execution.
+
+
+<br>
+
 
 ### [***Cross-validation in scikit-learn***]()
 
@@ -303,6 +389,8 @@ print(f'Mean: {scores.mean():.4f}')
 print(f'Standard deviation: {scores.std():.4f}')
 ```
 
+<br>
+
 `cross_val_score` receives the development data and the cross-validation configuration. It controls the fold rotations internally; the notebook does not manually create five separate train/validation datasets for this evaluation.
 
 <br><br>
@@ -313,6 +401,8 @@ print(f'Standard deviation: {scores.std():.4f}')
 
 The handout presents \(k=5\) and \(k=10\) as practical common choices.
 
+<br>
+
 | Property | \(k = 5\) | \(k = 10\) |
 |---|---|---|
 | Training share in each round | 80% | 90% |
@@ -321,12 +411,17 @@ The handout presents \(k=5\) and \(k=10\) as practical common choices.
 | Computational cost | Lower | Higher |
 | Handout framing | A common balance for many cases | More training data per round, but more expensive |
 
+<br>
+
 The notebook executed both settings with the same `LogisticRegression(random_state=0, solver='liblinear')` configuration:
+
+<br>
 
 ```text
 K=5: Mean = 0.8938 ± 0.0117
 K=10: Mean = 0.8938 ± 0.0286
 ```
+<br>
 
 These values are **demonstrated results from the supplied notebook**. They should not be generalized as a universal ranking of 5-fold versus 10-fold validation; they describe this specific development dataset, model, scoring rule, and execution.
 
@@ -338,7 +433,11 @@ These values are **demonstrated results from the supplied notebook**. They shoul
 
 When the target is imbalanced, random folds can concentrate positive examples unevenly. A validation fold with too few—or zero—positive examples makes classification metrics such as recall, precision, and F1 less meaningful or undefined for that fold.
 
+<br>
+
 `StratifiedKFold` aims to preserve the class distribution in each fold.
+
+<br>
 
 ```python
 from sklearn.model_selection import KFold, StratifiedKFold
@@ -347,26 +446,42 @@ kf = KFold(n_splits=5, shuffle=True, random_state=0)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
 ```
 
+<br>
+
 ### [***Notebook demonstration: positive counts per test fold***]()
 
-The executed notebook counted the positive target examples in each test fold:
+The executed notebook counted the positive target examples in each test fold
+
+<br>
 
 | Splitter | Fold 1 | Fold 2 | Fold 3 | Fold 4 | Fold 5 |
 |---|---:|---:|---:|---:|---:|
 | `KFold` | 10 | 12 | 4 | 4 | 4 |
 | `StratifiedKFold` | 6 | 7 | 7 | 7 | 7 |
 
+<br>
+
 The result illustrates the class objective: stratification does not make the class balanced overall, but it distributes the existing positive cases more consistently across folds.
+
+<br>
 
 ### [***The rare-class limit***]()
 
 Stratification cannot create positive examples. The class gives the practical rule:
 
+<br>
+
 \[
 k \leq \text{number of examples in the rarest class}
 \]
 
+
+<br>
+
+
 The notebook constructs a small demonstration with four positive observations and tests `StratifiedKFold` with \(k=3\), \(k=5\), and \(k=10\):
+
+<br>
 
 ```text
 Total positives in the rare set: 4
@@ -380,7 +495,12 @@ StratifiedKFold with k = 5:
  Error: n_splits=5 cannot be greater than the number of members in each class.
 ```
 
+<br>
+
 The \(k=10\) attempt also errors in the notebook because the requested number of folds exceeds the number of samples in the constructed eight-row rare-class subset.
+
+<br>
+
 
 ### [***Practical implication***]()
 
@@ -390,17 +510,25 @@ If the rarest class has fewer observations than the intended number of folds, re
 
 ## [Leave-One-Out and Repeated CV]()
 
+<br>
+
 ### [***Leave-One-Out (LOO)***]()
 
 Leave-One-Out cross-validation uses one observation as validation at a time:
+
+<br>
 
 \[
 \text{LOO} = \text{k-fold with } k = n
 \]
 
+<br>
+
 It maximizes the number of examples used for training in each run, but it requires \(n\) fits and each fold-level classification score is based on a single example—therefore often 0 or 1 for accuracy.
 
 The notebook demonstrates LOO using a 40-row subset:
+
+<br>
 
 ```python
 from sklearn.model_selection import LeaveOneOut, cross_val_score
@@ -414,7 +542,11 @@ model = LogisticRegression(random_state=0, solver='liblinear')
 scores_loo = cross_val_score(model, X_loo, y_loo, cv=loo, scoring='accuracy')
 ```
 
+<br>
+
 Executed output:
+
+<br>
 
 ```text
 Number of rounds (samples in X_loo): 40
@@ -422,11 +554,19 @@ First 10 scores (0 or 1): [1. 0. 1. 1. 1. 1. 1. 1. 1. 1.]
 Mean accuracy: 0.9000
 ```
 
+<br>
+
+
 This is a **demonstrated lab result** for the selected 40-row subset, not a universal recommendation to use LOO.
+
+
+<br>
 
 ### [***Repeated stratified cross-validation***]()
 
 Repeated CV runs the k-fold procedure multiple times using different shuffled assignments. The supplied notebook uses `RepeatedStratifiedKFold` with five folds and ten repetitions:
+
+<br>
 
 ```python
 from sklearn.model_selection import RepeatedStratifiedKFold
@@ -447,12 +587,16 @@ scores_rskf = cross_val_score(
 )
 ```
 
+<br>
+
 Executed output:
 
 ```text
 Mean accuracies (50 rounds): 0.8944
 Standard deviation of accuracies (50 rounds): 0.0131
 ```
+
+<br>
 
 This procedure generated \(5 \times 10 = 50\) scores. It is useful when the practitioner wants an estimate that is less tied to a single shuffled assignment, subject to the increased computational cost.
 
@@ -464,13 +608,22 @@ This procedure generated \(5 \times 10 = 50\) scores. It is useful when the prac
 
 Rows can be statistically related because they belong to the same entity: repeated measurements of a patient, interactions from a user, sensor readings from a device, or sales records from a store. If random cross-validation places some rows from the entity in training and other rows from the same entity in validation, the model can exploit entity-specific patterns instead of learning the intended general signal.
 
+<br>
+
 `GroupKFold` keeps each group entirely in training or entirely in validation within a round.
+
+<br>
 
 ```python
 from sklearn.model_selection import GroupKFold
 
 gkf = GroupKFold(n_splits=5)
 ```
+
+
+<br>
+
+
 
 ```mermaid
 %%{init:{'theme':'dark','themeVariables':{'background':'#0f172a','primaryTextColor':'#F8FAFC','lineColor':'#2dd4bf'}}}%%
@@ -491,16 +644,26 @@ flowchart LR
     classDef safe fill:#134e4a,stroke:#2dd4bf,color:#F8FAFC,stroke-width:2px;
 ```
 
+
+<br>
+
 ### [***Notebook demonstration***]()
 
 The supplied notebook creates synthetic group labels by assigning blocks of five rows to one group:
+
+<br>
 
 ```python
 n_samples = len(X_dev)
 groups = np.repeat(np.arange(n_samples // 5), 5)[:n_samples]
 ```
 
+<br>
+
+
 It then checks whether training and test folds share groups. The executed output shows that random `KFold` produces overlapping groups in every fold, whereas `GroupKFold` produces no overlap in each of the five folds.
+
+<br>
 
 ```text
 KFold (leakage):
@@ -518,6 +681,9 @@ GroupKFold (no leakage):
  Fold 5: No group leakage.
 ```
 
+<br>
+
+
 The group identities in this exercise are **constructed for demonstration**. They are not confirmed real patient identifiers or a real clinical dataset.
 
 <br><br>
@@ -528,13 +694,21 @@ The group identities in this exercise are **constructed for demonstration**. The
 
 When the data have chronological order, random splitting can mix future observations into the training data for predictions evaluated on earlier observations. This is temporal leakage because the evaluation scenario no longer resembles forecasting or future decision-making.
 
+<br>
+
+
 `TimeSeriesSplit` creates expanding training windows and later validation windows:
+
+<br>
 
 ```python
 from sklearn.model_selection import TimeSeriesSplit
 
 tscv = TimeSeriesSplit(n_splits=5)
 ```
+
+<br>
+
 
 ```mermaid
 %%{init:{'theme':'dark','themeVariables':{'background':'#0f172a','primaryTextColor':'#F8FAFC','lineColor':'#2dd4bf'}}}%%
@@ -548,16 +722,24 @@ flowchart LR
     classDef test fill:#14532d,stroke:#86efac,color:#F8FAFC,stroke-width:2px;
 ```
 
+<br>
+
 ### [***Notebook verification***]()
 
 The notebook confirms the time ordering by asserting that the largest training index is smaller than the smallest testing index in each fold:
+
+<br>
 
 ```python
 for fold, (train_index, test_index) in enumerate(tscv.split(X_dev)):
     assert train_index.max() < test_index.min()
 ```
 
+<br>
+
 The executed output provides these fold sizes and boundaries:
+
+<br>
 
 | Fold | Maximum train index | Minimum test index | Train rows | Test rows |
 |---|---:|---:|---:|---:|
@@ -567,16 +749,26 @@ The executed output provides these fold sizes and boundaries:
 | 4 | 213 | 214 | 214 | 53 |
 | 5 | 266 | 267 | 267 | 53 |
 
+
+<br>
+
 The notebook uses row order to demonstrate temporal splitting. A production time-series workflow must ensure that the data are correctly ordered by the relevant timestamp before applying a temporal splitter.
+
+<br>
+
 
 ### [***One temporal hold-out or several temporal splits***]()
 
 The handout distinguishes:
 
+<br>
+
 | Scheme | Description | Trade-off |
 |---|---|---|
 | **Temporal hold-out** | Train on an earlier period and reserve a later period for testing. | Simple and realistic, but one held-out period can be atypical. |
 | **`TimeSeriesSplit`** | Repeatedly train on the past and validate on the next future segment. | Produces several temporal estimates, but requires multiple fits and early observations may only be used for training. |
+
+<br>
 
 After a model and workflow are approved, the handout explains that the final model can be refitted using all available historical data before predicting the next future period.
 
@@ -590,6 +782,8 @@ Preprocessing is not merely a formatting step. Standardization, imputation, enco
 
 The core `Pipeline` pattern shown in the handout is:
 
+<br>
+
 ```python
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -602,11 +796,16 @@ pipe = Pipeline([
 cross_val_score(pipe, X, y, cv=5)
 ```
 
+<br>
+
 When a pipeline is passed to cross-validation, each fold calls `fit` on the pipeline using that fold’s training data. The scaler’s means and standard deviations are learned from the training fold only, then applied to the corresponding held-out fold.
 
 ### [***Feature-selection leakage demonstration***]()
 
 The notebook makes leakage visible by appending 200 columns of pure random noise and comparing feature selection before versus inside CV:
+
+<br>
+
 
 ```python
 from sklearn.feature_selection import SelectKBest, f_classif
@@ -625,6 +824,9 @@ pipeline_cv = Pipeline([
 scores_in_cv = cross_val_score(pipeline_cv, X_dev_noisy, y_dev, cv=skf)
 ```
 
+
+<br>
+
 Executed notebook output:
 
 ```text
@@ -635,7 +837,11 @@ Scenario 2: Feature selection INSIDE the Pipeline (no leakage)
  Mean (inside Pipeline): 0.8812 ± 0.0125
 ```
 
+<br>
+
 The notebook explicitly identifies the first score as artificially optimistic because selection had access to all development rows before validation folds were scored.
+
+<br>
 
 ```mermaid
 %%{init:{'theme':'dark','themeVariables':{'background':'#0f172a','primaryTextColor':'#F8FAFC','lineColor':'#2dd4bf'}}}%%
@@ -653,6 +859,8 @@ flowchart LR
     classDef validation fill:#0f766e,stroke:#5eead4,color:#F8FAFC,stroke-width:2px;
 ```
 
+<br>
+
 A `Pipeline` protects the order of operations that it contains. It cannot automatically identify every leakage source, such as a target-derived business field, an invalid data join, or a timestamp that reveals future information. The split design and feature semantics remain the practitioner’s responsibility.
 
 <br><br>
@@ -662,6 +870,8 @@ A `Pipeline` protects the order of operations that it contains. It cannot automa
 [***Code shown and executed in the supplied notebook***]()
 
 ### [***1. Imports***]()
+
+<br>
 
 ```python
 import numpy as np, pandas as pd
@@ -678,7 +888,11 @@ from sklearn.metrics import accuracy_score
 np.random.seed(0)
 ```
 
+<br>
+
 ### [***2. Single-split variability demonstration***]()
+
+<br>
 
 ```python
 accuracies = []
@@ -718,7 +932,11 @@ print(f'Mean: {scores.mean():.4f}')
 print(f'Standard deviation: {scores.std():.4f}')
 ```
 
+<br>
+
 ### [***4. Group-aware cross-validation***]()
+
+<br>
 
 ```python
 from sklearn.model_selection import GroupKFold, cross_val_score
@@ -735,7 +953,12 @@ scores = cross_val_score(
 )
 ```
 
+<br>
+
 ### [***5. Final test evaluation with a pipeline***]()
+
+
+<br>
 
 ```python
 pipeline_final = Pipeline([
@@ -750,6 +973,9 @@ final_accuracy = accuracy_score(y_test, y_pred_test)
 print(f'Final accuracy on the test set: {final_accuracy:.4f}')
 ```
 
+
+<br>
+
 The code blocks above are grounded in the supplied Class 06 notebook. They are not a complete production application, data-ingestion system, or deployment package.
 
 <br><br>
@@ -757,6 +983,8 @@ The code blocks above are grounded in the supplied Class 06 notebook. They are n
 ## [Demonstrated Lab Results]()
 
 [***Executed values from the supplied answers notebook***]()
+
+<br>
 
 | Exercise / procedure | Demonstrated result | Interpretation boundary |
 |---|---|---|
@@ -772,6 +1000,9 @@ The code blocks above are grounded in the supplied Class 06 notebook. They are n
 | Feature selection before CV | `0.8906 ± 0.0140` | Marked in the notebook as optimistic due to leakage. |
 | Feature selection inside `Pipeline` | `0.8812 ± 0.0125` | Leakage-safe CV demonstration. |
 | Final held-out test accuracy | `0.8875` | Obtained once after fitting the final scaler + logistic regression pipeline on all development data. |
+
+
+<br>
 
 > [!IMPORTANT]
 > These numeric results belong to the supplied notebook execution. They must not be represented as a benchmark for other datasets, a comparison against external models, or a general accuracy claim for logistic regression.
@@ -794,6 +1025,8 @@ The code blocks above are grounded in the supplied Class 06 notebook. They are n
 ## [Recommended Repository Structure]()
 
 [***Recommended structure — not confirmed as an existing implementation***]()
+
+<br>
 
 ```text
 class-06-ai-ml-cross-validation-correct-scheme/
@@ -818,7 +1051,10 @@ class-06-ai-ml-cross-validation-correct-scheme/
 └── LICENSE
 ```
 
-This is a **recommended organization** for converting the class materials into a maintainable repository. The supplied files do not establish that all directories, source modules, tests, or environment files already exist.
+<br>
+
+
+> This is a **recommended organization** for converting the class materials into a maintainable repository. The supplied files do not establish that all directories, source modules, tests, or environment files already exist.
 
 <br><br>
 
@@ -828,7 +1064,11 @@ This is a **recommended organization** for converting the class materials into a
 
 The supplied notebook imports `numpy`, `pandas`, and `scikit-learn`, then reads a local file named `dados_aula06.csv`. The file is referenced in code but was not included with the supplied materials. Therefore, the notebook cannot be claimed as self-contained until that CSV is made available in the expected working directory or the input path is updated.
 
+<br>
+
 ### [***Minimum package set implied by the notebook***]()
+
+<br>
 
 ```text
 numpy
@@ -836,9 +1076,14 @@ pandas
 scikit-learn
 ```
 
+<br>
+
+
 ### [***Future local environment pattern***]()
 
 The following is a recommended setup pattern after a real repository and `requirements.txt` have been created:
+
+<br>
 
 ```bash
 git clone <YOUR_REPOSITORY_URL>
@@ -851,11 +1096,16 @@ pip install -r requirements.txt
 jupyter notebook
 ```
 
+<br>
+
 For Windows PowerShell:
 
 ```powershell
 .venv\Scripts\Activate.ps1
 ```
+
+<br>
+
 
 Then open the notebook and ensure `dados_aula06.csv` is available where the notebook expects it:
 
@@ -863,6 +1113,8 @@ Then open the notebook and ensure `dados_aula06.csv` is available where the note
 1B_class_6_Cross_Validation_from_Rotation_to_Correct_SchemaSchema_ANSWERS.ipynb
 dados_aula06.csv
 ```
+
+<br>
 
 > [!NOTE]
 > The commands above are a **recommended future repository workflow**, not a verified setup instruction for an already published repository. Replace placeholders only after actual repository and dependency files exist.
@@ -883,6 +1135,8 @@ dados_aula06.csv
 - A pipeline prevents leakage only for the transformations placed inside it.
 - A final test result is not a license to repeatedly tune based on that test set.
 
+<br>
+
 ### [***Common mistakes in the handout***]()
 
 - Reporting one split without cross-validation.
@@ -890,6 +1144,8 @@ dados_aula06.csv
 - Applying random k-fold validation to grouped or temporal data.
 - Selecting and measuring a model using the same validation evidence without accounting for selection bias.
 - Forgetting to report the standard deviation of fold scores.
+
+  <br>
 
 ### [***Good practices in the handout***]()
 
