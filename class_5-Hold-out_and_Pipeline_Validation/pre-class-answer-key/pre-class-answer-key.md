@@ -1,185 +1,202 @@
 
-1. Why should you NOT evaluate a model using the same data it was trained on?
+# Gabarito Bilíngue — Validação Cruzada / Bilingual Answer Key — Cross-Validation
 
-* A) because training takes longer
-* B) because it memorizes the data, and the score does not measure generalization (it becomes too high) ✅
-* C) because the test set needs to be larger than the training set
-* D) because otherwise decision trees cannot be used
+## 1) "Avaliar com uma única divisão treino/teste é como jogar a moeda." Por quê?
+**"Evaluating with a single train/test split is like flipping a coin." Why?**
 
-Answer: B) because it memorizes the data, and the score does not measure generalization (it becomes too high).
+* A) porque o modelo responde ao acaso / because the model answers randomly
+* B) porque a acurácia é sempre 50% / because accuracy is always 50%
+* C) porque a nota varia conforme a sorte do corte; a solução é a média de vários cortes (validação cruzada) / because the score varies depending on the luck of the split; the solution is to average multiple splits (cross-validation) ✅
+* D) porque não se deve usar teste / because a test set should not be used
 
-#
+**Resposta / Answer:** C) porque a nota varia conforme a sorte do corte; a solução é a média de vários cortes (validação cruzada) / because the score varies depending on the luck of the split; the solution is to average multiple splits (cross-validation).
 
-2. In a three-set hold-out, what is the role of each set?
+<br><br>
 
-* A) training adjusts the model, validation is untouched, and testing selects the model
-* B) all three are used for training
-* C) training fits the model, validation helps make decisions (model/threshold), and testing provides the final untouched score ✅
-* D) validation trains the model and testing adjusts it
+## 2) Em `cross_val_score(modelo, X, y, cv=5)`, quem define o que é treino e o que é teste?
+**In `cross_val_score(model, X, y, cv=5)`, what defines what is training and what is testing?**
 
-Answer: C) training fits the model, validation helps make decisions (model/threshold), and testing provides the final untouched score.
+* A) você, separando as linhas à mão antes de chamar a função / you, manually separating the rows before calling the function
+* B) o `cv=5`: ele corta o `X, y` em 5 pedaços e faz o rodízio automaticamente / `cv=5`: it splits `X, y` into 5 parts and automatically rotates them ✅
+* C) o modelo, durante o `fit` / the model, during `fit`
+* D) é preciso passar dois conjuntos `X_treino` e `X_teste` / you need to provide two sets, `X_train` and `X_test`
 
-#
+**Resposta / Answer:** B) o `cv=5`: ele corta o `X, y` em 5 pedaços e faz o rodízio automaticamente / `cv=5`: it splits `X, y` into 5 parts and automatically rotates them.
 
-3. How do you obtain training / validation / test sets in practice?
+<br><br>
 
-* A) two sequential splits: separate the test set first; then split the remainder into training and validation ✅
-* B) one split into three equal and always randomly selected parts
-* C) it is not possible to have three sets
-* D) randomly sampling the rows at each epoch
+## 3) O `X, y` que você passa para o `cross_val_score` deve:
+**The `X, y` passed to `cross_val_score` should:**
 
-Answer: A) two sequential splits: separate the test set first; then split the remainder into training and validation.
+* A) ser apenas o bloco de treino/validação — o teste final fica separado e é tocado uma vez no fim / be only the training/validation block — the final test set remains separate and is used once at the end ✅
+* B) ser a base inteira, incluindo o teste final / be the entire dataset, including the final test set
+* C) conter só a classe positiva / contain only the positive class
+* D) já estar padronizado com o conjunto todo / already be standardized using the entire dataset
 
-#
+**Resposta / Answer:** A) ser apenas o bloco de treino/validação — o teste final fica separado e é tocado uma vez no fim / be only the training/validation block — the final test set remains separate and is used once at the end.
 
-4. What is `stratify=y` used for in `train_test_split`?
+<br><br>
 
-* A) to shuffle the data better
-* B) to standardize the variables
-* C) to speed up training
-* D) to maintain the same class proportions in the training and test sets ✅
+## 4) Um 5-fold deu as acurácias `[0,80; 0,90; 0,70; 0,85; 0,75]`. A média é:
+**A 5-fold produced accuracies `[0.80; 0.90; 0.70; 0.85; 0.75]`. What is the mean?**
 
-Answer: D) to maintain the same class proportions in the training and test sets.
+* A) 0,78 / 0.78
+* B) 0,80 / 0.80 ✅
+* C) 0,82 / 0.82
+* D) 0,85 / 0.85
 
-#
+**Resposta / Answer:** B) 0,80 / 0.80.
 
-5. What is `random_state` (the seed) used for?
+<br><br>
 
-* A) to improve model accuracy
-* B) to make the random split reproducible — same seed, same split ✅
-* C) to increase the test set size
-* D) to prevent missing values
+## 5) O resultado honesto de uma validação cruzada é:
+**The honest result of cross-validation is:**
 
-Answer: B) to make the random split reproducible — same seed, same split.
+* A) a maior nota entre as dobras / the highest score among the folds
+* B) a nota da primeira dobra / the score from the first fold
+* C) a média das dobras E o desvio-padrão (média ± desvio) / the mean across folds AND the standard deviation (mean ± standard deviation) ✅
+* D) um único número, sem desvio / a single number, without deviation
 
-#
+**Resposta / Answer:** C) a média das dobras E o desvio-padrão (média ± desvio) / the mean across folds AND the standard deviation (mean ± standard deviation).
 
-6. "Evaluating with a single train/test split is like flipping a coin." What does this mean?
+<br><br>
 
-* A) that the model randomly chooses the answer
-* B) that accuracy is always 50%
-* C) that the score varies depending on the luck of the split; the solution is to average multiple splits (cross-validation) ✅
-* D) that a test set should not be used
+## 6) O `StratifiedKFold` serve para:
+**`StratifiedKFold` is used to:**
 
-Answer: C) that the score varies depending on the luck of the split; the solution is to average multiple splits (cross-validation).
+* A) acelerar o treino / speed up training
+* B) padronizar as variáveis / standardize the variables
+* C) embaralhar melhor as linhas / shuffle the rows better
+* D) manter a mesma proporção das classes em cada dobra / maintain the same class proportion in each fold ✅
 
-#
+**Resposta / Answer:** D) manter a mesma proporção das classes em cada dobra / maintain the same class proportion in each fold.
 
-7. Standardizing (`StandardScaler`) using the ENTIRE dataset before splitting into training/test sets is:
+<br><br>
 
-* A) data leakage — the test set "peeks" at the training data because its mean and standard deviation are included ✅
-* B) the recommended approach
-* C) irrelevant to the result
-* D) necessary for `OneHotEncoder`
+## 7) Você tem 100 exemplos, mas só 3 positivos, e quer 5 dobras estratificadas (`k=5`). O que acontece?
+**You have 100 examples, but only 3 positives, and you want 5 stratified folds (`k=5`). What happens?**
 
-Answer: A) data leakage — the test set "peeks" at the training data because its mean and standard deviation are included.
+* A) funciona: o `StratifiedKFold` cria positivos sintéticos para completar / it works: `StratifiedKFold` creates synthetic positives to fill the folds
+* B) pelo menos 2 dobras ficam sem nenhum positivo — `k` não pode passar do nº de positivos / at least 2 folds will have no positive examples — `k` cannot exceed the number of positive examples ✅
+* C) o modelo fica mais preciso por ter classe rara / the model becomes more accurate because the class is rare
+* D) a acurácia vira sempre 100% / accuracy always becomes 100%
 
-#
+**Resposta / Answer:** B) pelo menos 2 dobras ficam sem nenhum positivo — `k` não pode passar do nº de positivos / at least 2 folds will have no positive examples — `k` cannot exceed the number of positive examples.
 
-8. What is the correct way to apply `StandardScaler`?
+<br><br>
 
-* A) `fit_transform` on the training set and `fit_transform` on the test set
-* B) `fit` on the test set and `transform` on the training set
-* C) `fit` on the training set; `transform` (without fit) on the test set ✅
-* D) `fit_transform` on the entire dataset
+## 8) O Leave-One-Out (LOO) é:
+**Leave-One-Out (LOO) is:**
 
-Answer: C) `fit` on the training set; `transform` (without fit) on the test set.
+* A) o k-fold levado ao extremo, com `k = n`: cada exemplo, sozinho, é o teste uma vez / k-fold taken to the extreme, with `k = n`: each example is used alone as the test set once ✅
+* B) um k-fold que usa sempre `k=2` / a k-fold that always uses `k=2`
+* C) treinar e testar no mesmo conjunto / training and testing on the same dataset
+* D) sortear 1 exemplo e ignorar o resto / randomly selecting 1 example and ignoring the rest
 
-#
+**Resposta / Answer:** A) o k-fold levado ao extremo, com `k = n`: cada exemplo, sozinho, é o teste uma vez / k-fold taken to the extreme, with `k = n`: each example is used alone as the test set once.
 
-9. What is `ColumnTransformer` used for?
+<br><br>
 
-* A) training multiple models at the same time
-* B) applying a different transformation to each type of column (numeric × categorical) at once ✅
-* C) splitting the training and test sets
-* D) calculating accuracy
+## 9) Uma consequência prática do LOO (`n=10` exemplos) é:
+**A practical consequence of LOO (`n=10` examples) is:**
 
-Answer: B) applying a different transformation to each type of column (numeric × categorical) at once.
+* A) faz apenas 2 treinos / it performs only 2 training runs
+* B) cada rodada testa 5 exemplos / each round tests 5 examples
+* C) faz 10 treinos e a nota de cada rodada é 0 ou 1 (teste de 1 exemplo) — só a média faz sentido / it performs 10 training runs and each round's score is 0 or 1 (testing 1 example) — only the average makes sense ✅
+* D) não precisa treinar o modelo / it does not need to train the model
 
-#
+**Resposta / Answer:** C) faz 10 treinos e a nota de cada rodada é 0 ou 1 (teste de 1 exemplo) — só a média faz sentido / it performs 10 training runs and each round's score is 0 or 1 (testing 1 example) — only the average makes sense.
 
-10. Why does a `Pipeline` (preprocessing + model) prevent leakage during cross-validation?
+<br><br>
 
-* A) because it uses less memory
-* B) because it removes missing values
-* C) because it automatically chooses `k`
-* D) because it refits the preprocessing WITHIN each fold, using only that fold's training data ✅
+## 10) O `RepeatedKFold` (k-fold repetido) faz:
+**`RepeatedKFold` (repeated k-fold) does:**
 
-Answer: D) because it refits the preprocessing WITHIN each fold, using only that fold's training data.
+* A) aumenta o número de dobras dentro de uma rodada / increases the number of folds within one round
+* B) repete o k-fold várias vezes, com sorteios diferentes, e tira a média de todas as notas / repeats k-fold several times with different random splits and averages all the scores ✅
+* C) usa o mesmo sorteio toda vez / uses the same split every time
+* D) remove os exemplos difíceis / removes difficult examples
 
-#
+**Resposta / Answer:** B) repete o k-fold várias vezes, com sorteios diferentes, e tira a média de todas as notas / repeats k-fold several times with different random splits and averages all the scores.
 
-11. When the data contains dates, what is the correct splitting strategy?
+<br><br>
 
-* A) split by time: train on the past and test on the future (do not randomly shuffle) ✅
-* B) randomly shuffle the rows as usual
-* C) test on the past and train on the future
-* D) use only the oldest month
+## 11) Você tem vários exames do mesmo paciente. Se exames do MESMO paciente caem no treino E no teste:
+**You have several exams from the same patient. If exams from the SAME patient end up in both training AND testing:**
 
-Answer: A) split by time: train on the past and test on the future (do not randomly shuffle).
+* A) não há problema algum / there is no problem
+* B) o teste fica maior que o treino / the test set becomes larger than the training set
+* C) o modelo aprende melhor a doença / the model learns the disease better
+* D) o modelo "decora" o paciente e acerta por reconhecê-lo — nota inflada que some com pacientes novos / the model "memorizes" the patient and gets the answer right by recognizing them — an inflated score that disappears with new patients ✅
 
-#
+**Resposta / Answer:** D) o modelo "decora" o paciente e acerta por reconhecê-lo — nota inflada que some com pacientes novos / the model "memorizes" the patient and gets the answer right by recognizing them — an inflated score that disappears with new patients.
 
-12. You have sales data from 2000 to 2025 and want to forecast December 2026 (you already have January–November 2026). Regarding training:
+<br><br>
 
-* A) remove ALL Decembers from 2000–2025 from the training set
-* B) train only with 2026 data
-* C) keep previous Decembers in the training set (they teach seasonality); never use data after the forecasting point ✅
-* D) use only December data for training
+## 12) O `GroupKFold` resolve isso porque:
+**`GroupKFold` solves this because:**
 
-Answer: C) keep previous Decembers in the training set (they teach seasonality); never use data after the forecasting point.
+* A) garante que todas as linhas de um mesmo grupo fiquem do mesmo lado (ou todas no treino, ou todas no teste) / it ensures that all rows from the same group stay on the same side (either all in training or all in testing) ✅
+* B) remove os grupos com poucas linhas / removes groups with few rows
+* C) padroniza cada grupo separadamente / standardizes each group separately
+* D) treina um modelo por grupo / trains one model per group
 
-#
+**Resposta / Answer:** A) garante que todas as linhas de um mesmo grupo fiquem do mesmo lado (ou todas no treino, ou todas no teste) / it ensures that all rows from the same group stay on the same side (either all in training or all in testing).
 
-13. To estimate whether the time-series model works (without having the actual 2026 value yet), what is the best practice?
+<br><br>
 
-* A) never test; trust the training results
-* B) hold out the most recent known years as a test set (e.g., train on 2000–2023, forecast 2024–2025) and, if approved, retrain using all the data ✅
-* C) test on randomly selected years
-* D) use the same year for training and testing
+## 13) Quando os dados têm data, a divisão correta é:
+**When the data contains dates, the correct splitting strategy is:**
 
-Answer: B) hold out the most recent known years as a test set (e.g., train on 2000–2023, forecast 2024–2025) and, if approved, retrain using all the data.
+* A) por tempo: treinar no passado e testar no futuro (não sortear as linhas) / by time: train on the past and test on the future (do not randomly shuffle the rows) ✅
+* B) sortear aleatoriamente como sempre / randomly shuffle as usual
+* C) testar no passado e treinar no futuro / test on the past and train on the future
+* D) usar só o mês mais recente / use only the most recent month
 
-#
+**Resposta / Answer:** A) por tempo: treinar no passado e testar no futuro (não sortear as linhas) / by time: train on the past and test on the future (do not randomly shuffle the rows).
 
-14. What is a "global holdout" (product holdout) used for?
+<br><br>
 
-* A) tuning the model's parameters
-* B) standardizing the variables
-* C) replacing the model's test set
-* D) keeping a group of users outside ALL changes, measuring the real cumulative impact on the business ✅
+## 14) Qual a relação entre segurar 2016–2021 como teste (treino 2000–2015) e o `TimeSeriesSplit`?
+**What is the relationship between holding out 2016–2021 as the test set (training on 2000–2015) and `TimeSeriesSplit`?**
 
-Answer: D) keeping a group of users outside ALL changes, measuring the real cumulative impact on the business.
+* A) são coisas sem relação / they are unrelated
+* B) o `TimeSeriesSplit` sorteia as datas / `TimeSeriesSplit` randomly shuffles the dates
+* C) o primeiro é um hold-out temporal (1 corte); o `TimeSeriesSplit` é isso repetido em vários cortes, dando uma média mais estável / the first is a temporal hold-out (1 split); `TimeSeriesSplit` repeats this across multiple splits, producing a more stable average ✅
+* D) o hold-out temporal usa o futuro no treino / the temporal hold-out uses the future for training
 
-#
+**Resposta / Answer:** C) o primeiro é um hold-out temporal (1 corte); o `TimeSeriesSplit` é isso repetido em vários cortes, dando uma média mais estável / the first is a temporal hold-out (1 split); `TimeSeriesSplit` repeats this across multiple splits, producing a more stable average.
 
-15. What is the difference between an A/B test and a global holdout?
+<br><br>
 
-* A) an A/B test measures ONE change (short term); a global holdout measures the effect of EVERYTHING (long term) ✅
-* B) they are exactly the same thing
-* C) an A/B test does not use a control group
-* D) a global holdout is used to train the model
+## 15) Por que rodar a validação cruzada DENTRO de um `Pipeline` (pré-processamento + modelo)?
+**Why run cross-validation INSIDE a `Pipeline` (preprocessing + model)?**
 
-Answer: A) an A/B test measures ONE change (short term); a global holdout measures the effect of EVERYTHING (long term).
+* A) para usar menos memória / to use less memory
+* B) para escolher o `k` sozinho / to choose `k` automatically
+* C) para remover valores ausentes / to remove missing values
+* D) porque o pré-processamento se refaz em cada dobra, só com o treino daquela dobra — sem vazar / because preprocessing is refit in each fold using only that fold's training data — preventing leakage ✅
 
-#
+**Resposta / Answer:** D) porque o pré-processamento se refaz em cada dobra, só com o treino daquela dobra — sem vazar / because preprocessing is refit in each fold using only that fold's training data — preventing leakage.
 
-16. In model production, what are skew and drift?
+<br><br>
 
-* A) the same problem with different names
-* B) typos in the code
-* C) skew = training ≠ production NOW (defense: use the same Pipeline); drift = data changes OVER TIME (defense: monitor and retrain) ✅
-* D) skew happens over time and drift happens during deployment
+## 16) Padronizar (`StandardScaler`) usando o conjunto INTEIRO antes da validação cruzada é:
+**Standardizing (`StandardScaler`) using the ENTIRE dataset before cross-validation is:**
 
-Answer: C) skew = training ≠ production NOW (defense: use the same Pipeline); drift = data changes OVER TIME (defense: monitor and retrain).
+* A) vazamento — a média/desvio incluem os dados que serão teste em cada dobra, inflando a nota / data leakage — the mean/standard deviation include data that will be used as test data in each fold, inflating the score ✅
+* B) a forma recomendada / the recommended approach
+* C) irrelevante para o resultado / irrelevant to the result
+* D) necessário para o k-fold funcionar / necessary for k-fold to work
 
-#
+**Resposta / Answer:** A) vazamento — a média/desvio incluem os dados que serão teste em cada dobra, inflando a nota / data leakage — the mean/standard deviation include data that will be used as test data in each fold, inflating the score.
 
-17. Did you have any questions about today's class?
+<br><br>
 
-A question I still have is:
+## 17) Ficou alguma dúvida da aula de hoje?
+**Did you have any questions about today's class?**
 
-In practice, how do we know if the model is actually generalizing well and not just memorizing the training data? And when the data changes over time, how can we tell when it is time to reevaluate or retrain the model?
+**Uma dúvida que fiquei: na prática, como a gente sabe se o modelo está realmente generalizando bem e não só decorando os dados do treino? E quando os dados mudam com o tempo, como a gente percebe que está na hora de reavaliar ou treinar o modelo de novo?**
 
-This is something I would like to understand better in practice, especially how to identify when a model is no longer generalizing well and when retraining becomes necessary.
+**One question I still have is: in practice, how do we know if the model is actually generalizing well and not just memorizing the training data? And when the data changes over time, how can we tell when it is time to reevaluate or retrain the model?**
 
