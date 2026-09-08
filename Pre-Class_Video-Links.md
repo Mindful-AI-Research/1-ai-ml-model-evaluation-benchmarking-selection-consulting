@@ -64,9 +64,10 @@ https://github.com/user-attachments/assets/43bd905c-3c5e-4c15-88ad-284b24773f10
 
 
 
-## [Week 6 and 7]() — 
+## [Week 6 and 7]() — Cross-Validation from Rotation to Correct-Schema
 
 
+https://github.com/user-attachments/assets/4097ba66-9586-4e2f-a10e-5f7189d4ed91
 
 
 ### 📺 [You Tube](https://youtu.be/Wc-ysPS2kZE)
