@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-lang="pt" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cross-Validation — Class 06</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0e141b;
+      --bg-soft:#121b24;
+      --surface:#182330;
+      --surface-2:#1f2d3c;
+      --surface-3:#243446;
+      --text:#ecf3fb;
+      --muted:#a8b7c8;
+      --line:rgba(255,255,255,.1);
+      --accent:#65d6c2;
+      --accent-2:#8eb8ff;
+      --accent-3:#f5cf7b;
+      --shadow:0 20px 50px rgba(0,0,0,.28);
+      --radius-xl:28px;
+      --radius-lg:20px;
+      --radius-md:14px;
+      --content:1180px;
+    }
+    html[data-theme="light"]{
+      --bg:#f4f7fb;
+      --bg-soft:#ffffff;
+      --surface:#ffffff;
+      --surface-2:#eef3f9;
+      --surface-3:#e7edf5;
+      --text:#13202d;
+      --muted:#5c6f82;
+      --line:rgba(19,32,45,.12);
+      --accent:#0b8f84;
+      --accent-2:#426dff;
+      --accent-3:#b98519;
+      --shadow:0 16px 40px rgba(26,47,76,.08);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(101,214,194,.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(142,184,255,.10), transparent 24%),
+        linear-gradient(180deg,var(--bg),var(--bg-soft));
+      color:var(--text);
+      line-height:1.55;
+    }
+    .shell{max-width:var(--content);margin:0 auto;padding:24px 20px 64px}
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(18px);
+      background:color-mix(in srgb,var(--bg) 78%, transparent);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar-inner{max-width:var(--content);margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:var(--shadow);
+      position:relative;overflow:hidden;flex:0 0 auto;
+    }
+    .brand-mark::after{
+      content:"";position:absolute;inset:9px;border-radius:10px;border:1.5px solid rgba(255,255,255,.7)
+    }
+    .brand h1{margin:0;font-size:1rem;font-weight:700;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand p{margin:2px 0 0;font-size:.82rem;color:var(--muted)}
+    .controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{
+      appearance:none;border:1px solid var(--line);background:var(--surface);
+      color:var(--text);padding:10px 14px;border-radius:999px;font-size:.92rem;
+      font-weight:600;cursor:pointer;transition:.22s ease;display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 50%, var(--line));box-shadow:var(--shadow)}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent-2) 65%, var(--accent)));color:#072328;border:none}
+    html[data-theme="light"] .btn.primary{color:white}
+    .hero{
+      padding:36px 0 28px;display:grid;grid-template-columns:1.25fr .9fr;gap:24px;align-items:stretch;
+    }
+    .panel{
+      background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 94%, transparent),color-mix(in srgb,var(--surface-2) 96%, transparent));
+      border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow);
+    }
+    .hero-card{padding:34px}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:color-mix(in srgb,var(--accent) 10%, transparent);color:var(--accent);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .hero h2{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,4rem);line-height:1.02;letter-spacing:-.03em;margin:18px 0 14px}
+    .lead{font-size:1.04rem;color:var(--muted);max-width:62ch}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+    .kpi{padding:18px;border-radius:18px;background:color-mix(in srgb,var(--surface-2) 88%, transparent);border:1px solid var(--line)}
+    .kpi .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+    .kpi .value{margin-top:8px;font-size:1.35rem;font-weight:800}
+    .hero-side{padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+    .mini-chart{display:grid;gap:10px}
+    .bar-row{display:grid;grid-template-columns:84px 1fr 64px;gap:10px;align-items:center;font-size:.92rem}
+    .track{height:10px;border-radius:999px;background:color-mix(in srgb,var(--surface-3) 88%, transparent);overflow:hidden}
+    .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+    .stat-note{padding:16px 18px;border-radius:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%, transparent),color-mix(in srgb,var(--accent-2) 14%, transparent));border:1px solid color-mix(in srgb,var(--accent) 30%, var(--line))}
+    .section{margin-top:22px;padding:28px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .section-head h3{margin:0;font-size:1.35rem}
+    .section-head p{margin:0;color:var(--muted);max-width:62ch}
+    .grid-2,.grid-3,.grid-4{display:grid;gap:18px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .card{padding:22px;border-radius:22px;background:color-mix(in srgb,var(--surface-2) 90%, transparent);border:1px solid var(--line)}
+    .card h4{margin:0 0 10px;font-size:1.02rem}
+    .card p{margin:0;color:var(--muted)}
+    .accent{color:var(--accent)}
+    .table-wrap{overflow:auto;border-radius:20px;border:1px solid var(--line)}
+    table{width:100%;border-collapse:collapse;background:color-mix(in srgb,var(--surface-2) 86%, transparent)}
+    th,td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+    th{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:color-mix(in srgb,var(--surface-3) 85%, transparent)}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:color-mix(in srgb,var(--surface-3) 88%, transparent);padding:3px 8px;border-radius:999px;font-size:.9em}
+    .timeline{display:grid;gap:14px}
+    .step{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+    .dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));margin-top:6px;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 16%, transparent)}
+    .footer-note{margin-top:24px;text-align:center;color:var(--muted);font-size:.92rem}
+    [data-lang-block]{display:none}
+    html[data-lang="pt"] [data-lang-block="pt"], html[data-lang="en"] [data-lang-block="en"]{display:block}
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      .grid-4{grid-template-columns:repeat(2,1fr)}
+      .grid-3{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 720px){
+      .topbar-inner,.controls{align-items:flex-start}
+      .topbar-inner{flex-direction:column}
+      .controls{justify-content:flex-start}
+      .kpis,.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+      .hero-card,.hero-side,.section{padding:22px}
+      .bar-row{grid-template-columns:72px 1fr 54px;font-size:.86rem}
+      .brand h1{white-space:normal}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <h1>Cross-Validation — Class 06</h1>
+          <p data-lang-block="pt">Interface bilíngue, tema adaptável e visual profissional</p>
+          <p data-lang-block="en">Bilingual interface, adaptive theme, and professional visual polish</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="langToggle">PT / EN</button>
+        <a class="btn" href="#overview">⌂ <span data-lang-block="pt">Visão geral</span><span data-lang-block="en">Overview</span></a>
+        <a class="btn" href="#schemes">⤢ <span data-lang-block="pt">Esquemas</span><span data-lang-block="en">Schemes</span></a>
+        <button class="btn primary" id="themeToggle">☼ <span data-lang-block="pt">Tema</span><span data-lang-block="en">Theme</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero" id="overview">
+      <article class="panel hero-card">
+        <span class="eyebrow" data-lang-block="pt">Por que a validação muda</span>
+        <span class="eyebrow" data-lang-block="en">Why validation changes</span>
+
+        <h2 data-lang-block="pt">Uma única divisão é um lance de moeda.</h2>
+        <h2 data-lang-block="en">A single split is a coin toss.</h2>
+
+        <p class="lead" data-lang-block="pt">O mesmo modelo, com os mesmos dados de desenvolvimento, pode produzir estimativas bem diferentes quando apenas a semente aleatória da divisão muda. A validação cruzada substitui uma nota frágil por várias rotações de treino/validação e reporta sua distribuição. </p>
+        <p class="lead" data-lang-block="en">The same model, using the same development data, can produce meaningfully different estimates when only the split seed changes. Cross-validation replaces one fragile score with multiple train/validation rotations and reports their distribution.</p>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="label" data-lang-block="pt">Faixa observada</div>
+            <div class="label" data-lang-block="en">Observed range</div>
+            <div class="value">0.8750 → 0.9219</div>
+          </div>
+          <div class="kpi">
+            <div class="label" data-lang-block="pt">Resumo</div>
+            <div class="label" data-lang-block="en">Summary</div>
+            <div class="value">0.8906 ± 0.0171</div>
+          </div>
+          <div class="kpi">
+            <div class="label" data-lang-block="pt">Ideia central</div>
+            <div class="label" data-lang-block="en">Core idea</div>
+            <div class="value" data-lang-block="pt">Distribuição &gt; ponto único</div>
+            <div class="value" data-lang-block="en">Distribution &gt; single point</div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="panel hero-side">
+        <div>
+          <h3 style="margin:0 0 8px">Split sensitivity</h3>
+          <p style="margin:0;color:var(--muted)" data-lang-block="pt">Exemplo visual inspirado no deck de métricas, com barras compactas e leitura rápida.</p>
+          <p style="margin:0;color:var(--muted)" data-lang-block="en">Compact visual inspired by the metrics deck, with quick-scan bars.</p>
+        </div>
+        <div class="mini-chart">
+          <div class="bar-row"><strong>run 1</strong><div class="track"><div class="fill" style="width:87.50%"></div></div><span>0.8750</span></div>
+          <div class="bar-row"><strong>run 2</strong><div class="track"><div class="fill" style="width:89.06%"></div></div><span>0.8906</span></div>
+          <div class="bar-row"><strong>run 3</strong><div class="track"><div class="fill" style="width:90.62%"></div></div><span>0.9062</span></div>
+          <div class="bar-row"><strong>run 4</strong><div class="track"><div class="fill" style="width:92.19%"></div></div><span>0.9219</span></div>
+          <div class="bar-row"><strong>run 5</strong><div class="track"><div class="fill" style="width:88.28%"></div></div><span>0.8828</span></div>
+        </div>
+        <div class="stat-note">
+          <strong data-lang-block="pt">Lição.</strong>
+          <strong data-lang-block="en">Lesson.</strong>
+          <span data-lang-block="pt"> A média resume as execuções; o desvio-padrão mostra o quanto a estimativa oscila com a divisão.</span>
+          <span data-lang-block="en"> The mean summarizes the runs; the standard deviation shows how much the estimate moves with the split.</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel section" id="schemes">
+      <div class="section-head">
+        <div>
+          <h3 data-lang-block="pt">Como o k-fold funciona</h3>
+          <h3 data-lang-block="en">How k-fold works</h3>
+        </div>
+        <p data-lang-block="pt">Particione os dados de desenvolvimento em k folds, treine em k−1 partes, valide na parte restante e repita até que cada fold tenha sido validação uma vez.</p>
+        <p data-lang-block="en">Partition the development data into k folds, train on k−1 parts, validate on the remaining one, and repeat until every fold has served as validation once.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card"><h4>fold 1</h4><p data-lang-block="pt">Validação uma vez; treino nas demais partes.</p><p data-lang-block="en">Validation once; training on the remaining parts.</p></div>
+        <div class="card"><h4>fold 2</h4><p data-lang-block="pt">A rotação muda apenas a parte validada.</p><p data-lang-block="en">The rotation changes only the validated part.</p></div>
+        <div class="card"><h4>fold 3</h4><p data-lang-block="pt">Repete o mesmo processo com consistência.</p><p data-lang-block="en">Repeat the same process consistently.</p></div>
+        <div class="card"><h4>folds 4–5</h4><p data-lang-block="pt">Relate média e desvio, não um número isolado.</p><p data-lang-block="en">Report mean and deviation, not an isolated number.</p></div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <h3 data-lang-block="pt">5 folds vs 10 folds</h3>
+          <h3 data-lang-block="en">5 folds vs 10 folds</h3>
+        </div>
+        <p data-lang-block="pt">Regra conceitual: 5 ou 10 folds costumam ser boas escolhas. k maior treina com mais dados por rodada, mas custa mais execuções.</p>
+        <p data-lang-block="en">Rule of thumb: 5 or 10 folds are often good choices. Larger k trains on more data per round, but it costs more runs.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-lang-block="pt">Configuração</th><th data-lang-block="en">Configuration</th>
+              <th data-lang-block="pt">Parte de treino</th><th data-lang-block="en">Training share</th>
+              <th data-lang-block="pt">Custo</th><th data-lang-block="en">Cost</th>
+              <th data-lang-block="pt">Resultado do notebook</th><th data-lang-block="en">Notebook result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>k = 5</code></td><td>80%</td><td>5 fits</td><td><code>0.8938 ± 0.0117</code></td></tr>
+            <tr><td><code>k = 10</code></td><td>90%</td><td>10 fits</td><td><code>0.8938 ± 0.0286</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grid-2" style="margin-top:22px;">
+      <article class="panel section">
+        <div class="section-head">
+          <div>
+            <h3><span class="accent">StratifiedKFold</span></h3>
+          </div>
+          <p data-lang-block="pt">Mantém a proporção das classes visível em cada fold.</p>
+          <p data-lang-block="en">Keeps class proportions visible in each fold.</p>
+        </div>
+        <div class="timeline">
+          <div class="step"><span class="dot"></span><div><strong data-lang-block="pt">Sem estratificação.</strong><strong data-lang-block="en">Without stratification.</strong><p data-lang-block="pt">A concentração de positivos varia fortemente entre folds.</p><p data-lang-block="en">Positive concentration can vary sharply across folds.</p></div></div>
+          <div class="step"><span class="dot"></span><div><strong data-lang-block="pt">Com estratificação.</strong><strong data-lang-block="en">With stratification.</strong><p data-lang-block="pt">Os positivos ficam distribuídos quase uniformemente, acompanhando a proporção original.</p><p data-lang-block="en">Positives are distributed nearly evenly, matching the original proportion.</p></div></div>
+          <div class="step"><span class="dot"></span><div><strong data-lang-block="pt">Limite prático.</strong><strong data-lang-block="en">Practical limit.</strong><p data-lang-block="pt">Estratificação distribui positivos; ela não cria exemplos onde eles não existem.</p><p data-lang-block="en">Stratification distributes positives; it does not create examples that do not exist.</p></div></div>
+        </div>
+      </article>
+
+      <article class="panel section">
+        <div class="section-head">
+          <div>
+            <h3><span class="accent">Repeated / LOO</span></h3>
+          </div>
+          <p data-lang-block="pt">Usam os exemplos mais intensivamente e tornam a incerteza mais informativa.</p>
+          <p data-lang-block="en">They use examples more intensively and make uncertainty more informative.</p>
+        </div>
+        <div class="card">
+          <h4 data-lang-block="pt">Leave-One-Out</h4>
+          <h4 data-lang-block="en">Leave-One-Out</h4>
+          <p data-lang-block="pt">No exemplo conceitual, cada observação vira validação uma vez. Com 40 exemplos, isso gera 40 scores de 0 ou 1 e média 0.9000.</p>
+          <p data-lang-block="en">In the conceptual example, each observation becomes validation once. With 40 examples, this yields 40 scores of 0 or 1 and mean accuracy 0.9000.</p>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h4 data-lang-block="pt">RepeatedStratifiedKFold</h4>
+          <h4 data-lang-block="en">RepeatedStratifiedKFold</h4>
+          <p data-lang-block="pt">No notebook, 5-fold estratificado repetido 10 vezes produziu <code>0.8944 ± 0.0131</code> ao longo de 50 rodadas.</p>
+          <p data-lang-block="en">In the notebook, repeated 5-fold stratified validation over 10 repetitions produced <code>0.8944 ± 0.0131</code> across 50 rounds.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid-2" style="margin-top:22px;">
+      <article class="panel section">
+        <div class="section-head">
+          <div><h3><span class="accent">GroupKFold</span></h3></div>
+          <p data-lang-block="pt">Mantém cada entidade inteira de um lado só da divisão.</p>
+          <p data-lang-block="en">Keeps each entity entirely on one side of the split.</p>
+        </div>
+        <div class="card">
+          <p data-lang-block="pt">No notebook, um KFold aleatório mostrou vazamento de grupos em todos os folds, enquanto <code>GroupKFold</code> não apresentou vazamento em nenhuma das cinco divisões.</p>
+          <p data-lang-block="en">In the notebook, random KFold showed leaking groups in every fold, while <code>GroupKFold</code> showed no group leakage in any of the five splits.</p>
+        </div>
+      </article>
+
+      <article class="panel section">
+        <div class="section-head">
+          <div><h3><span class="accent">TimeSeriesSplit</span></h3></div>
+          <p data-lang-block="pt">Treina no passado e testa no futuro.</p>
+          <p data-lang-block="en">Train on the past and test on the future.</p>
+        </div>
+        <div class="card">
+          <p data-lang-block="pt">Ele evita treinar em observações posteriores para prever anteriores. No notebook, o maior índice de treino permaneceu menor do que o menor índice de teste em todos os splits.</p>
+          <p data-lang-block="en">It avoids training on later observations to predict earlier ones. In the notebook, the maximum training index remained lower than the minimum test index in every split.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <h3 data-lang-block="pt">Pipelines e leakage</h3>
+          <h3 data-lang-block="en">Pipelines and leakage</h3>
+        </div>
+        <p data-lang-block="pt">Pré-processamento e seleção de atributos precisam ficar dentro do fluxo de validação.</p>
+        <p data-lang-block="en">Preprocessing and feature selection must stay inside the validation workflow.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h4 data-lang-block="pt">Seleção antes da CV</h4>
+          <h4 data-lang-block="en">Selection before CV</h4>
+          <p><code>0.8906 ± 0.0140</code></p>
+          <p data-lang-block="pt">Pontuação artificialmente otimista após adicionar 200 colunas de ruído.</p>
+          <p data-lang-block="en">Artificially optimistic score after adding 200 noise columns.</p>
+        </div>
+        <div class="card">
+          <h4 data-lang-block="pt">Seleção dentro de Pipeline</h4>
+          <h4 data-lang-block="en">Selection inside Pipeline</h4>
+          <p><code>0.8812 ± 0.0125</code></p>
+          <p data-lang-block="pt">Estimativa mais honesta, porque o procedimento evita vazamento.</p>
+          <p data-lang-block="en">More honest estimate, because the procedure avoids leakage.</p>
+        </div>
+        <div class="card">
+          <h4 data-lang-block="pt">Conjunto final de teste</h4>
+          <h4 data-lang-block="en">Final test set</h4>
+          <p data-lang-block="pt">Deve permanecer isolado durante o desenvolvimento e ser usado apenas na medição final.</p>
+          <p data-lang-block="en">It should remain isolated during development and be used only for the final measurement.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <h3 data-lang-block="pt">Qual esquema usar?</h3>
+          <h3 data-lang-block="en">Which scheme should you use?</h3>
+        </div>
+        <p data-lang-block="pt">O objetivo não é obter uma nota bonita; é obter uma estimativa que sobreviva ao contato com novos dados.</p>
+        <p data-lang-block="en">The goal is not to obtain a flattering score; it is to obtain an estimate that survives contact with new data.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-lang-block="pt">Situação dos dados</th><th data-lang-block="en">Data situation</th>
+              <th data-lang-block="pt">Esquema</th><th data-lang-block="en">Scheme</th>
+              <th data-lang-block="pt">Por quê</th><th data-lang-block="en">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td data-lang-block="pt">Classificação</td><td data-lang-block="en">Classification</td><td><code>StratifiedKFold</code></td><td data-lang-block="pt">Preserva proporções por fold</td><td data-lang-block="en">Preserves proportions per fold</td></tr>
+            <tr><td data-lang-block="pt">Regressão / dados independentes</td><td data-lang-block="en">Regression / independent data</td><td><code>KFold</code></td><td data-lang-block="pt">Rotação simples é apropriada</td><td data-lang-block="en">Simple rotation is appropriate</td></tr>
+            <tr><td data-lang-block="pt">Observações repetidas por entidade</td><td data-lang-block="en">Repeated observations by entity</td><td><code>GroupKFold</code></td><td data-lang-block="pt">Impede a entidade nos dois lados</td><td data-lang-block="en">Prevents the same entity on both sides</td></tr>
+            <tr><td data-lang-block="pt">Dados ordenados no tempo</td><td data-lang-block="en">Time-ordered data</td><td><code>TimeSeriesSplit</code></td><td data-lang-block="pt">Passado → futuro, sem vazamento temporal</td><td data-lang-block="en">Past → future, without temporal leakage</td></tr>
+            <tr><td data-lang-block="pt">Pouquíssimos dados</td><td data-lang-block="en">Very limited data</td><td><code>LOO</code> / <code>RepeatedStratifiedKFold</code></td><td data-lang-block="pt">Usa os exemplos mais intensivamente, com trade-offs computacionais</td><td data-lang-block="en">Uses examples more intensively, with computational trade-offs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footer-note" data-lang-block="pt">Arquivo pronto para substituir o HTML atual ou servir como versão redesenhada final.</p>
+      <p class="footer-note" data-lang-block="en">This file is ready to replace the current HTML or serve as the final redesigned version.</p>
+    </section>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    document.getElementById('langToggle').addEventListener('click', () => {
+      root.dataset.lang = root.dataset.lang === 'pt' ? 'en' : 'pt';
+    });
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    });
+  </script>
+</body>
+</html>

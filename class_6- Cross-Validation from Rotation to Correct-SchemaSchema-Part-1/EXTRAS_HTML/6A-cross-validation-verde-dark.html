@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6A — Cross-Validation</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a1710;
+      --surface: #10251a;
+      --surface-soft: #153421;
+      --text: #e1f5e8;
+      --muted: #a1c3ae;
+      --border: #285c3c;
+      --accent: #61d58e;
+      --accent-strong: #91ebb1;
+      --accent-soft: #1d5232;
+      --accent-tint: #122d1d;
+      --shadow: 0 20px 55px rgba(0, 0, 0, .28);
+      --code-bg: #07150d;
+      --code-text: #d8f5e3;
+      --warning-bg: #392d0f;
+      --warning-border: #a87d1e;
+      --warning-text: #ffe2a0;
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4fbf7;
+      --surface: #ffffff;
+      --surface-soft: #eaf7ef;
+      --text: #123526;
+      --muted: #527364;
+      --border: #cbe7d5;
+      --accent: #16824a;
+      --accent-strong: #0d6338;
+      --accent-soft: #d8f3e2;
+      --accent-tint: #effaf3;
+      --shadow: 0 18px 45px rgba(18, 85, 47, .10);
+      --code-bg: #103c29;
+      --code-text: #dcf8e7;
+      --warning-bg: #fff8e6;
+      --warning-border: #e9bf55;
+      --warning-text: #6a4b06;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 30rem),
+        radial-gradient(circle at 100% 12%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      transition: background .25s ease, color .25s ease;
+    }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 46%, transparent); outline-offset: 3px; }
+
+    .page { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 25px 0 72px; }
+    .topbar { position: sticky; top: 12px; z-index: 20; display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-bottom: 22px; padding: 10px 12px 10px 16px; border: 1px solid var(--border); border-radius: 16px; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(14px); box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+    .eyebrow { margin: 0; color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+
+    .control-group { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .control, .theme-toggle {
+      appearance: none; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 38px; padding: 8px 12px; border-radius: 10px;
+      cursor: pointer; font: inherit; font-size: .86rem; font-weight: 750; transition: transform .18s ease, background .25s ease, border-color .25s ease, color .25s ease;
+    }
+    .control:hover, .theme-toggle:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--accent-tint); }
+    .control:active, .theme-toggle:active { transform: translateY(0); }
+    .control.primary { background: var(--accent); border-color: var(--accent); color: #062312; }
+    html[data-theme="light"] .control.primary { color: white; }
+    .control.primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .theme-icon, .control-icon { width: 1.05rem; text-align: center; }
+
+    header { position: relative; overflow: hidden; padding: clamp(28px, 6vw, 60px); border-radius: 28px; background: linear-gradient(135deg, #0c6336, #16824a); color: #fff; box-shadow: var(--shadow); }
+    html[data-theme="dark"] header { background: linear-gradient(135deg, #0b4c2a, #1d8a4d); }
+    header::after { content: ""; position: absolute; width: 340px; height: 340px; right: -130px; top: -180px; border-radius: 50%; background: rgba(255,255,255,.13); }
+    header::before { content: ""; position: absolute; width: 190px; height: 190px; right: 110px; bottom: -135px; border-radius: 50%; border: 32px solid rgba(255,255,255,.10); }
+    header > * { position: relative; z-index: 1; }
+    h1 { margin: 8px 0 12px; max-width: 850px; font-size: clamp(2rem, 5vw, 4.1rem); line-height: 1.04; letter-spacing: -.055em; }
+    .lead { max-width: 760px; margin: 0; font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,.90); }
+
+    .nav { display: flex; flex-wrap: wrap; gap: 9px; margin: 26px 0 34px; }
+    .nav a { color: var(--accent-strong); text-decoration: none; background: var(--accent-soft); border: 1px solid var(--border); border-radius: 999px; padding: 7px 12px; font-size: .87rem; font-weight: 700; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+    .nav a:hover { background: var(--accent); color: #062312; border-color: var(--accent); }
+    html[data-theme="light"] .nav a:hover { color: #fff; }
+
+    section { margin-top: 32px; scroll-margin-top: 100px; }
+    .section-heading { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; font-size: clamp(1.45rem, 2.5vw, 2rem); letter-spacing: -.035em; }
+    .section-heading::before { content: ""; width: 5px; align-self: stretch; background: var(--accent); border-radius: 99px; }
+    .bilingual { color: var(--muted); font-size: .92em; font-weight: 600; }
+
+    .card, .metric, .step, .callout, .scheme-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); }
+    .card { padding: clamp(22px, 4vw, 34px); }
+    p { margin: 0 0 15px; }
+    p:last-child { margin-bottom: 0; }
+
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 22px 0 0; }
+    .metric { padding: 20px; background: linear-gradient(180deg, var(--surface), var(--accent-tint)); }
+    .metric small { display: block; color: var(--muted); font-weight: 700; margin-bottom: 5px; }
+    .metric strong { display: block; color: var(--accent-strong); font-size: clamp(1.35rem, 3vw, 2rem); letter-spacing: -.04em; }
+
+    .folds { display: grid; gap: 12px; margin-top: 22px; }
+    .fold-row { display: grid; grid-template-columns: 92px repeat(5, 1fr); gap: 8px; align-items: center; }
+    .fold-label { color: var(--muted); font-weight: 800; font-size: .85rem; }
+    .fold { min-height: 43px; border-radius: 10px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border)); display: grid; place-items: center; color: var(--accent-strong); font-weight: 800; font-size: .82rem; }
+    .fold.validation { background: var(--accent); border-color: var(--accent); color: #062312; box-shadow: 0 6px 15px color-mix(in srgb, var(--accent) 30%, transparent); }
+    html[data-theme="light"] .fold.validation { color: #fff; }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; color: var(--muted); font-size: .9rem; font-weight: 600; }
+    .legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .swatch { width: 13px; height: 13px; border-radius: 4px; background: var(--accent-soft); border: 1px solid var(--border); }
+    .swatch.validation { background: var(--accent); border-color: var(--accent); }
+
+    .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .step { padding: 22px; position: relative; overflow: hidden; }
+    .step-number { display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 15px; border-radius: 50%; background: var(--accent); color: #062312; font-weight: 900; }
+    html[data-theme="light"] .step-number { color: #fff; }
+    .step h3, .scheme-card h3, .callout h3 { margin: 0 0 9px; font-size: 1rem; }
+    .step p { color: var(--muted); font-size: .94rem; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; min-width: 690px; background: var(--surface); }
+    th, td { padding: 15px 17px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+    th { background: var(--accent-tint); color: var(--accent-strong); font-size: .9rem; }
+    tr:last-child td { border-bottom: 0; }
+    td { color: var(--muted); }
+    td:first-child, td:nth-child(2) { color: var(--text); font-weight: 700; }
+
+    .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .callout { padding: 24px; }
+    .callout.good { border-top: 5px solid var(--accent); }
+    .callout.warning { background: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border); border-top: 5px solid var(--warning-border); }
+    .callout p { color: inherit; opacity: .92; }
+    .callout ul { padding-left: 20px; margin: 12px 0 0; }
+    .callout li { margin: 7px 0; }
+
+    .scheme-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .scheme-card { padding: 20px; }
+    .scheme-card p { color: var(--muted); font-size: .94rem; }
+    .tag { display: inline-block; margin-bottom: 11px; padding: 4px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); font-size: .77rem; font-weight: 800; }
+
+    .score-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .score { padding: 25px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
+    .score.bad { border-top: 5px solid var(--warning-border); }
+    .score.good { border-top: 5px solid var(--accent); }
+    .score-value { display: block; margin: 8px 0 12px; color: var(--accent-strong); font-weight: 900; font-size: 2rem; letter-spacing: -.05em; }
+    .score.bad .score-value { color: var(--warning-text); }
+
+    footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
+    .toast { position: fixed; z-index: 50; bottom: 20px; left: 50%; transform: translate(-50%, 120px); width: max-content; max-width: calc(100% - 32px); padding: 11px 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); box-shadow: var(--shadow); font-size: .9rem; font-weight: 700; transition: transform .26s ease; }
+    .toast.show { transform: translate(-50%, 0); }
+
+    @media (max-width: 820px) { .topbar { align-items: flex-start; flex-direction: column; } .control-group { justify-content: flex-start; } .stats, .steps, .scheme-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .two-col, .score-comparison { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .page { width: min(100% - 22px, 1120px); padding-top: 12px; } .topbar { top: 6px; margin-bottom: 15px; } .control, .theme-toggle { padding: 8px 10px; } .control .control-label { display: none; } header { border-radius: 22px; padding: 28px 23px; } .stats, .steps, .scheme-grid { grid-template-columns: 1fr; } .fold-row { grid-template-columns: 70px repeat(5, 1fr); gap: 5px; } .fold { font-size: .7rem; min-height: 37px; } }
+    @media print { .topbar, .nav, .toast { display: none !important; } body { background: #fff; color: #111; } .card, .metric, .step, .callout, .scheme-card, .score { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <main class="page" id="topo">
+    <div class="topbar">
+      <p class="eyebrow">Machine Learning · Avaliação</p>
+      <div class="control-group" aria-label="Comandos da página">
+        <button class="control" id="prev-section" type="button" title="Seção anterior" aria-label="Ir para a seção anterior"><span class="control-icon" aria-hidden="true">←</span><span class="control-label">Anterior</span></button>
+        <button class="control" id="next-section" type="button" title="Próxima seção" aria-label="Ir para a próxima seção"><span class="control-label">Próxima</span><span class="control-icon" aria-hidden="true">→</span></button>
+        <button class="control" id="copy-link" type="button" title="Copiar link da seção atual" aria-label="Copiar link da seção atual"><span class="control-icon" aria-hidden="true">⧉</span><span class="control-label">Copiar link</span></button>
+        <button class="control" id="print-page" type="button" title="Imprimir ou salvar em PDF" aria-label="Imprimir ou salvar em PDF"><span class="control-icon" aria-hidden="true">⎙</span><span class="control-label">Imprimir</span></button>
+        <button class="theme-toggle primary" id="theme-toggle" type="button" aria-label="Alternar para modo claro" aria-pressed="true"><span class="theme-icon" aria-hidden="true">☀</span><span id="theme-label">Modo claro</span></button>
+      </div>
+    </div>
+
+    <header>
+      <p class="eyebrow" style="color:rgba(255,255,255,.78)">Cross-validation</p>
+      <h1>De rotação ao esquema certo</h1>
+      <p class="lead">From rotation to the right scheme</p>
+    </header>
+
+    <nav class="nav" aria-label="Navegação da página">
+      <a href="#split">Uma divisão</a><a href="#kfold">K-fold</a><a href="#esquemas">Esquemas</a><a href="#estratificacao">Estratificação</a><a href="#grupos">GroupKFold</a><a href="#repeticao">Repetição</a><a href="#vazamento">Vazamento</a>
+    </nav>
+
+    <section id="split"><h2 class="section-heading">Uma única divisão é um cara ou coroa <span class="bilingual">One split is a coin toss.</span></h2><div class="card"><p>Com o mesmo modelo e os mesmos dados de desenvolvimento, trocar apenas a semente aleatória já move a estimativa. A validação cruzada substitui um número frágil por uma distribuição de resultados.</p><p class="bilingual">With the same model and the same development data, changing only the random seed already moves the estimate. Cross-validation replaces one fragile number with a distribution of results.</p><div class="stats" aria-label="Resumo das cinco execuções"><div class="metric"><small>Menor acurácia</small><strong>0.8750</strong></div><div class="metric"><small>Maior acurácia</small><strong>0.9219</strong></div><div class="metric"><small>Execuções</small><strong>5 seeds</strong></div></div></div></section>
+
+    <section id="mesmos-dados"><h2 class="section-heading">Mesmo modelo. Mesmos dados de desenvolvimento. <span class="bilingual">Same model. Same development data.</span></h2><div class="card"><p>Mudando apenas a semente do split aleatório, a acurácia foi de 0.8750 a 0.9219 em cinco execuções. A média resume o centro; o desvio-padrão mostra o quanto a estimativa oscila.</p><p class="bilingual">Changing only the random split seed, accuracy ranged from 0.8750 to 0.9219 across five runs. The mean summarizes the center; the standard deviation shows how much the estimate moves.</p></div></section>
+
+    <section id="kfold"><h2 class="section-heading">Como o k-fold funciona <span class="bilingual">How k-fold works</span></h2><div class="steps"><article class="step"><div class="step-number">1</div><h3>Particione os dados</h3><p>Particione os dados de desenvolvimento em k folds.</p><p class="bilingual">Partition the development data into k folds.</p></article><article class="step"><div class="step-number">2</div><h3>Gire a validação</h3><p>Cada fold vira validação uma vez; os outros k−1 treinam.</p><p class="bilingual">Each fold becomes validation once; the other k−1 folds train.</p></article><article class="step"><div class="step-number">3</div><h3>Complete o ciclo</h3><p>Repita até todos os folds ocuparem o papel de validação.</p><p class="bilingual">Repeat until every fold has served as the validation fold.</p></article><article class="step"><div class="step-number">4</div><h3>Reporte a variação</h3><p>Reporte média e desvio-padrão, não um número solto.</p><p class="bilingual">Report mean and standard deviation, not an isolated number.</p></article></div><div class="card" style="margin-top:18px"><div class="folds" aria-label="Ilustração de cinco rodadas de validação cruzada"><div class="fold-row"><span class="fold-label">Rodada 1</span><span class="fold validation">Val.</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold">Treino</span></div><div class="fold-row"><span class="fold-label">Rodada 2</span><span class="fold">Treino</span><span class="fold validation">Val.</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold">Treino</span></div><div class="fold-row"><span class="fold-label">Rodada 3</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold validation">Val.</span><span class="fold">Treino</span><span class="fold">Treino</span></div><div class="fold-row"><span class="fold-label">Rodada 4</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold validation">Val.</span><span class="fold">Treino</span></div><div class="fold-row"><span class="fold-label">Rodada 5</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold">Treino</span><span class="fold validation">Val.</span></div></div><div class="legend"><span><i class="swatch validation"></i>Fold de validação</span><span><i class="swatch"></i>Folds de treino</span></div></div></section>
+
+    <section id="esquemas"><h2 class="section-heading">O esquema certo depende da estrutura dos dados <span class="bilingual">The right scheme depends on the data structure</span></h2><div class="card" style="margin-bottom:18px"><p>A regra prática é simples: escolha o método que protege o padrão de dependência dos seus dados e evita otimismos artificiais.</p><p class="bilingual">The practical rule is simple: choose the method that protects the dependency structure in your data and avoids artificial optimism.</p></div><div class="table-wrap"><table><thead><tr><th>Situação<br><span class="bilingual">Situation</span></th><th>Esquema<br><span class="bilingual">Scheme</span></th><th>Por quê<br><span class="bilingual">Why</span></th></tr></thead><tbody><tr><td>Classificação<br><span class="bilingual">Classification</span></td><td>StratifiedKFold</td><td>Preserva proporções de classe por fold.<br><span class="bilingual">Preserves class proportions in each fold.</span></td></tr><tr><td>Regressão / dados independentes<br><span class="bilingual">Regression / independent data</span></td><td>KFold</td><td>Rotação simples costuma ser adequada.<br><span class="bilingual">Simple rotation is usually appropriate.</span></td></tr><tr><td>Observações por entidade<br><span class="bilingual">Repeated entity observations</span></td><td>GroupKFold</td><td>Impede a mesma entidade de aparecer dos dois lados.<br><span class="bilingual">Prevents the same entity from appearing on both sides.</span></td></tr><tr><td>Dados temporais<br><span class="bilingual">Time-ordered data</span></td><td>TimeSeriesSplit</td><td>Treina no passado e testa no futuro, sem vazamento temporal.<br><span class="bilingual">Trains on the past and tests the future, without temporal leakage.</span></td></tr><tr><td>Dados muito limitados<br><span class="bilingual">Very limited data</span></td><td>LOO / RepeatedStratifiedKFold</td><td>Usa os exemplos mais intensamente, com custo computacional.<br><span class="bilingual">Uses examples more intensively, with computational trade-offs.</span></td></tr></tbody></table></div></section>
+
+    <section id="estratificacao"><h2 class="section-heading">Estratificação reduz instabilidade em classificação <span class="bilingual">Stratification reduces instability in classification</span></h2><div class="two-col"><article class="callout good"><h3>O que ela faz <span class="bilingual">What it does</span></h3><p>Distribui os positivos de forma mais uniforme entre os folds. Isso estabiliza a avaliação, mas não cria exemplos minoritários inexistentes.</p><p class="bilingual">Distributes positive cases more evenly across folds. This stabilizes evaluation, but it does not create missing minority examples.</p></article><article class="callout"><h3>Quando ajuda mais <span class="bilingual">When it helps most</span></h3><ul><li>Classes desbalanceadas. <span class="bilingual">Imbalanced classes.</span></li><li>Poucos positivos por fold. <span class="bilingual">Few positives per fold.</span></li><li>Métricas sensíveis à prevalência. <span class="bilingual">Metrics sensitive to prevalence.</span></li></ul></article></div></section>
+
+    <section id="grupos"><h2 class="section-heading">GroupKFold protege contra vazamento por entidade <span class="bilingual">GroupKFold protects against entity leakage</span></h2><div class="card"><p>Mantém cada entidade inteira de um lado só. É a defesa certa quando diferentes linhas pertencem à mesma pessoa, paciente, cliente ou dispositivo.</p><p class="bilingual">Keeps each entity entirely on one side. It is the right defense when different rows belong to the same person, patient, customer, or device.</p></div><div class="scheme-grid" style="margin-top:18px"><article class="scheme-card"><span class="tag">Errado · Wrong</span><h3>Mesmo paciente nos dois lados</h3><p>Mesmo paciente no treino e na validação.</p><p class="bilingual">Same patient in train and validation.</p></article><article class="scheme-card"><span class="tag">Certo · Right</span><h3>Entidade indivisível</h3><p>Paciente inteiro fica de um lado só.</p><p class="bilingual">The whole patient stays on one side only.</p></article><article class="scheme-card"><span class="tag">Efeito · Effect</span><h3>Estimativa mais realista</h3><p>Estimativa menos otimista e mais fiel ao uso real.</p><p class="bilingual">Less optimistic and more realistic estimate.</p></article></div></section>
+
+    <section id="repeticao"><h2 class="section-heading">Repetição mede melhor a incerteza <span class="bilingual">Repetition measures uncertainty better</span></h2><div class="card"><p>RepeatedStratifiedKFold repete a validação estratificada com várias partições aleatórias, tornando a estimativa mais informativa sobre a incerteza.</p><p class="bilingual">RepeatedStratifiedKFold repeats stratified validation with multiple random partitions, making the estimate more informative about uncertainty.</p></div></section>
+
+    <section id="vazamento"><h2 class="section-heading">Selecionar antes do split parece melhor, mas engana <span class="bilingual">Selecting before the split looks better, but misleads</span></h2><div class="score-comparison"><article class="score bad"><span class="tag" style="background:var(--warning-bg);color:var(--warning-text)">Procedimento incorreto · Incorrect procedure</span><span class="score-value">0.8906 ± 0.0140</span><p>Esse valor parece melhor, mas é otimista demais porque a seleção viu informação que deveria permanecer restrita ao treino de cada fold.</p><p class="bilingual">This value looks better, but it is overly optimistic because selection saw information that should have remained restricted to each fold's training data.</p></article><article class="score good"><span class="tag">Procedimento correto · Correct procedure</span><span class="score-value">0.8812 ± 0.0125</span><p>Esse é o procedimento correto: cada transformação aprende apenas com o treino da rodada, reduzindo vazamento e aproximando a estimativa da realidade.</p><p class="bilingual">This is the correct procedure: each transformation learns only from that round's training set, reducing leakage and bringing the estimate closer to reality.</p></article></div></section>
+
+    <footer>6A · Cross-Validation — visual verde, tema escuro inicial e comandos de navegação.</footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.getElementById('theme-toggle');
+      const label = document.getElementById('theme-label');
+      const icon = toggle.querySelector('.theme-icon');
+      const toast = document.getElementById('toast');
+      const sections = Array.from(document.querySelectorAll('main section[id]'));
+      let toastTimer;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+      }
+
+      function setTheme(theme) {
+        const dark = theme === 'dark';
+        root.dataset.theme = theme;
+        toggle.setAttribute('aria-pressed', String(dark));
+        toggle.setAttribute('aria-label', dark ? 'Alternar para modo claro' : 'Alternar para modo escuro');
+        label.textContent = dark ? 'Modo claro' : 'Modo escuro';
+        icon.textContent = dark ? '☀' : '☾';
+      }
+
+      // Tema inicial obrigatório: escuro. Depois, respeita a escolha manual salva pelo visitante.
+      setTheme(localStorage.getItem('cv-theme') || 'dark');
+      toggle.addEventListener('click', () => {
+        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('cv-theme', next);
+        setTheme(next);
+        showToast(next === 'dark' ? 'Modo escuro ativado.' : 'Modo claro ativado.');
+      });
+
+      function activeIndex() {
+        const marker = window.scrollY + 135;
+        let index = 0;
+        sections.forEach((section, i) => { if (section.offsetTop <= marker) index = i; });
+        return index;
+      }
+      function goTo(index) {
+        const safeIndex = Math.max(0, Math.min(sections.length - 1, index));
+        sections[safeIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      document.getElementById('prev-section').addEventListener('click', () => goTo(activeIndex() - 1));
+      document.getElementById('next-section').addEventListener('click', () => goTo(activeIndex() + 1));
+
+      document.getElementById('copy-link').addEventListener('click', async () => {
+        const id = sections[activeIndex()]?.id || 'topo';
+        const url = `${window.location.href.split('#')[0]}#${id}`;
+        try {
+          await navigator.clipboard.writeText(url);
+          showToast('Link da seção copiado.');
+        } catch (error) {
+          window.location.hash = id;
+          showToast('Link atualizado na barra de endereço.');
+        }
+      });
+      document.getElementById('print-page').addEventListener('click', () => window.print());
+      document.addEventListener('keydown', event => {
+        if ((event.altKey || event.metaKey) && event.key === 'ArrowRight') { event.preventDefault(); goTo(activeIndex() + 1); }
+        if ((event.altKey || event.metaKey) && event.key === 'ArrowLeft') { event.preventDefault(); goTo(activeIndex() - 1); }
+      });
+    }());
+  </script>
+</body>
+</html>

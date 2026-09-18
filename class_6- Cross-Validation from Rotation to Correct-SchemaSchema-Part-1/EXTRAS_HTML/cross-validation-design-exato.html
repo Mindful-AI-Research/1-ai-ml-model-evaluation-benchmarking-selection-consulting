@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cross-Validation — Class 06</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111823;
+      --panel-2: #0f1720;
+      --text: #eef5ff;
+      --muted: #aeb9c9;
+      --line: #243247;
+      --accent: #6ad5ff;
+      --accent-2: #16324a;
+      --accent-3: #183d5b;
+      --good: #8df0b3;
+      --warn: #ffd38a;
+      --shadow: 0 14px 36px rgba(0,0,0,.32);
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; }
+    body { min-height: 100vh; }
+    .topbar, .bottombar {
+      position: fixed; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 10px 14px; background: rgba(8,12,18,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+    }
+    .bottombar { top: auto; bottom: 0; border-bottom: 0; border-top: 1px solid var(--line); }
+    .topbar { top: 0; }
+    .controls, .navset { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      appearance: none; border: 1px solid #32506f; background: linear-gradient(180deg, var(--accent-3), var(--accent-2));
+      color: #dff6ff; border-radius: 999px; padding: 10px 14px; font-size: 14px; line-height: 1; cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 8px 18px rgba(0,0,0,.22); transition: .2s ease;
+    }
+    .btn:hover, .btn:focus-visible { transform: translateY(-1px); border-color: #4f7ba3; }
+    .btn.active { background: linear-gradient(180deg, #1c557c, #0d6fa1); color: white; border-color: #79dbff; box-shadow: 0 0 0 2px rgba(106,213,255,.12), 0 10px 24px rgba(0,0,0,.28); }
+    .titlebar { font-size: 15px; color: #dfeaf6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    main { padding: 82px 18px 84px; }
+    .deck { max-width: 1120px; margin: 0 auto; display: grid; gap: 18px; }
+    .slide {
+      background: linear-gradient(180deg, rgba(20,29,42,.98), rgba(12,18,28,.98));
+      border: 1px solid var(--line); border-radius: 26px; padding: 28px; box-shadow: var(--shadow);
+    }
+    .hero { min-height: 62vh; display: grid; align-content: center; gap: 18px; }
+    .eyebrow { color: var(--accent); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; }
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: clamp(2rem, 4.6vw, 4.2rem); line-height: .98; max-width: 12ch; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.35rem); line-height: 1.05; }
+    h3 { font-size: 1.06rem; color: #f7fbff; }
+    p { color: var(--muted); font-size: 1rem; line-height: 1.65; margin: 0; max-width: 78ch; }
+    .accent { color: var(--accent); }
+    .coin {
+      display: inline-block; padding: 8px 14px; border-radius: 999px; background: rgba(106,213,255,.12); color: #d9f7ff; border: 1px solid rgba(106,213,255,.28);
+      font-weight: 700; letter-spacing: .04em;
+    }
+    .grid-2, .grid-3, .grid-4 { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .card, .stat, .callout, .mini {
+      background: linear-gradient(180deg, rgba(20,31,46,.96), rgba(13,22,33,.96)); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px;
+    }
+    .stat .value { font-size: clamp(1.6rem, 3.4vw, 2.7rem); font-weight: 700; color: var(--text); }
+    .stat .label { margin-top: 6px; color: var(--muted); font-size: .95rem; }
+    .kicker { color: var(--accent); font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 8px; }
+    .rule { height: 1px; background: linear-gradient(90deg, transparent, #3b5573, transparent); margin: 10px 0 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; overflow: hidden; border-radius: 18px; }
+    th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: #eaf6ff; background: rgba(27,46,67,.58); font-size: .94rem; }
+    td { color: var(--muted); background: rgba(14,22,33,.52); }
+    .metric { color: var(--good); font-weight: 700; }
+    .warn { color: var(--warn); }
+    .footer-note { color: #8ea1b8; font-size: .9rem; }
+    .lang-pt .en, .lang-en .pt { display: none !important; }
+    .section-space { margin-top: 10px; }
+    .bullets { display: grid; gap: 10px; margin-top: 12px; }
+    .bullet { display: flex; gap: 10px; align-items: flex-start; }
+    .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--accent); margin-top: 8px; box-shadow: 0 0 0 6px rgba(106,213,255,.08); flex: 0 0 auto; }
+    .slide[hidden] { display: none; }
+    @media (max-width: 920px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .titlebar { display: none; }
+      .slide { padding: 20px; border-radius: 22px; }
+      main { padding-left: 12px; padding-right: 12px; }
+    }
+  </style>
+</head>
+<body class="lang-pt">
+  <div class="topbar">
+    <div class="controls">
+      <button class="btn active" id="ptBtn">PT</button>
+      <button class="btn" id="enBtn">EN</button>
+      <button class="btn" id="homeBtn">⌂</button>
+      <button class="btn" id="fitBtn">⛶</button>
+    </div>
+    <div class="titlebar">Cross-validation: From rotation to the right scheme</div>
+    <div class="navset">
+      <button class="btn" id="prevBtn">←</button>
+      <button class="btn" id="nextBtn">→</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="deck" id="deck">
+      <section class="slide hero" data-slide>
+        <div class="eyebrow pt">VALIAÇÃO CRUZADA</div>
+        <div class="eyebrow en">CROSS-VALIDATION</div>
+        <h1>
+          <span class="pt">De rotação ao <span class="accent">esquema certo</span></span>
+          <span class="en">From rotation to the <span class="accent">right scheme</span></span>
+        </h1>
+        <div class="rule"></div>
+        <h2>
+          <span class="pt">Uma única divisão é um <span class="coin">cara ou coroa</span>.</span>
+          <span class="en">One split is a <span class="coin">coin toss</span>.</span>
+        </h2>
+        <p class="pt">Com o mesmo modelo e os mesmos dados de desenvolvimento, trocar apenas a semente aleatória já move a estimativa. A validação cruzada substitui um número frágil por uma distribuição de resultados.</p>
+        <p class="en">With the same model and the same development data, changing only the random seed already moves the estimate. Cross-validation replaces one fragile number with a distribution of results.</p>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">DEMONSTRADO</div>
+        <div class="kicker en">DEMONSTRATED</div>
+        <h2 class="pt">Mesmo modelo. Mesmos dados de desenvolvimento.</h2>
+        <h2 class="en">Same model. Same development data.</h2>
+        <p class="section-space pt">Mudando apenas a semente do split aleatório, a acurácia foi de 0.8750 a 0.9219 em cinco execuções. A média resume o centro; o desvio-padrão mostra o quanto a estimativa oscila.</p>
+        <p class="section-space en">Changing only the random split seed, accuracy ranged from 0.8750 to 0.9219 across five runs. The mean summarizes the center; the standard deviation shows how much the estimate moves.</p>
+        <div class="grid-3 section-space">
+          <div class="stat"><div class="value">0.8750</div><div class="label pt">menor acurácia observada</div><div class="label en">lowest observed accuracy</div></div>
+          <div class="stat"><div class="value">0.9219</div><div class="label pt">maior acurácia observada</div><div class="label en">highest observed accuracy</div></div>
+          <div class="stat"><div class="value">0.8906 ± 0.0171</div><div class="label pt">média ± desvio-padrão</div><div class="label en">mean ± standard deviation</div></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">MECÂNICA</div>
+        <div class="kicker en">MECHANICS</div>
+        <h2 class="pt">Como o k-fold funciona</h2>
+        <h2 class="en">How k-fold works</h2>
+        <div class="grid-4 section-space">
+          <div class="card"><h3>1</h3><p class="pt">Particione os dados de desenvolvimento em k folds.</p><p class="en">Partition the development data into k folds.</p></div>
+          <div class="card"><h3>2</h3><p class="pt">Cada fold vira validação uma vez; os outros k−1 treinam.</p><p class="en">Each fold becomes validation once; the other k−1 folds train.</p></div>
+          <div class="card"><h3>3</h3><p class="pt">Repita até todos os folds ocuparem o papel de validação.</p><p class="en">Repeat until every fold has served as the validation fold.</p></div>
+          <div class="card"><h3>4</h3><p class="pt">Reporte média e desvio-padrão, não um número solto.</p><p class="en">Report mean and standard deviation, not an isolated number.</p></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">ESCOLHA DO ESQUEMA</div>
+        <div class="kicker en">SCHEME CHOICE</div>
+        <h2 class="pt">O esquema certo depende da estrutura dos dados</h2>
+        <h2 class="en">The right scheme depends on the data structure</h2>
+        <p class="section-space pt">A regra prática é simples: escolha o método que protege o padrão de dependência dos seus dados e evita otimismos artificiais.</p>
+        <p class="section-space en">The practical rule is simple: choose the method that protects the dependency structure in your data and avoids artificial optimism.</p>
+        <table>
+          <thead>
+            <tr>
+              <th><span class="pt">Situação</span><span class="en">Situation</span></th>
+              <th><span class="pt">Esquema</span><span class="en">Scheme</span></th>
+              <th><span class="pt">Por quê</span><span class="en">Why</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="pt">Classificação</span><span class="en">Classification</span></td>
+              <td>StratifiedKFold</td>
+              <td><span class="pt">Preserva proporções de classe por fold.</span><span class="en">Preserves class proportions in each fold.</span></td>
+            </tr>
+            <tr>
+              <td><span class="pt">Regressão / dados independentes</span><span class="en">Regression / independent data</span></td>
+              <td>KFold</td>
+              <td><span class="pt">Rotação simples costuma ser adequada.</span><span class="en">Simple rotation is usually appropriate.</span></td>
+            </tr>
+            <tr>
+              <td><span class="pt">Observações por entidade</span><span class="en">Repeated entity observations</span></td>
+              <td>GroupKFold</td>
+              <td><span class="pt">Impede a mesma entidade de aparecer dos dois lados.</span><span class="en">Prevents the same entity from appearing on both sides.</span></td>
+            </tr>
+            <tr>
+              <td><span class="pt">Dados temporais</span><span class="en">Time-ordered data</span></td>
+              <td>TimeSeriesSplit</td>
+              <td><span class="pt">Treina no passado e testa no futuro, sem vazamento temporal.</span><span class="en">Trains on the past and tests the future, without temporal leakage.</span></td>
+            </tr>
+            <tr>
+              <td><span class="pt">Dados muito limitados</span><span class="en">Very limited data</span></td>
+              <td>LOO / RepeatedStratifiedKFold</td>
+              <td><span class="pt">Usa os exemplos mais intensamente, com custo computacional.</span><span class="en">Uses examples more intensively, with computational trade-offs.</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">QUANDO ESTRATIFICAR</div>
+        <div class="kicker en">WHEN TO STRATIFY</div>
+        <h2 class="pt">Estratificação reduz instabilidade em classificação</h2>
+        <h2 class="en">Stratification reduces instability in classification</h2>
+        <div class="grid-2 section-space">
+          <div class="callout">
+            <h3 class="pt">O que ela faz</h3>
+            <h3 class="en">What it does</h3>
+            <p class="pt">Distribui os positivos de forma mais uniforme entre os folds. Isso estabiliza a avaliação, mas não cria exemplos minoritários inexistentes.</p>
+            <p class="en">Distributes positive cases more evenly across folds. This stabilizes evaluation, but it does not create missing minority examples.</p>
+          </div>
+          <div class="callout">
+            <h3 class="pt">Quando ajuda mais</h3>
+            <h3 class="en">When it helps most</h3>
+            <div class="bullets">
+              <div class="bullet"><span class="dot"></span><p class="pt">Classes desbalanceadas.</p><p class="en">Imbalanced classes.</p></div>
+              <div class="bullet"><span class="dot"></span><p class="pt">Poucos positivos por fold.</p><p class="en">Few positives per fold.</p></div>
+              <div class="bullet"><span class="dot"></span><p class="pt">Métricas sensíveis à prevalência.</p><p class="en">Metrics sensitive to prevalence.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">QUANDO AGRUPAR</div>
+        <div class="kicker en">WHEN TO GROUP</div>
+        <h2 class="pt">GroupKFold protege contra vazamento por entidade</h2>
+        <h2 class="en">GroupKFold protects against entity leakage</h2>
+        <p class="section-space pt">Mantém cada entidade inteira de um lado só. É a defesa certa quando diferentes linhas pertencem à mesma pessoa, paciente, cliente ou dispositivo.</p>
+        <p class="section-space en">Keeps each entity entirely on one side. It is the right defense when different rows belong to the same person, patient, customer, or device.</p>
+        <div class="grid-3 section-space">
+          <div class="mini"><h3 class="pt">Errado</h3><h3 class="en">Wrong</h3><p class="pt">Mesmo paciente no treino e na validação.</p><p class="en">Same patient in train and validation.</p></div>
+          <div class="mini"><h3 class="pt">Certo</h3><h3 class="en">Right</h3><p class="pt">Paciente inteiro fica de um lado só.</p><p class="en">The whole patient stays on one side only.</p></div>
+          <div class="mini"><h3 class="pt">Efeito</h3><h3 class="en">Effect</h3><p class="pt">Estimativa menos otimista e mais fiel ao uso real.</p><p class="en">Less optimistic and more realistic estimate.</p></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">QUANDO REPETIR</div>
+        <div class="kicker en">WHEN TO REPEAT</div>
+        <h2 class="pt">Repetição mede melhor a incerteza</h2>
+        <h2 class="en">Repetition measures uncertainty better</h2>
+        <p class="section-space pt">RepeatedStratifiedKFold repete a validação estratificada com várias partições aleatórias, tornando a estimativa mais informativa sobre a incerteza.</p>
+        <p class="section-space en">RepeatedStratifiedKFold repeats stratified validation with multiple random partitions, making the estimate more informative about uncertainty.</p>
+        <div class="grid-2 section-space">
+          <div class="stat"><div class="value">+ estabilidade</div><div class="label pt">menos dependência de uma partição específica</div><div class="label en">less dependence on a specific partition</div></div>
+          <div class="stat"><div class="value">+ custo</div><div class="label pt">mais treinamento e mais tempo computacional</div><div class="label en">more training and more computation time</div></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide hidden>
+        <div class="kicker pt">VAZAMENTO</div>
+        <div class="kicker en">LEAKAGE</div>
+        <h2 class="pt">Selecionar antes do split parece melhor, mas engana</h2>
+        <h2 class="en">Selecting before the split looks better, but misleads</h2>
+        <div class="grid-2 section-space">
+          <div class="card">
+            <h3 class="pt">Procedimento incorreto</h3>
+            <h3 class="en">Incorrect procedure</h3>
+            <div class="stat" style="margin-top:12px;"><div class="value warn">0.8906 ± 0.0140</div></div>
+            <p class="pt">Esse valor parece melhor, mas é otimista demais porque a seleção viu informação que deveria permanecer restrita ao treino de cada fold.</p>
+            <p class="en">This value looks better, but it is overly optimistic because selection saw information that should have remained restricted to each fold's training data.</p>
+          </div>
+          <div class="card">
+            <h3 class="pt">Procedimento correto</h3>
+            <h3 class="en">Correct procedure</h3>
+            <div class="stat" style="margin-top:12px;"><div class="value metric">0.8812 ± 0.0125</div></div>
+            <p class="pt">Cada transformação aprende apenas com o treino da rodada, reduzindo vazamento e aproximando a estimativa da realidade.</p>
+            <p class="en">Each transformation learns only from that round's training set, reducing leakage and bringing the estimate closer to reality.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="bottombar">
+    <div class="footer-note"><span id="counter">1 / 8</span></div>
+    <div class="controls">
+      <button class="btn" id="prevBtn2">Anterior</button>
+      <button class="btn" id="nextBtn2">Próximo</button>
+    </div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const slides = Array.from(document.querySelectorAll('[data-slide]'));
+    let current = 0;
+
+    const ptBtn = document.getElementById('ptBtn');
+    const enBtn = document.getElementById('enBtn');
+    const prevBtns = [document.getElementById('prevBtn'), document.getElementById('prevBtn2')];
+    const nextBtns = [document.getElementById('nextBtn'), document.getElementById('nextBtn2')];
+    const counter = document.getElementById('counter');
+    const homeBtn = document.getElementById('homeBtn');
+    const fitBtn = document.getElementById('fitBtn');
+
+    function render() {
+      slides.forEach((slide, i) => slide.hidden = i !== current);
+      counter.textContent = `${current + 1} / ${slides.length}`;
+    }
+    function go(step) {
+      current = (current + step + slides.length) % slides.length;
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function goHome() { current = 0; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    function toggleLang(lang) {
+      body.classList.toggle('lang-pt', lang === 'pt');
+      body.classList.toggle('lang-en', lang === 'en');
+      ptBtn.classList.toggle('active', lang === 'pt');
+      enBtn.classList.toggle('active', lang === 'en');
+      const prev2 = document.getElementById('prevBtn2');
+      const next2 = document.getElementById('nextBtn2');
+      prev2.textContent = lang === 'pt' ? 'Anterior' : 'Previous';
+      next2.textContent = lang === 'pt' ? 'Próximo' : 'Next';
+    }
+    ptBtn.addEventListener('click', () => toggleLang('pt'));
+    enBtn.addEventListener('click', () => toggleLang('en'));
+    prevBtns.forEach(b => b.addEventListener('click', () => go(-1)));
+    nextBtns.forEach(b => b.addEventListener('click', () => go(1)));
+    homeBtn.addEventListener('click', goHome);
+    fitBtn.addEventListener('click', () => document.documentElement.requestFullscreen?.());
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') go(1);
+      if (e.key === 'ArrowLeft') go(-1);
+      if (e.key.toLowerCase() === 'h') goHome();
+      if (e.key.toLowerCase() === 'e') toggleLang('en');
+      if (e.key.toLowerCase() === 'p') toggleLang('pt');
+    });
+    toggleLang('pt');
+    render();
+  </script>
+</body>
+</html>
