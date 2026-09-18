@@ -31,11 +31,11 @@
 <!-- ========= START TEASER ========= -->
 ###### <p align="center"><em>Train it. Break it. Stress it. Test it.</em></p>
 
-###### <p align="center"><em>Good models learn. Great models survive evaluation.</em></p>
+###### <p align="center"> Good models ***learn***. Great models survive ***evaluation***.</p>
 
-###### <p align="center">👌🏻<em> Because “Trust me, ****ro” is not evidence. “It Works” is not a metric.</em></p>
+###### <p align="center">Because “***Trust me, Bro***” is not evidence. “***It Works***” is not a metric.</em></p>
 
-###### <p align="center">  <em>Reproduce it. Then we’ll talk.</em></p>
+###### <p align="center">  👌🏻  <em>Reproduce it !  Then we’ll talk.</em></p>
 
 ### <p align="center">⚡️</p>
 
