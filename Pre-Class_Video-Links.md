@@ -64,7 +64,7 @@ https://github.com/user-attachments/assets/43bd905c-3c5e-4c15-88ad-284b24773f10
 
 
 
-## [Week 6 and 7]() — Cross-Validation from Rotation to Correct-Schema
+## [Week 6 and 7]() —  Cross-Validation from Rotation to Correct-Schema and Nested Croiss Validation
 
 
 https://github.com/user-attachments/assets/4097ba66-9586-4e2f-a10e-5f7189d4ed91
@@ -75,7 +75,12 @@ https://github.com/user-attachments/assets/4097ba66-9586-4e2f-a10e-5f7189d4ed91
 
 <br><br>
 
+[Class 8]() - Hyperparameter Search - Grid Search
 
+https://github.com/user-attachments/assets/d1156b3a-fc02-4621-a143-515776d0cc2e
+
+
+### 📺 [You Tube](https://youtu.be/2VMpLJG0waE?si=_NuqqcWUc8kUWWu5)
 
 
 <!--
