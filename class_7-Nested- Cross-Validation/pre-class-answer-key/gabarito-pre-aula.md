@@ -163,8 +163,11 @@ D) Descartar as três e ampliar a grade em volta delas
 ## 15) Sobre o `busca.best_estimator_`, é CORRETO afirmar:
 
 A) **É o Pipeline com a melhor combinação, JÁ TREINADO — é ele que você leva ao teste ✅**
+
 B) É apenas um dicionário com os melhores valores encontrados
+
 C) É o modelo com os hiperparâmetros certos, mas ainda sem treino: é preciso chamar `fit` antes de usar
+
 D) É a tabela completa com a média e o desvio de cada combinação
 
 **Resposta:** A
@@ -174,14 +177,18 @@ D) É a tabela completa com a média e o desvio de cada combinação
 ## 16) O teste ficou MUITO abaixo do `best_score_` da validação. A leitura mais provável é:
 
 A) O teste está pequeno demais e deve ser ampliado com dados da validação
+
 B) O modelo está subajustado e a grade precisa de valores mais extremos
+
 C) **A busca se sobreajustou — grade grande demais para o tamanho dos dados, e o topo veio de sorte nas dobras ✅**
+
 D) Houve erro de código: os dois números têm de coincidir
 
 **Resposta:** C
 
 <br><br>
 
-## 17) Ficou alguma dúvida da aula de hoje?
+## 17) Alguma dúvida ?
 
-**Uma dúvida que fiquei é: como a gente percebe, na prática, que uma busca de hiperparâmetros está começando a “forçar” demais os dados da validação? E, quando várias combinações ficam muito próximas, como decidir se vale a pena escolher a mais simples?**
+**Uma dúvida que fiquei é: como a gente percebe, na prática, que uma busca de hiperparâmetros está começando a “forçar” demais os dados da validação? 
+E, quando várias combinações ficam muito próximas, como decidir se vale a pena escolher a mais simples?**
