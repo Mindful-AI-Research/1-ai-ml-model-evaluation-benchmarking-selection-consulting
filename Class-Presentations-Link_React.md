@@ -1,13 +1,11 @@
 
 
+- [class_2](https://fabulous-starship-5f9a11.netlify.app/) - Classification Metrics I
 
+- [class_3](https://lovely-salamander-c0ee0f.netlify.app/) - Classification Metrics II
 
-[class_2](https://fabulous-starship-5f9a11.netlify.app/) - Classification Metrics I
+- [class_4](https://aesthetic-cocada-c4703b.netlify.app/) - Regression Metrics
 
+- [class 5](https://astonishing-dodol-818e9f.netlify.app/)- Hold-out and Pipeline Validation
 
-[class_3](https://lovely-salamander-c0ee0f.netlify.app/) - Classification Metrics II
-
-[class_4](https://aesthetic-cocada-c4703b.netlify.app/) - Regression Metrics
-
-
-[class 6](https://astounding-marzipan-63764d.netlify.app/) - Cross-Validation from Rotation to Correct-SchemaSchema-Part
+- [class 6](https://astounding-marzipan-63764d.netlify.app/) - Cross-Validation from Rotation to Correct-SchemaSchema
