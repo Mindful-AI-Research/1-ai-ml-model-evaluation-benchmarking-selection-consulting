@@ -6,6 +6,8 @@
 
 - [class_4](https://aesthetic-cocada-c4703b.netlify.app/) - Regression Metrics
 
-- [class 5](https://astonishing-dodol-818e9f.netlify.app/)- Hold-out and Pipeline Validation
+- [class 5](https://beamish-pegasus-b4f06f.netlify.app/)- Hold-out and Pipeline Validation
 
-- [class 6](https://astounding-marzipan-63764d.netlify.app/) - Cross-Validation from Rotation to Correct-SchemaSchema
+- [class 6](https://astounding-marzipan-63764d.netlify.app/) - Cross Validation from Rotation to Correct-SchemaSchema
+
+- [class 7](https://astonishing-dodol-818e9f.netlify.app/) - Nested  Cross Validation
