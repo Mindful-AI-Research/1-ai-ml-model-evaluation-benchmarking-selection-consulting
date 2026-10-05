@@ -82,6 +82,15 @@ https://github.com/user-attachments/assets/d1156b3a-fc02-4621-a143-515776d0cc2e
 
 ### 📺 [You Tube](https://youtu.be/2VMpLJG0waE?si=_NuqqcWUc8kUWWu5)
 
+<br><br>
+
+[Class 9]() - Random search and AutoML
+
+
+
+
+### 📺 [You Tube](https://www.youtube.com/watch?v=nOjlIEvL9jg)
+
 
 <!--
 ## Week 3 — Classification Metrics I
