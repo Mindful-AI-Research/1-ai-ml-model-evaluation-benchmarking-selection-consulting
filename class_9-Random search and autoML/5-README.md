@@ -1,3 +1,20 @@
+
+
+# [Class 09](): Random Search, Hyperparameter Optimization & AutoML
+
+> **Course:** Data Science & Machine Learning — Model Evaluation, Benchmarking & Selection  
+> **Institution:** Pontifical Catholic University of São Paulo — PUC-SP  
+> **School:** FACEI — Computer Science Department  
+> **Program:** BSc in Human-Centered AI & Data Science · 6th Semester · 2026  
+> **Professor:** Giovani Giulio Tristão Thibes Vieira  
+> **Author:** Fabiana Campanari
+
+<br><br>
+
+#
+
+<br><br>
+
 <p align="center">
   <img src="https://img.shields.io/badge/Class-09-0f766e?style=for-the-badge&labelColor=022c22" alt="Class 09" />
   <img src="https://img.shields.io/badge/Topic-Random%20Search%20%26%20AutoML-134e4a?style=for-the-badge&labelColor=022c22" alt="Random Search and AutoML" />
@@ -10,18 +27,8 @@
   <img src="https://img.shields.io/badge/Cross--Validation-Evaluation-134a4a?style=for-the-badge&labelColor=022c22" alt="Cross Validation" />
 </p>
 
-<br>
+<br><br><br><br>
 
-# [Class 09]: Random Search, Hyperparameter Optimization & AutoML
-
-> **Course:** Data Science & Machine Learning — Model Evaluation, Benchmarking & Selection  
-> **Institution:** Pontifical Catholic University of São Paulo — PUC-SP  
-> **School:** FACEI — Computer Science Department  
-> **Program:** BSc in Human-Centered AI & Data Science · 6th Semester · 2026  
-> **Professor:** Giovani Giulio Tristão Thibes Vieira  
-> **Author:** Fabiana Campanari  
-
-<br>
 
 ## [Overview]()
 
