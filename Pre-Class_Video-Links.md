@@ -86,7 +86,7 @@ https://github.com/user-attachments/assets/d1156b3a-fc02-4621-a143-515776d0cc2e
 
 [Class 9]() - Random search and AutoML
 
-
+https://github.com/user-attachments/assets/79b46aa5-38d9-4ab6-8eca-96a3dc6de0b9
 
 
 ### 📺 [You Tube](https://www.youtube.com/watch?v=nOjlIEvL9jg)
