@@ -92,6 +92,18 @@ https://github.com/user-attachments/assets/79b46aa5-38d9-4ab6-8eca-96a3dc6de0b9
 ### 📺 [You Tube](https://www.youtube.com/watch?v=nOjlIEvL9jg)
 
 
+
+<br><br>
+
+[Class 10]() - Validation Curve
+
+https://github.com/user-attachments/assets/ba85dd3e-37e8-4f16-a3e3-7222d03ed011
+
+### 📺 [You Tube]()
+
+<br><br>
+
+
 <!--
 ## Week 3 — Classification Metrics I
 
