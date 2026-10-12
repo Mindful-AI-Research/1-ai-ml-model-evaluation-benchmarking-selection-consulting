@@ -1,0 +1,26 @@
+# ============================================================
+# AI/ML Model Evaluation, Benchmarking & Selection
+# Base environment for Python labs and notebooks
+# ============================================================
+
+# Numerical computing and data analysis
+numpy
+pandas
+scipy
+
+# Machine learning, evaluation, validation and model selection
+scikit-learn
+
+# Data visualization
+matplotlib
+seaborn
+plotly
+
+# Model and pipeline serialization
+joblib
+
+# Jupyter environment
+jupyterlab
+notebook
+ipykernel
+ipywidgets
