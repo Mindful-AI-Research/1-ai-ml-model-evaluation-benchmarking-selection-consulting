@@ -16,5 +16,6 @@
 
 - [class 9](https://taupe-tarsier-591729.netlify.app/) - Random Search and autoML Optimization
 
--[class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve
+- [class_10](https://symphonious-pegasus-931006.netlify.app) - Validation Curve II
+- [class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve I
 
