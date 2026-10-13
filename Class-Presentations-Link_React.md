@@ -11,3 +11,11 @@
 - [class 6](https://astounding-marzipan-63764d.netlify.app/) - Cross Validation from Rotation to Correct-SchemaSchema
 
 - [class 7](https://astonishing-dodol-818e9f.netlify.app/) - Nested  Cross Validation
+
+- [class 9]() - 
+
+- [class 9]() -
+
+
+-[class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve
+
