@@ -121,14 +121,4 @@
 **1-B · 2-B · 3-C · 4-A · 5-B · 6-C · 7-A · 8-B · 9-C · 10-B · 11-D ·
 12-A · 13-B · 14-C · 15-D · 16-A**
 
-## Lesson note
 
-The question recorded in the form was how to combine the
-**training--validation gap** with the **variation across folds** when
-choosing between hyperparameter values with very similar results.
-
-A practical rule from the quiz is to prioritize the validation mean. If
-the difference between candidates is small relative to the observed
-variation, prefer the simpler model while also considering the gap. The
-gap alone does not replace the validation score or guarantee that
-overfitting is absent.
