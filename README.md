@@ -62,7 +62,7 @@
 [**Course:**]() BSc in Human-Centered AI & Data Science •  6th Semester • 2026 <br>
 [**Subject:**]() Data Science  & Machine Learning — Model Evaluation, Benchmarking & Selection  <br>
 [**Extensionist Projects:**]() Social projects with open-source software for community support <br>
-**Professor:** [✨ Giovani Giulio Tristão Thibes Vieira]() <br>
+**Professor:** [✨ Giovani Giulio Tristão Thibes Vieira](linkedin.com/in/giovanigttvieira) <br>
 **Author:** [Fabiana ⚡️ Campanari]() 
 
 
