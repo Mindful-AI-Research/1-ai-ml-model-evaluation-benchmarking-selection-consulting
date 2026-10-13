@@ -12,7 +12,7 @@
 
 - [class 7](https://astonishing-dodol-818e9f.netlify.app/) - Nested  Cross Validation
 
-- [class 9]() - 
+- [class 9](https://lively-halva-00f14e.netlify.app/) -  Hyperparameter Search - Grid-Search
 
 - [class 9]() -
 
