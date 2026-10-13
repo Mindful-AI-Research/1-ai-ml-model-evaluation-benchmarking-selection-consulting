@@ -102,14 +102,4 @@
 **1-B · 2-B · 3-C · 4-A · 5-B · 6-C · 7-A · 8-B · 9-C · 10-B · 11-D ·
 12-A · 13-B · 14-C · 15-D · 16-A**
 
-## Observação da aula
 
-A dúvida registrada no formulário foi como combinar o **gap entre treino
-e validação** com o **desvio entre as dobras** quando dois
-hiperparâmetros apresentam resultados muito próximos.
-
-Regra prática apresentada pelas questões: priorize a média de validação;
-se a diferença entre candidatos for pequena em relação à variação
-observada, prefira o modelo mais simples, considerando também o gap. O
-gap, isoladamente, não substitui o score de validação nem garante
-ausência de sobreajuste.
