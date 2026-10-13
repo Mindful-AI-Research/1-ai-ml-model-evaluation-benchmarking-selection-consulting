@@ -14,8 +14,7 @@
 
 - [class 9](https://lively-halva-00f14e.netlify.app/) -  Hyperparameter Search - Grid-Search
 
-- [class 9]() -
-
+- [class 9](https://taupe-tarsier-591729.netlify.app/) - Random Search and autoML Optimization
 
 -[class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve
 
