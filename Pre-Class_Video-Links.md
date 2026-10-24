@@ -106,6 +106,7 @@ https://github.com/user-attachments/assets/ba85dd3e-37e8-4f16-a3e3-7222d03ed011
 
 [Class 11]() - Learning Curves - is it worth collecting more data ?
 
+https://github.com/user-attachments/assets/17732736-a136-4dc2-8bd3-a5702f2dd297
 
 
 ### 📺 [You Tube](https://youtu.be/YTBqip5UqK4?si=FCIcKaDs6VSCiBtY)
