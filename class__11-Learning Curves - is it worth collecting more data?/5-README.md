@@ -27,10 +27,10 @@
 2. [Source Audit and Class Context](#source-audit-and-class-context)
 3. [Overview and Core Problem](#overview-and-core-problem)
 4. [Learning Curves vs. Validation Curves](#learning-curves-vs-validation-curves)
-5. [Mathematical and Theoretical Foundations](#mathematical-and-theoretical-foundations)
-6. [Diagnostic Signatures and Decision Framework](#diagnostic-signatures-and-decision-framework)
-7. [Decision Matrix](#decision-matrix)
-8. [Empirical Sample Scaling Economics](#empirical-sample-scaling-economics)
+5. [Mathematical Foundations and Asymptotic Theory](#mathematical-foundations-and-asymptotic-theory)
+6. [Detailed Technical Explanations of Core Concepts](#detailed-technical-explanations-of-core-concepts)
+7. [Empirical Sample Scaling Economics](#empirical-sample-scaling-economics)
+8. [Master Decision Matrix](#master-decision-matrix)
 9. [Architecture and ML Pipeline](#architecture-and-ml-pipeline)
 10. [Executable Code Implementation](#executable-code-implementation)
 11. [Common Pitfalls and Best Practices](#common-pitfalls-and-best-practices)
@@ -53,7 +53,7 @@
 
 | Resource | Inspection Status | Scope / Role |
 |---|---|---|
-| `class_11-Learning-Curves-is-it-worth-collecting-more-data.mp4` | Analyzed primary audio/video transcription and presentation slides. | Authoritative basis for curriculum, taxonomy, decision rules, and examples. |
+| `class_11-Learning-Curves-is-it-worth-collecting-more-data.mp4` | Analyzed primary audio/video recording and presentation slides. | Authoritative basis for curriculum, taxonomy, decision rules, and examples. |
 | Slide Deck: *Ciência de Dados 1 · Curvas de Aprendizado (Aula 11)* | Verified via video frames. | Core structure: definition, bias/variance signatures, sample scaling table, scikit-learn API, common pitfalls. |
 | Prior Lessons (Class 06–10) | Cross-referenced for continuity. | Class 10 focused on Validation Curves (hyperparameter sensitivity); Class 11 focuses on Learning Curves (sample size sensitivity). |
 
@@ -64,127 +64,176 @@
 
 ## [Overview and Core Problem]()
 
-A fundamental challenge in applied Machine Learning is deciding **when to stop collecting data** and **when to modify model architecture**. Data acquisition, labeling, and compute costs scale non-linearly. Without systematic empirical diagnostics, teams often make expensive mistakes:
+In applied machine learning engineering, one of the most critical and expensive capital allocation decisions is determining **when a model will benefit from collecting additional training data** versus **when the model architecture itself is the fundamental bottleneck**. Data acquisition, domain expert annotation, and cloud compute scale multiplicatively. Without formal empirical diagnostics, engineering teams risk two severe failure modes:
 
-1. **Premature data acquisition:** Spending significant budget to label more records when the underlying model suffers from high bias (underfitting).
-2. **Under-resourced capacity:** Terminating data collection prematurely when high variance indicates that additional samples would steadily close the generalization gap.
+1. **The High-Bias Data Acquisition Trap:** Allocating substantial budget to collect and label thousands or millions of additional records when the underlying model family lacks the representational capacity (*underfitting*) to absorb the information.
+2. **Premature Data Collection Termination:** Stopping data collection prematurely when an estimator with high variance is actively benefiting from larger sample sizes, leaving significant generalization performance uncaptured.
 
-Learning Curves address this dilemma by plotting an estimator's training and cross-validated test scores as a function of **training dataset size** ($N$), transforming subjective intuition into data-driven decision-making.
+**Learning Curves** solve this problem by empirically evaluating an estimator's training and out-of-fold validation performance as a mathematical function of **training dataset size** ($N$), providing concrete visual and quantitative evidence for data collection return on investment (ROI).
 
 ## [Learning Curves vs. Validation Curves]()
 
-It is crucial to distinguish between the complementary diagnostic tools introduced in Classes 10 and 11:
+A common point of confusion in model evaluation is conflating **Validation Curves** with **Learning Curves**. Both compare training and validation performance, but they explore completely different operational dimensions and answer distinct engineering questions:
 
 | Dimension | Validation Curve (Class 10) | Learning Curve (Class 11) |
 |---|---|---|
-| **Horizontal Axis ($X$)** | Single hyperparameter value (e.g., `max_depth`, `C`, `gamma`) | Number of training examples ($N$ or percentage of training data) |
-| **Fixed Factor** | Training dataset size held constant | Hyperparameter configuration held constant |
-| **Diagnostic Question** | What is the optimal model capacity / regularizer? | Does the model benefit from more training observations? |
-| **Core Decision** | Parameter tuning and model architecture selection | Data acquisition, labeling budget, and compute allocation |
-| **scikit-learn API** | `sklearn.model_selection.validation_curve` | `sklearn.model_selection.learning_curve` |
+| **Horizontal Axis ($X$)** | Single hyperparameter value (e.g., tree depth $d$, regularization $C$, kernel coefficient $\gamma$) | Number of training examples ($N$ or fractional percentage of available training records) |
+| **Fixed Factor** | Training dataset size ($N$ held constant across all evaluations) | Model hyperparameter configuration (model architecture held fixed) |
+| **Core Diagnostic Question** | What is the optimal model capacity or regularization strength? | Does the estimator have enough samples to constrain variance, or is it capacity-limited? |
+| **Engineering Decision** | Hyperparameter optimization, architecture selection, model tuning | Data acquisition budget, labeling prioritization, sample size sizing, compute allocation |
+| **scikit-learn Module** | `sklearn.model_selection.validation_curve` | `sklearn.model_selection.learning_curve` |
 
-## [Mathematical and Theoretical Foundations]()
+## [Mathematical Foundations and Asymptotic Theory]()
 
-Let $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^M$ be the available training partition. We evaluate subsets $\mathcal{D}_{N_j} \subset \mathcal{D}$ of increasing sample sizes:
-\[
+### 1. Empirical Formulation
+Let the full available labeled training set be denoted by $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^M$, where $x_i \in \mathbb{R}^d$ represents the feature vector and $y_i \in \mathcal{Y}$ represents the ground-truth target.
+
+We evaluate an ordered discrete sequence of $S$ sample sizes:
+$$
 N_1 < N_2 < \dots < N_S \le M
-\]
+$$
 
-For each sample size $N_j$ and across $K$ cross-validation folds ($k = 1, \dots, K$), an estimator $f_{N_j, k}$ is trained on $N_j$ samples from fold training set $T_k$, yielding:
+For a $K$-fold cross-validation scheme, the dataset $\mathcal{D}$ is partitioned into $K$ disjoint subsets $\{V_k\}_{k=1}^K$, with corresponding training partitions $T_k = \mathcal{D} \setminus V_k$. For each sample size $N_j$ and each fold $k \in \{1, \dots, K\}$, a sub-sampled training partition $T_{k, N_j} \subset T_k$ of cardinality $|T_{k, N_j}| = N_j$ is drawn.
+
+The estimator is trained exclusively on this sub-sample:
+$$
+f_{N_j, k} = \operatorname*{arg\,min}_{f \in \mathcal{H}} \left( \frac{1}{N_j}\sum_{(x_i, y_i) \in T_{k, N_j}} \mathcal{L}\left(f(x_i), y_i\right) + \Omega(f) \right)
+$$
+where $\mathcal{L}(\cdot)$ is the task-specific loss function, $\mathcal{H}$ is the hypothesis class, and $\Omega(f)$ is a regularization penalty.
+
+### 2. Metric Computation Across Folds
+For an arbitrary evaluation metric $\mathcal{M}(f, \mathcal{S})$ (e.g., ROC-AUC, Average Precision, Negative Log-Loss, Accuracy):
 
 1. **Fold Training Score:**
-\[
+$$
 s_{\mathrm{train}, k}(N_j) = \mathcal{M}\left(f_{N_j, k}, T_{k, N_j}\right)
-\]
-2. **Fold Validation Score (Held-Out Fold):**
-\[
+$$
+
+2. **Fold Validation Score (Held-Out):**
+$$
 s_{\mathrm{val}, k}(N_j) = \mathcal{M}\left(f_{N_j, k}, V_k\right)
-\]
+$$
 
-where $\mathcal{M}(\cdot)$ is the designated evaluation metric (e.g., ROC-AUC, Log-Loss, $F_1$, Accuracy).
+The sample mean performance trajectories across the $K$ cross-validation splits are:
+$$
+\bar{s}_{\mathrm{train}}(N_j) = \frac{1}{K}\sum_{k=1}^K s_{\mathrm{train}, k}(N_j)
+$$
+$$
+\bar{s}_{\mathrm{val}}(N_j) = \frac{1}{K}\sum_{k=1}^K s_{\mathrm{val}, k}(N_j)
+$$
 
-The mean training and validation trajectories are:
-\[
-\bar{s}_{\mathrm{train}}(N_j) = \frac{1}{K}\sum_{k=1}^K s_{\mathrm{train}, k}(N_j), \qquad \bar{s}_{\mathrm{val}}(N_j) = \frac{1}{K}\sum_{k=1}^K s_{\mathrm{val}, k}(N_j)
-\]
+The descriptive standard deviation across validation folds is computed as:
+$$
+\sigma_{\mathrm{val}}(N_j) = \sqrt{\frac{1}{K}\sum_{k=1}^K \left(s_{\mathrm{val}, k}(N_j) - \bar{s}_{\mathrm{val}}(N_j)\right)^2}
+$$
 
-### The Generalization Gap
+### 3. Generalization Gap and Asymptotic Limits
 The empirical generalization gap at sample size $N_j$ is defined as:
-\[
+$$
 \Delta(N_j) = \bar{s}_{\mathrm{train}}(N_j) - \bar{s}_{\mathrm{val}}(N_j)
-\]
+$$
 
-### Asymptotic Trajectories
-- As $N_j \to \infty$, for consistent estimators, $\Delta(N_j) \to 0$.
-- In practice, small $N$ yields near-perfect training score ($\bar{s}_{\mathrm{train}} \approx 1.0$) because the model easily memorizes few points, while held-out performance $\bar{s}_{\mathrm{val}}$ is poor.
-- As $N$ increases, $\bar{s}_{\mathrm{train}}$ decreases slightly and $\bar{s}_{\mathrm{val}}$ increases asymptotically toward the Bayes optimal rate minus inherent model bias.
+Under statistical learning theory, as $N_j \to \infty$:
+$$
+\lim_{N_j \to \infty} \Delta(N_j) = 0
+$$
+$$
+\lim_{N_j \to \infty} \bar{s}_{\mathrm{val}}(N_j) = s^*_{\mathcal{H}} = \mathcal{M}\left(f^*_{\mathcal{H}}\right)
+$$
+where $s^*_{\mathcal{H}}$ represents the optimal achievable score within the hypothesis class $\mathcal{H}$, bounded above by the Bayes optimal performance $s^*_{\mathrm{Bayes}}$:
+$$
+s^*_{\mathrm{Bayes}} - s^*_{\mathcal{H}} = \text{Approximation Error (Bias)}
+$$
 
-## [Diagnostic Signatures and Decision Framework]()
+## [Detailed Technical Explanations of Core Concepts]()
 
-### 1. High Bias (Underfitting)
-- **Visual Pattern:** Both training and validation curves converge rapidly to a **low performance plateau**. The gap $\Delta(N)$ is small, but both scores are unacceptable relative to the baseline.
-- **Root Cause:** The hypothesis class lacks capacity (inflexible model, insufficient features, excessive regularization).
-- **Decision:** **DO NOT collect more data.** Additional samples will not improve performance because the model cannot represent the data distribution.
-- **Action Plan:** Switch to a richer model architecture, engineer domain features, decrease regularization, or add polynomial interactions.
+### 1. Generalization Trajectory Dynamics
+- **What It Is:** The characteristic pattern where training score starts high and slightly decreases, while validation score starts low and increases toward a shared plateau.
+- **How It Works:** When $N$ is small, a parameterized model easily memorizes the few training points ($s_{\mathrm{train}} pprox 1.0$), but fails to generalize to unseen test folds ($s_{\mathrm{val}}$ is low). As $N$ expands, rote memorization becomes impossible; the model is forced to learn true underlying statistical regularities, slightly reducing $s_{\mathrm{train}}$ while driving $s_{\mathrm{val}}$ upward.
+- **Why It Matters:** Demonstrates that a drop in training score as dataset size increases is healthy and expected—not a sign of model degradation.
+- **When It Is Useful:** Validating that training routines and loss functions are functioning properly during sample scaling experiments.
+- **Limitations:** If the training score drops abruptly below task-acceptable levels at small $N$, the optimization algorithm may be failing to converge.
+- **Component Relationship:** Governs the narrowing of the generalization gap $\Delta(N)$ before convergence.
 
 ---
 
-### 2. High Variance (Overfitting)
-- **Visual Pattern:** Training score remains high, validation score is notably lower, resulting in a **large generalization gap $\Delta(N)$**. Crucially, the validation curve maintains a **positive slope** ($rac{dar{s}_{\mathrm{val}}}{dN} > 0$) at the maximum available $N$.
-- **Root Cause:** The model has sufficient capacity but lacks enough training examples to constrain variance across unseen regions.
-- **Decision:** **COLLECT MORE DATA.** The trajectory indicates further samples will directly boost validation score and narrow the gap.
-- **Alternative / Supplementary Action:** Apply regularization, prune decision trees, use dropout, or perform feature selection if data collection is cost-prohibitive.
+### 2. High Bias (Underfitting) Signature
+- **What It Is:** An asymptotic regime where both training and validation curves converge early to an unacceptably low score plateau with a negligible gap $\Delta(N) pprox 0$.
+- **How It Works:** The model's hypothesis space $\mathcal{H}$ is too restrictive (or informative features are absent), preventing the model from fitting the true data-generating distribution even on training data.
+- **Why It Matters:** Proves conclusively that **collecting more data will not improve performance**. The bottleneck is representation, not sample volume.
+- **When It Is Useful:** Preventing costly, wasteful data collection campaigns proposed by stakeholders who believe "more data always fixes ML models".
+- **Limitations:** A low score plateau can occasionally result from extreme label noise rather than model inflexibility; data quality audits must accompany this diagnosis.
+- **Component Relationship:** Resolved upstream by feature engineering, increasing model complexity (e.g., switching from linear models to GBDTs/neural networks), or reducing regularization penalties.
 
 ---
 
-### 3. Saturated Model (Optimal Convergence)
-- **Visual Pattern:** Both curves have flattened into a parallel plateau at an acceptable performance level ($rac{dar{s}_{\mathrm{val}}}{dN} pprox 0$).
-- **Decision:** **STOP data collection.** Marginal gains from additional samples are negligible (e.g., doubling data from 2,000 to 4,000 samples yielding $< 0.005$ score increase).
+### 3. High Variance (Overfitting) Signature
+- **What It Is:** An asymptotic regime characterized by a high training score, a substantially lower validation score (large gap $\Delta(N) \gg 0$), and a **positive validation slope** ($rac{dar{s}_{\mathrm{val}}}{dN} > 0$) at the maximum available $N$.
+- **How It Works:** The model has sufficient capacity to capture complex interactions, but the number of available observations is insufficient to tightly constrain all free parameters, leading to variance across sample draws.
+- **Why It Matters:** Serves as empirical proof that **investing in additional training data will directly yield performance gains**.
+- **When It Is Useful:** Justifying data collection budgets, active learning initiatives, or synthetic data generation pipelines.
+- **Limitations:** If acquiring additional data is impossible or cost-prohibitive, high variance must be mitigated through inductive bias (regularization, dropout, pruning).
+- **Component Relationship:** Directly connected to model regularization and feature selection strategies.
 
-## [Decision Matrix]()
+---
 
-| Observed Curve Pattern | Statistical Diagnosis | Root Cause | Prescribed Engineering Action |
-|---|---|---|---|
-| **Low training, low validation, small gap, early plateau** | **High Bias** *(Underfitting)* | Model capacity / features are the bottleneck | **Do NOT collect data.** Increase model capacity, engineer features, reduce regularization. |
-| **High training, lower validation, large gap, positive validation slope** | **High Variance** *(Overfitting)* | Sample size is insufficient to constrain model parameters | **Collect more data** (or regularize / simplify model). |
-| **High training, high validation, small gap, plateau reached** | **Optimal Fit** | Reached empirical performance ceiling for current configuration | **Maintain current dataset size.** Optimize inference latency / deployment pipelines. |
+### 4. Saturated Learning Regime (Diminishing Marginal Returns)
+- **What It Is:** The state where the validation curve has reached a flat horizontal slope ($rac{dar{s}_{\mathrm{val}}}{dN} pprox 0$) at an acceptable performance level.
+- **How It Works:** The model has extracted virtually all learnable signal available from the current feature representation and model family.
+- **Why It Matters:** Identifies the precise point of maximum cost-efficiency, signaling that further data acquisition yields negligible score gains at exponential compute cost.
+- **When It Is Useful:** Establishing stopping criteria for data labeling and setting baseline dataset sizes for production retraining pipelines.
+- **Limitations:** A plateau is relative to the current feature set and model family; a radically different architecture (e.g., large pretrained foundation model) might establish a new, higher ceiling.
+- **Component Relationship:** Triggers the transition from exploratory experimentation to deployment, inference latency optimization, and MLOps monitoring.
 
 ## [Empirical Sample Scaling Economics]()
 
-Consider the concrete quantitative example demonstrated in the lecture, illustrating diminishing returns when doubling training volume:
+Consider the concrete quantitative experiment presented in the Class 11 lecture, measuring the rate of score improvement as training sample size doubles:
 
-| Training Samples ($N$) | Validation Score | Marginal Gain ($\Delta s$) | Cost / Compute Multiplier |
+| Training Samples ($N$) | Validation Score | Marginal Score Gain ($\Delta s$) | Effective Compute / Cost Multiplier | ROI Evaluation |
+|---|---|---|---|---|
+| **100** | $0.700$ | — | $1	imes$ baseline | Initial proof-of-concept |
+| **500** | $0.800$ | $+0.100$ ($+10.0\%$) | $5	imes$ | **Exceptional ROI:** High returns from initial scaling |
+| **1,000** | $0.840$ | $+0.040$ ($+4.0\%$) | $2	imes$ previous ($10	imes$ base) | **High ROI:** Worthwhile collection investment |
+| **2,000** | $0.850$ | $+0.010$ ($+1.0\%$) | $2	imes$ previous ($20	imes$ base) | **Inflection Point:** Slower returns; near optimal plateau |
+| **4,000** | $0.855$ | $+0.005$ ($+0.5\%$) | $2	imes$ previous ($40	imes$ base) | **Diminishing Returns:** $2	imes$ compute cost for $+0.005$ gain |
+
+### Economic Decision Analysis
+$$
+	ext{Marginal ROI} = rac{\Delta ar{s}_{\mathrm{val}}}{\Delta 	ext{Cost}(N)}
+$$
+- Doubling data from $100 	o 500$ yields $+10\%$ improvement for moderate labeling expense.
+- Doubling data from $2,000 	o 4,000$ requires doubling cloud memory, storage, GPU/CPU hours, and labeling payroll for a negligible gain of $+0.005$.
+- **Strategic Decision:** Terminating data acquisition at $N = 1,000$ or $N = 2,000$ represents the optimal engineering and financial trade-off.
+
+## [Master Decision Matrix]()
+
+| Observed Curve Pattern | Statistical Diagnosis | Root Cause | Primary Prescribed Engineering Action |
 |---|---|---|---|
-| **100** | $0.700$ | — | $1	imes$ baseline |
-| **500** | $0.800$ | $+0.100$ | $5	imes$ |
-| **1,000** | $0.840$ | $+0.040$ | $2	imes$ previous ($10	imes$ baseline) |
-| **2,000** | $0.850$ | $+0.010$ | $2	imes$ previous ($20	imes$ baseline) |
-| **4,000** | $0.855$ | $+0.005$ | $2	imes$ previous ($40	imes$ baseline) |
-
-### Key Economic Takeaways
-- Doubling data from $100 	o 500$ gives a substantial $+10\%$ improvement.
-- Doubling data from $2,000 	o 4,000$ yields only $+0.5\%$ improvement while doubling cloud compute, storage, memory, and annotation costs.
-- **Stopping at $N=1,000$ or $N=2,000$** is often the optimal business decision, avoiding $2	imes$ to $4	imes$ cloud compute expenditure for negligible real-world returns.
+| **Low training score, low validation score, small gap, early flat plateau** | **High Bias** *(Underfitting)* | Hypothesis class $\mathcal{H}$ lacks capacity; insufficient features | **DO NOT collect more data.** Switch to more expressive model, engineer domain features, reduce regularization. |
+| **High training score, lower validation score, large gap, positive validation slope** | **High Variance** *(Overfitting)* | Sample size $N$ is insufficient to constrain model parameters | **COLLECT MORE DATA.** If cost-prohibitive, apply L1/L2 regularization, feature selection, or tree pruning. |
+| **High training score, high validation score, small gap, horizontal plateau** | **Optimal Fit** *(Saturated)* | Model has extracted maximum signal for current feature space | **STOP data collection.** Freeze dataset size, optimize inference latency, proceed to deployment. |
 
 ## [Architecture and ML Pipeline]()
 
+The following diagram illustrates the complete, leakage-free cross-validation pipeline for generating empirical learning curves:
+
 ```mermaid
 flowchart TD
-    A[Raw Training Dataset] --> B[Pipeline Encapsulation]
+    A[Raw Labeled Dataset D] --> B[Pipeline Encapsulation]
     subgraph Preprocessing_CV [Strict Leakage-Free Boundary]
-        B --> C[Imputation / Encoding / Scaling]
-        C --> D[Model Estimator]
+        B --> C[Imputation / Encoding / StandardScaler]
+        C --> D[Estimator Model]
     end
-    B --> E[learning_curve Grid Generator]
-    E --> F[Subsample Train Portions: np.linspace 0.1 to 1.0]
-    F --> G[K-Fold Cross-Validation Splits]
-    G --> H[Train Model on Portion N_j]
+    B --> E[learning_curve Generator]
+    E --> F[Subsample Train Fractions: np.linspace 0.1 to 1.0]
+    F --> G[K-Fold Cross-Validation Partitioning]
+    G --> H[Fit Pipeline on Subsample N_j]
     H --> I[Evaluate on Held-out Fold V_k]
-    I --> J[Compute Mean and Std across Folds]
-    J --> K[Plot Diagnostic Learning Curves]
-    K --> L{Is Validation Slope > 0?}
+    I --> J[Compute Mean & Std Across Folds]
+    J --> K[Plot Diagnostic Dual Curves]
+    K --> L{Validation Slope > 0?}
     L -- Yes, Gap Large --> M[High Variance: Collect More Data / Regularize]
-    L -- No, Low Plateau --> N[High Bias: Upgrade Model / Features]
+    L -- No, Low Plateau --> N[High Bias: Upgrade Model / Feature Engineering]
     L -- No, High Plateau --> O[Saturated: Stop Collection & Deploy]
 
     classDef stage fill:#101f2f,stroke:#0f766e,color:#ffffff;
@@ -195,7 +244,7 @@ flowchart TD
 
 ## [Executable Code Implementation]()
 
-The standard, leak-free scikit-learn implementation demonstrated in Class 11:
+The following production-ready Python implementation utilizes scikit-learn's `learning_curve` strictly encapsulated inside a `Pipeline` to prevent data leakage during subsampling:
 
 ```python
 import numpy as np
@@ -205,16 +254,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 
-# 1. Define complete pipeline to prevent data leakage during subsampling & CV
+# 1. Define complete pipeline to ensure zero data leakage across CV splits
 pipeline = Pipeline([
     ("scaler", StandardScaler()),
     ("classifier", LogisticRegression(max_iter=1000, random_state=42))
 ])
 
-# 2. Define sample size fractions (e.g., 8 intervals from 10% to 100%)
+# 2. Define 8 discrete sample fractions from 10% to 100% of training data
 train_sizes_fraction = np.linspace(0.1, 1.0, 8)
 
-# 3. Compute learning curve across 5-fold cross-validation
+# 3. Compute cross-validated learning curve
 train_sizes_abs, train_scores, val_scores = learning_curve(
     estimator=pipeline,
     X=X_train,
@@ -226,35 +275,37 @@ train_sizes_abs, train_scores, val_scores = learning_curve(
     random_state=42
 )
 
-# 4. Aggregate metrics across folds
+# 4. Aggregate metrics across the 5 validation folds
 train_mean = np.mean(train_scores, axis=1)
 train_std = np.std(train_scores, axis=1)
 val_mean = np.mean(val_scores, axis=1)
 val_std = np.std(val_scores, axis=1)
 
-# 5. Diagnostic inspection
+# 5. Output decision table for engineering inspection
+print(f"{'N Samples':>10} | {'Train ROC-AUC':>14} | {'Val ROC-AUC':>14} | {'Gap Δ(N)':>10}")
+print("-" * 56)
 for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
-    print(f"N={n:5d} | Train ROC-AUC: {tr:.4f} | Val ROC-AUC: {va:.4f} | Gap: {tr - va:.4f}")
+    print(f"{n:10d} | {tr:14.4f} | {va:14.4f} | {tr - va:10.4f}")
 ```
 
-### Explanatory Details
-- **`train_sizes`:** Pass relative fractions (`np.linspace(0.1, 1.0, 8)`) or absolute sample counts. Passing at least 6–10 points ensures a smooth, readable curve rather than coarse geometric lines.
-- **`cv=5`:** Cross-validation guarantees that validation scores reflect out-of-fold generalization, not training memory.
-- **`Pipeline` encapsulation:** Ensures standard scaling and transformers fit *only* on the active subsampled training slice, eliminating optimistic leakage.
+### Explanatory Implementation Details
+- **`train_sizes=np.linspace(0.1, 1.0, 8)`:** Evaluates 8 distinct training sizes. Using at least 6–8 evaluation points ensures a smooth, readable curve that clearly exposes saturation knees.
+- **`cv=5`:** Performs 5-fold cross-validation at each subsample size, ensuring that validation scores reflect true out-of-fold generalization rather than random split noise.
+- **`Pipeline` Encapsulation:** Enforces that feature scalers and transformers are fitted *only* on the active subsampled training slice $T_{k, N_j}$, eliminating optimistic distribution leakage into held-out validation folds.
 
 ## [Common Pitfalls and Best Practices]()
 
 ### Common Pitfalls to Avoid
-1. **Reading the training curve instead of the validation curve:** Training score only measures how well the model memorizes seen data; only the validation curve estimates true generalization performance.
-2. **Concluding 'collect more data' when bias is high:** Collecting millions of extra samples for an underfitting model yields zero gains and major compute waste.
-3. **Using too few sample evaluation points (broken curves):** Passing only 2 or 3 training sizes produces jagged lines that obscure subtle saturation knees.
-4. **Constructing the curve outside of a Pipeline:** Applying transformations (e.g., global scaling, imputation) before subsampling leaks distribution parameters into the validation folds.
-5. **Ignoring temporal regime changes:** Training on massive historical datasets (e.g., 10 years of pre-pandemic data) may degrade generalization if target distributions have shifted (*concept drift*).
+1. **Reading the training curve in isolation:** The training score measures only how well the model memorizes seen instances. Only the validation curve estimates true out-of-sample generalization.
+2. **Prescribing 'more data' under high bias:** Collecting millions of extra samples for an underfitting model yields zero gains and massive financial waste.
+3. **Using too few evaluation sample points (broken curves):** Passing only 2 or 3 training sizes produces coarse, jagged lines that obscure subtle saturation knees.
+4. **Constructing learning curves outside a Pipeline:** Applying transformations (e.g., standard scaling, one-hot encoding, imputation) prior to subsampling leaks distribution parameters into the validation folds.
+5. **Ignoring temporal regime changes (concept drift):** In time-dependent domains, training on 10 years of historical data (e.g., pre-pandemic records) can degrade generalization if underlying consumer behavior has shifted.
 
 ### Best Practices Checklist
-- [x] Inspect the **final validation slope** ($rac{dar{s}_{\mathrm{val}}}{dN}$) at the maximum data point.
-- [x] Diagnose bias vs. variance **before** committing resources to data acquisition.
-- [x] Use at least 6–8 evaluation sample points along the $X$-axis.
+- [x] Inspect the **final validation slope** ($rac{dar{s}_{\mathrm{val}}}{dN}$) at the maximum data point before requesting budget.
+- [x] Perform formal bias vs. variance diagnosis **before** committing resources to data acquisition campaigns.
+- [x] Use at least 6–8 evaluation sample points along the $X$-axis for smooth curvature.
 - [x] Wrap estimators and transformers in a `Pipeline` for every evaluation fold.
 - [x] Translate statistical curves into tangible **business decisions** (cost of labeling vs. marginal KPI gain).
 
