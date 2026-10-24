@@ -89,6 +89,7 @@ A common point of confusion in model evaluation is conflating **Validation Curve
 Let the full available labeled training set be denoted by $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^M$, where $x_i \in \mathbb{R}^d$ represents the feature vector and $y_i \in \mathcal{Y}$ represents the ground-truth target.
 
 We evaluate an ordered discrete sequence of $S$ sample sizes:
+
 $$
 N_1 < N_2 < \dots < N_S \le M
 $$
@@ -96,28 +97,33 @@ $$
 For a $K$-fold cross-validation scheme, the dataset $\mathcal{D}$ is partitioned into $K$ disjoint subsets $\{V_k\}_{k=1}^K$, with corresponding training partitions $T_k = \mathcal{D} \setminus V_k$. For each sample size $N_j$ and each fold $k \in \{1, \dots, K\}$, a sub-sampled training partition $T_{k, N_j} \subset T_k$ of cardinality $|T_{k, N_j}| = N_j$ is drawn.
 
 The estimator is trained exclusively on this sub-sample:
+
 $$
 f_{N_j, k} = \operatorname*{arg\,min}_{f \in \mathcal{H}} \left( \frac{1}{N_j}\sum_{(x_i, y_i) \in T_{k, N_j}} \mathcal{L}\left(f(x_i), y_i\right) + \Omega(f) \right)
 $$
+
 where $\mathcal{L}(\cdot)$ is the task-specific loss function, $\mathcal{H}$ is the hypothesis class, and $\Omega(f)$ is a regularization penalty.
 
 ### 2. Metric Computation Across Folds
 For an arbitrary evaluation metric $\mathcal{M}(f, \mathcal{S})$ (e.g., ROC-AUC, Average Precision, Negative Log-Loss, Accuracy):
 
 1. **Fold Training Score:**
+
 $$
 s_{\mathrm{train}, k}(N_j) = \mathcal{M}\left(f_{N_j, k}, T_{k, N_j}\right)
 $$
 
-2. **Fold Validation Score (Held-Out):**
+3. **Fold Validation Score (Held-Out):**
 $$
 s_{\mathrm{val}, k}(N_j) = \mathcal{M}\left(f_{N_j, k}, V_k\right)
 $$
 
 The sample mean performance trajectories across the $K$ cross-validation splits are:
+
 $$
 \bar{s}_{\mathrm{train}}(N_j) = \frac{1}{K}\sum_{k=1}^K s_{\mathrm{train}, k}(N_j)
 $$
+
 $$
 \bar{s}_{\mathrm{val}}(N_j) = \frac{1}{K}\sum_{k=1}^K s_{\mathrm{val}, k}(N_j)
 $$
@@ -129,6 +135,7 @@ $$
 
 ### 3. Generalization Gap and Asymptotic Limits
 The empirical generalization gap at sample size $N_j$ is defined as:
+
 $$
 \Delta(N_j) = \bar{s}_{\mathrm{train}}(N_j) - \bar{s}_{\mathrm{val}}(N_j)
 $$
@@ -137,19 +144,23 @@ Under statistical learning theory, as $N_j \to \infty$:
 $$
 \lim_{N_j \to \infty} \Delta(N_j) = 0
 $$
+
 $$
 \lim_{N_j \to \infty} \bar{s}_{\mathrm{val}}(N_j) = s^*_{\mathcal{H}} = \mathcal{M}\left(f^*_{\mathcal{H}}\right)
 $$
+
 where $s^*_{\mathcal{H}}$ represents the optimal achievable score within the hypothesis class $\mathcal{H}$, bounded above by the Bayes optimal performance $s^*_{\mathrm{Bayes}}$:
+
 $$
 s^*_{\mathrm{Bayes}} - s^*_{\mathcal{H}} = \text{Approximation Error (Bias)}
 $$
 
 ## [Detailed Technical Explanations of Core Concepts]()
 
+
 ### 1. Generalization Trajectory Dynamics
 - **What It Is:** The characteristic pattern where training score starts high and slightly decreases, while validation score starts low and increases toward a shared plateau.
-- **How It Works:** When $N$ is small, a parameterized model easily memorizes the few training points ($s_{\mathrm{train}} pprox 1.0$), but fails to generalize to unseen test folds ($s_{\mathrm{val}}$ is low). As $N$ expands, rote memorization becomes impossible; the model is forced to learn true underlying statistical regularities, slightly reducing $s_{\mathrm{train}}$ while driving $s_{\mathrm{val}}$ upward.
+- **How It Works:** When $N$ is small, a parameterized model easily memorizes the few training points ($s_{\mathrm{train}} \approx 1.0$), but fails to generalize to unseen test folds ($s_{\mathrm{val}}$ is low). As $N$ expands, rote memorization becomes impossible; the model is forced to learn true underlying statistical regularities, slightly reducing $s_{\mathrm{train}}$ while driving $s_{\mathrm{val}}$ upward.
 - **Why It Matters:** Demonstrates that a drop in training score as dataset size increases is healthy and expected—not a sign of model degradation.
 - **When It Is Useful:** Validating that training routines and loss functions are functioning properly during sample scaling experiments.
 - **Limitations:** If the training score drops abruptly below task-acceptable levels at small $N$, the optimization algorithm may be failing to converge.
@@ -158,7 +169,7 @@ $$
 ---
 
 ### 2. High Bias (Underfitting) Signature
-- **What It Is:** An asymptotic regime where both training and validation curves converge early to an unacceptably low score plateau with a negligible gap $\Delta(N) pprox 0$.
+- **What It Is:** An asymptotic regime where both training and validation curves converge early to an unacceptably low score plateau with a negligible gap $\Delta(N) \approx 0$.
 - **How It Works:** The model's hypothesis space $\mathcal{H}$ is too restrictive (or informative features are absent), preventing the model from fitting the true data-generating distribution even on training data.
 - **Why It Matters:** Proves conclusively that **collecting more data will not improve performance**. The bottleneck is representation, not sample volume.
 - **When It Is Useful:** Preventing costly, wasteful data collection campaigns proposed by stakeholders who believe "more data always fixes ML models".
@@ -168,7 +179,7 @@ $$
 ---
 
 ### 3. High Variance (Overfitting) Signature
-- **What It Is:** An asymptotic regime characterized by a high training score, a substantially lower validation score (large gap $\Delta(N) \gg 0$), and a **positive validation slope** ($rac{dar{s}_{\mathrm{val}}}{dN} > 0$) at the maximum available $N$.
+- **What It Is:** An asymptotic regime characterized by a high training score, a substantially lower validation score (large gap $\Delta(N) \gg 0$), and a **positive validation slope** ($\frac{d\bar{s}_{\mathrm{val}}}{dN} > 0$) at the maximum available $N$.
 - **How It Works:** The model has sufficient capacity to capture complex interactions, but the number of available observations is insufficient to tightly constrain all free parameters, leading to variance across sample draws.
 - **Why It Matters:** Serves as empirical proof that **investing in additional training data will directly yield performance gains**.
 - **When It Is Useful:** Justifying data collection budgets, active learning initiatives, or synthetic data generation pipelines.
@@ -178,7 +189,7 @@ $$
 ---
 
 ### 4. Saturated Learning Regime (Diminishing Marginal Returns)
-- **What It Is:** The state where the validation curve has reached a flat horizontal slope ($rac{dar{s}_{\mathrm{val}}}{dN} pprox 0$) at an acceptable performance level.
+- **What It Is:** The state where the validation curve has reached a flat horizontal slope ($\frac{d\bar{s}_{\mathrm{val}}}{dN} \approx 0$) at an acceptable performance level.
 - **How It Works:** The model has extracted virtually all learnable signal available from the current feature representation and model family.
 - **Why It Matters:** Identifies the precise point of maximum cost-efficiency, signaling that further data acquisition yields negligible score gains at exponential compute cost.
 - **When It Is Useful:** Establishing stopping criteria for data labeling and setting baseline dataset sizes for production retraining pipelines.
@@ -191,18 +202,18 @@ Consider the concrete quantitative experiment presented in the Class 11 lecture,
 
 | Training Samples ($N$) | Validation Score | Marginal Score Gain ($\Delta s$) | Effective Compute / Cost Multiplier | ROI Evaluation |
 |---|---|---|---|---|
-| **100** | $0.700$ | — | $1	imes$ baseline | Initial proof-of-concept |
-| **500** | $0.800$ | $+0.100$ ($+10.0\%$) | $5	imes$ | **Exceptional ROI:** High returns from initial scaling |
-| **1,000** | $0.840$ | $+0.040$ ($+4.0\%$) | $2	imes$ previous ($10	imes$ base) | **High ROI:** Worthwhile collection investment |
-| **2,000** | $0.850$ | $+0.010$ ($+1.0\%$) | $2	imes$ previous ($20	imes$ base) | **Inflection Point:** Slower returns; near optimal plateau |
-| **4,000** | $0.855$ | $+0.005$ ($+0.5\%$) | $2	imes$ previous ($40	imes$ base) | **Diminishing Returns:** $2	imes$ compute cost for $+0.005$ gain |
+| **100** | $0.700$ | — | $1\times$ baseline | Initial proof-of-concept |
+| **500** | $0.800$ | $+0.100$ ($+10.0\%$) | $5\times$ | **Exceptional ROI:** High returns from initial scaling |
+| **1,000** | $0.840$ | $+0.040$ ($+4.0\%$) | $2\times$ previous ($10\times$ base) | **High ROI:** Worthwhile collection investment |
+| **2,000** | $0.850$ | $+0.010$ ($+1.0\%$) | $2\times$ previous ($20\times$ base) | **Inflection Point:** Slower returns; near optimal plateau |
+| **4,000** | $0.855$ | $+0.005$ ($+0.5\%$) | $2\times$ previous ($40\times$ base) | **Diminishing Returns:** $2\times$ compute cost for $+0.005$ gain |
 
 ### Economic Decision Analysis
 $$
-	ext{Marginal ROI} = rac{\Delta ar{s}_{\mathrm{val}}}{\Delta 	ext{Cost}(N)}
+\text{Marginal ROI} = \frac{\Delta \bar{s}_{\mathrm{val}}}{\Delta \text{Cost}(N)}
 $$
-- Doubling data from $100 	o 500$ yields $+10\%$ improvement for moderate labeling expense.
-- Doubling data from $2,000 	o 4,000$ requires doubling cloud memory, storage, GPU/CPU hours, and labeling payroll for a negligible gain of $+0.005$.
+- Doubling data from $100 \to 500$ yields $+10\%$ improvement for moderate labeling expense.
+- Doubling data from $2,000 \to 4,000$ requires doubling cloud memory, storage, GPU/CPU hours, and labeling payroll for a negligible gain of $+0.005$.
 - **Strategic Decision:** Terminating data acquisition at $N = 1,000$ or $N = 2,000$ represents the optimal engineering and financial trade-off.
 
 ## [Master Decision Matrix]()
@@ -235,7 +246,7 @@ flowchart TD
     L -- Yes, Gap Large --> M[High Variance: Collect More Data / Regularize]
     L -- No, Low Plateau --> N[High Bias: Upgrade Model / Feature Engineering]
     L -- No, High Plateau --> O[Saturated: Stop Collection & Deploy]
-
+    
     classDef stage fill:#101f2f,stroke:#0f766e,color:#ffffff;
     classDef branch fill:#123445,stroke:#71ddce,color:#ffffff;
     class A,B,C,D,E,F,G,H,I,J,K stage;
@@ -289,7 +300,7 @@ for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
 ```
 
 ### Explanatory Implementation Details
-- **`train_sizes=np.linspace(0.1, 1.0, 8)`:** Evaluates 8 distinct training sizes. Using at least 6–8 evaluation points ensures a smooth, readable curve that clearly exposes saturation knees.
+- **`train_sizes=np.linspace(0.1, 1.0, 8)`:** Evaluates 8 discrete training sizes. Using at least 6–8 evaluation points ensures a smooth, readable curve that clearly exposes saturation knees.
 - **`cv=5`:** Performs 5-fold cross-validation at each subsample size, ensuring that validation scores reflect true out-of-fold generalization rather than random split noise.
 - **`Pipeline` Encapsulation:** Enforces that feature scalers and transformers are fitted *only* on the active subsampled training slice $T_{k, N_j}$, eliminating optimistic distribution leakage into held-out validation folds.
 
@@ -303,7 +314,7 @@ for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
 5. **Ignoring temporal regime changes (concept drift):** In time-dependent domains, training on 10 years of historical data (e.g., pre-pandemic records) can degrade generalization if underlying consumer behavior has shifted.
 
 ### Best Practices Checklist
-- [x] Inspect the **final validation slope** ($rac{dar{s}_{\mathrm{val}}}{dN}$) at the maximum data point before requesting budget.
+- [x] Inspect the **final validation slope** ($\frac{d\bar{s}_{\mathrm{val}}}{dN}$) at the maximum data point before requesting budget.
 - [x] Perform formal bias vs. variance diagnosis **before** committing resources to data acquisition campaigns.
 - [x] Use at least 6–8 evaluation sample points along the $X$-axis for smooth curvature.
 - [x] Wrap estimators and transformers in a `Pipeline` for every evaluation fold.
@@ -324,7 +335,7 @@ for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
 ### Environment Setup
 ```bash
 # Clone repository
-git clone https://github.com/Mindful-AI-Research/class-11-ai-ml-learning-curves.git
+git clone [https://github.com/Mindful-AI-Research/class-11-ai-ml-learning-curves.git](https://github.com/Mindful-AI-Research/class-11-ai-ml-learning-curves.git)
 cd class-11-ai-ml-learning-curves
 
 # Create and activate virtual environment
