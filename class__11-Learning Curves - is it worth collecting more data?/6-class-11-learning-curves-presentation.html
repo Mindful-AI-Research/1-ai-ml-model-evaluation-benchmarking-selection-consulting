@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class 11 · Learning Curves · Mindful AI</title>
+  <meta name="description" content="Interactive React Presentation for Class 11 — Learning Curves: Is it worth collecting more data? PUC-SP & Mindful AI Research." />
+
+  <!-- React 18 & Babel Standalone via CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+
+:root {
+  --bg-primary: #03070c;
+  --bg-card: #0c1826;
+  --bg-surface: #102235;
+  --border-subtle: #1c3852;
+  --border-hover: #2e5980;
+  --text-primary: #edf5f9;
+  --text-secondary: #9cb5c9;
+  --text-muted: #5e7a91;
+  --accent-teal: #64e0cd;
+  --accent-teal-glow: rgba(100, 224, 205, 0.15);
+  --accent-blue: #739cff;
+  --accent-gold: #ffbe59;
+  --accent-red: #ff6b6b;
+  --accent-green: #51cf66;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --header-height: 72px;
+  --footer-height: 72px;
+}
+
+body.light {
+  --bg-primary: #f2f7fa;
+  --bg-card: #ffffff;
+  --bg-surface: #e5eff5;
+  --border-subtle: #cde0ec;
+  --border-hover: #96bbd4;
+  --text-primary: #0e2333;
+  --text-secondary: #425f75;
+  --text-muted: #7997ad;
+  --accent-teal: #0c8c7c;
+  --accent-teal-glow: rgba(12, 140, 124, 0.12);
+  --accent-blue: #2b5cdb;
+  --accent-gold: #c78000;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+  box-shadow: 0 0 10px var(--accent-teal);
+  z-index: 1000;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Header */
+.site-header {
+  height: var(--header-height);
+  padding: 0 3.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 16px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-symbol {
+  font-size: 24px;
+  color: var(--accent-teal);
+  text-shadow: 0 0 12px var(--accent-teal-glow);
+}
+
+.brand-text strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.brand-text small {
+  display: block;
+  font-size: 9.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.control-btn.active {
+  background: var(--bg-surface);
+  border-color: var(--accent-teal);
+  color: var(--accent-teal);
+  box-shadow: 0 0 12px var(--accent-teal-glow);
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-btn:hover {
+  border-color: var(--accent-teal);
+  color: var(--accent-teal);
+}
+
+/* Layout */
+.main-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  flex: 1;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+}
+
+.reading-mode .main-layout {
+  display: block;
+}
+
+/* Sidebar */
+.slide-sidebar {
+  border-right: 1px solid var(--border-subtle);
+  padding: 24px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-primary);
+  max-height: calc(100vh - var(--header-height) - var(--footer-height));
+  overflow-y: auto;
+  position: sticky;
+  top: var(--header-height);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 6px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-item .item-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.sidebar-item .item-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-item:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.sidebar-item.active {
+  background: var(--bg-surface);
+  border-color: var(--border-subtle);
+  color: var(--accent-teal);
+  font-weight: 500;
+}
+
+.sidebar-item.active .item-num {
+  color: var(--accent-teal);
+}
+
+/* Viewport */
+.slide-viewport {
+  padding: 44px 5.5vw 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent-teal);
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.slide-title {
+  font-size: clamp(32px, 4.2vw, 56px);
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  margin-bottom: 18px;
+  white-space: pre-line;
+}
+
+.slide-subtitle {
+  font-size: clamp(16px, 1.8vw, 19px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 820px;
+  margin-bottom: 34px;
+}
+
+/* Hero Section Specifics */
+.hero-details {
+  margin-top: 24px;
+}
+
+.hero-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  color: var(--accent-teal);
+  letter-spacing: 0.05em;
+}
+
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 24px;
+}
+
+.meta-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.meta-label {
+  display: block;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.meta-val {
+  display: block;
+  font-size: 13.5px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Feature Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.feature-card {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 26px;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hover);
+}
+
+.card-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--accent-teal);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.card-heading {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.card-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--bg-card);
+  margin-top: 16px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13.5px;
+}
+
+.custom-table th {
+  background: var(--bg-surface);
+  color: var(--accent-teal);
+  padding: 14px 18px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-subtle);
+  letter-spacing: 0.03em;
+}
+
+.custom-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+
+.custom-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+}
+
+/* Architecture Flow */
+.flow-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 26px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  margin-top: 16px;
+}
+
+.flow-step {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.step-index {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  color: var(--accent-teal);
+  margin-bottom: 4px;
+}
+
+.step-name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.flow-arrow {
+  color: var(--accent-teal);
+  font-size: 18px;
+  user-select: none;
+}
+
+/* Simulator */
+.simulator-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 28px;
+  margin-top: 20px;
+}
+
+.sim-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+}
+
+.ctrl-label {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.regime-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.regime-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.regime-btn.active {
+  border-color: var(--accent-teal);
+  color: var(--accent-teal);
+  background: rgba(100, 224, 205, 0.08);
+}
+
+.custom-range {
+  width: 100%;
+  accent-color: var(--accent-teal);
+  cursor: pointer;
+}
+
+.sim-visualization-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.sim-chart-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.sim-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  font-size: 11.5px;
+  margin-top: 10px;
+  color: var(--text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.teal { background: var(--accent-teal); }
+.legend-dot.blue { background: var(--accent-blue); }
+
+.sim-readouts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.readout-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.readout-card.full {
+  grid-column: 1 / -1;
+}
+
+.readout-label {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.readout-val {
+  font-size: 22px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.readout-val.teal { color: var(--accent-teal); }
+.readout-val.blue { color: var(--accent-blue); }
+.readout-val.gold { color: var(--accent-gold); }
+
+.readout-diagnosis {
+  font-size: 13.5px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Code Lab */
+.code-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.code-file {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-teal);
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-btn svg { width: 14px; height: 14px; }
+.copy-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+
+.code-pre {
+  padding: 20px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #a5d6ff;
+  background: var(--bg-primary);
+}
+
+/* Quiz */
+.quiz-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 16px;
+}
+
+.quiz-scenario {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--bg-surface);
+  border-left: 3px solid var(--accent-teal);
+  border-radius: 0 10px 10px 0;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.quiz-opt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  text-align: left;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-opt-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.quiz-opt-btn .opt-letter {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent-teal);
+}
+
+.quiz-opt-btn.correct {
+  border-color: var(--accent-green);
+  background: rgba(81, 207, 102, 0.08);
+  color: var(--accent-green);
+}
+
+.quiz-opt-btn.incorrect {
+  border-color: var(--accent-red);
+  background: rgba(255, 107, 107, 0.08);
+  color: var(--accent-red);
+}
+
+.quiz-feedback {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.quiz-feedback.success {
+  background: rgba(81, 207, 102, 0.1);
+  border: 1px solid var(--accent-green);
+  color: var(--accent-green);
+}
+
+.quiz-feedback.warning {
+  background: rgba(255, 190, 89, 0.1);
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* Footer */
+.site-footer {
+  height: var(--footer-height);
+  padding: 0 3.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+  gap: 16px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.slide-counter {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.slide-counter strong {
+  color: var(--accent-teal);
+}
+
+.step-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dot-btn.active {
+  background: var(--accent-teal);
+  box-shadow: 0 0 8px var(--accent-teal);
+  transform: scale(1.2);
+}
+
+.footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn svg { width: 15px; height: 15px; }
+
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--accent-teal);
+  color: var(--accent-teal);
+}
+
+.nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.nav-btn.primary {
+  background: linear-gradient(135deg, #102a3a, #0f766e);
+  border-color: var(--accent-teal);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(15, 118, 110, 0.3);
+}
+
+.nav-btn.text-only {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+
+.repo-link {
+  font-size: 12px;
+  color: var(--accent-teal);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.repo-link:hover {
+  text-decoration: underline;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 12, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  padding: 26px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.modal-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.shortcut-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+kbd {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-teal);
+}
+
+.modal-close {
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 950px) {
+  .main-layout { grid-template-columns: 1fr; }
+  .slide-sidebar { display: none; }
+  .sim-visualization-grid { grid-template-columns: 1fr; }
+  .site-header { padding: 0 16px; }
+  .site-footer { padding: 0 16px; flex-wrap: wrap; }
+  .step-dots { display: none; }
+}
+
+@media (max-width: 600px) {
+  .brand-text small { display: none; }
+  .slide-viewport { padding: 24px 16px 40px; }
+  .footer-right { display: none; }
+  .nav-btn { padding: 8px 12px; font-size: 12px; }
+}
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const SLIDES_DATA = [{"id": "hero", "eyebrow": "PUC-SP · FACEI · Human-Centered AI & Data Science", "title_en": "Learning Curves\nIs It Worth Collecting More Data?", "title_pt": "Curvas de Aprendizado\nVale a Pena Coletar Mais Dados?", "subtitle_en": "Diagnostic framework for sample complexity, bias-variance identification, and data acquisition ROI.", "subtitle_pt": "Framework diagnóstico para complexidade amostral, viés/variância e retorno sobre coleta de dados.", "type": "hero", "meta": [["Course / Disciplina", "Data Science & AI/ML · Model Evaluation, Benchmarking & Selection"], ["Professor", "✨ Giovani Giulio Tristão Thibes Vieira"], ["Author / Autoria", "Fabiana ⚡️ Campanari (2026)"]]}, {"id": "overview", "eyebrow": "01 · Executive Summary / Visão Geral", "title_en": "The Core Engineering Dilemma", "title_pt": "O Dilema Central de Engenharia", "subtitle_en": "Data collection, labeling, and compute costs scale multiplicatively. When should you stop?", "subtitle_pt": "Custos de coleta, rotulagem e computação crescem multiplicativamente. Quando parar?", "cards": [["The High-Bias Trap / Armadilha do Viés", "Spending capital on millions of new samples when the bottleneck is model capacity.", "Gastar capital em milhões de novas amostras quando o gargalo é a capacidade do modelo."], ["The Premature Stop / Parada Prematura", "Terminating collection early when the positive validation slope proves more data will bridge the gap.", "Interromper a coleta cedo quando a inclinação positiva da validação prova que mais dados ajudam."], ["Empirical ROI / Retorno Empírico", "Transforming subjective opinions into rigorous evidence-based investment decisions.", "Transformando opiniões subjetivas em decisões de investimento baseadas em evidências rigorosas."]]}, {"id": "comparison", "eyebrow": "02 · Taxonomy / Taxonomia", "title_en": "Validation Curve vs. Learning Curve", "title_pt": "Curva de Validação vs. Curva de Aprendizado", "subtitle_en": "Two distinct diagnostic tools with different axes and distinct engineering objectives.", "subtitle_pt": "Duas ferramentas diagnósticas distintas com eixos diferentes e objetivos complementares.", "table": {"headers": ["Dimension / Dimensão", "Validation Curve (Class 10)", "Learning Curve (Class 11)"], "rows": [["Horizontal Axis (X)", "Hyperparameter value (e.g. max_depth, C, gamma)", "Training sample size (N or % of training set)"], ["Fixed Variable", "Training dataset size (N held constant)", "Hyperparameter configuration (model fixed)"], ["Diagnostic Question", "What is the optimal model capacity / regularizer?", "Does the model benefit from more training examples?"], ["Engineering Decision", "Tune model parameters and architecture", "Budget data collection, labeling, and cloud compute"], ["scikit-learn API", "sklearn.model_selection.validation_curve", "sklearn.model_selection.learning_curve"]]}}, {"id": "mechanics", "eyebrow": "03 · Curve Mechanics / Mecânica da Curva", "title_en": "How Learning Curves Behave", "title_pt": "Como as Curvas se Comportam", "subtitle_en": "Understanding the asymptotic trajectories of training and validation scores as N grows.", "subtitle_pt": "Entendendo as trajetórias assintóticas de treino e validação conforme N cresce.", "cards": [["Training Trajectory / Treino", "Starts high (near 1.0) on tiny sets due to easy memorization, then slightly decreases as diverse patterns prevent rote memorization.", "Inicia alta (perto de 1.0) em amostras pequenas por memorização, caindo suavemente conforme novos padrões desafiam o ajuste."], ["Validation Trajectory / Validação", "Starts low on sparse samples due to poor generalization, then increases as more examples expose the model to the underlying distribution.", "Inicia baixa em amostras esparsas por generalização fraca, subindo conforme o modelo aprende a distribuição real."], ["Generalization Gap / Gap Δ(N)", "The distance Δ(N) = Score_train - Score_val shrinks as N expands, approaching empirical convergence.", "A distância Δ(N) = Score_treino - Score_val encolhe conforme N cresce, tendendo à convergência empírica."]]}, {"id": "simulator", "eyebrow": "04 · Interactive Simulator / Simulador Interativo", "title_en": "Simulate Sample Complexity & Regimes", "title_pt": "Simule Complexidade Amostral e Regimes", "subtitle_en": "Select a diagnostic regime and explore how training size N alters the scores and generalization gap.", "subtitle_pt": "Selecione um regime diagnóstico e explore como o tamanho de treino N altera os scores e o gap.", "type": "sim"}, {"id": "high_bias", "eyebrow": "05 · Diagnosis / Diagnóstico 1", "title_en": "High Bias Signature (Underfitting)", "title_pt": "Assinatura de Viés Alto (Subajuste)", "subtitle_en": "When both curves converge prematurely to an unacceptable, low-performance plateau.", "subtitle_pt": "Quando ambas as curvas convergem prematuramente para um patamar baixo e inaceitável.", "cards": [["Visual Signature / Assinatura Visual", "Training score and validation score are both low. Gap is small, but validation slope is flat at large N.", "Score de treino e validação são ambos baixos. O gap é pequeno, mas a validação atinge platô."], ["Root Cause / Causa Raiz", "The hypothesis class lacks representational capacity. The model is too simple for the task.", "A classe de hipóteses carece de capacidade representacional. O modelo é simples demais."], ["Engineering Action / Ação de Engenharia", "DO NOT collect more data! Switch to richer models, add domain features, reduce regularization.", "NÃO colete mais dados! Use modelos mais ricos, crie novas features e reduza regularização."]]}, {"id": "high_variance", "eyebrow": "06 · Diagnosis / Diagnóstico 2", "title_en": "High Variance Signature (Overfitting)", "title_pt": "Assinatura de Variância Alta (Sobreajuste)", "subtitle_en": "When training fits well, validation lags behind, and the curve maintains positive slope.", "subtitle_pt": "Quando o treino ajusta bem, a validação fica abaixo e a curva mantém inclinação positiva.", "cards": [["Visual Signature / Assinatura Visual", "High training score, significantly lower validation score, large gap Δ(N), with validation still rising.", "Treino alto, validação substancialmente menor, gap largo e curva de validação ainda em ascensão."], ["Root Cause / Causa Raiz", "The model has high capacity but lacks sufficient observations to constrain parameter variance.", "O modelo tem alta capacidade, mas faltam observações suficientes para estabilizar os parâmetros."], ["Engineering Action / Ação de Engenharia", "COLLECT MORE DATA! Additional samples will bridge the gap. Alternatively, apply regularization.", "COLETE MAIS DADOS! Amostras adicionais fecharão o gap. Alternativamente, aplique regularização."]]}, {"id": "economics", "eyebrow": "07 · Business Economics / Economia de Amostragem", "title_en": "Diminishing Returns & Cloud Cost ROI", "title_pt": "Retornos Decrescentes e Custo de Nuvem", "subtitle_en": "The concrete empirical scaling example demonstrated in Class 11.", "subtitle_pt": "O exemplo empírico concreto de escala demonstrado na Aula 11.", "table": {"headers": ["Training Size (N)", "Validation Score", "Marginal Gain (Δs)", "Cost Multiplier / Decisão"], "rows": [["100 samples", "0.700", "—", "1× Baseline (Initial proof-of-concept)"], ["500 samples", "0.800", "+0.100 (+10.0%)", "5× Data (Massive performance boost)"], ["1,000 samples", "0.840", "+0.040 (+4.0%)", "2× Previous (High ROI: Worth collecting)"], ["2,000 samples", "0.850", "+0.010 (+1.0%)", "2× Previous (Optimal plateau inflection point)"], ["4,000 samples", "0.855", "+0.005 (+0.5%)", "2× Previous (Diminishing return: Stop collection)"]]}}, {"id": "architecture", "eyebrow": "08 · MLOps & Architecture / Arquitetura", "title_en": "Leakage-Free Cross-Validation Pipeline", "title_pt": "Pipeline de Validação Livre de Vazamento", "subtitle_en": "Encapsulating feature transformers inside the cross-validation loop at every sub-sample size.", "subtitle_pt": "Encapsulando transformadores dentro do loop de validação cruzada para cada subamostra N.", "flow": [["Raw Training Set", "Base de Treino"], ["Pipeline Encapsulation", "Encapsulamento Pipeline"], ["Subsample Generator (N_1..N_S)", "Gerador de Amostras"], ["K-Fold CV Splits", "Divisão em K Dobras"], ["Fold Evaluator", "Avaliador de Dobra"], ["Diagnostic Decision", "Decisão de Negócio"]]}, {"id": "code_lab", "eyebrow": "09 · Executable Implementation / Código Prático", "title_en": "Production scikit-learn Implementation", "title_pt": "Implementação de Produção scikit-learn", "subtitle_en": "Copy-paste ready, leakage-free Python code using learning_curve and Pipeline.", "subtitle_pt": "Código Python pronto para uso, livre de vazamento com learning_curve e Pipeline.", "type": "code"}, {"id": "pitfalls", "eyebrow": "10 · Guardrails / Boas Práticas e Erros", "title_en": "Common Pitfalls & Best Practices", "title_pt": "Erros Comuns e Boas Práticas", "subtitle_en": "Crucial rules to ensure valid diagnosis and protect business budgets.", "subtitle_pt": "Regras cruciais para garantir diagnóstico válido e proteger o orçamento de negócio.", "cards": [["Never Read Training Alone / Nunca Olhe só o Treino", "Training score only reflects memorization; only validation slope reveals generalization transfer.", "Score de treino reflete apenas memorização; só a inclinação da validação revela generalização."], ["Avoid Coarse Grid Splitting / Evite Poucos Pontos", "Using only 2–3 sample points hides the knee of the curve. Always use at least 6–8 evaluation points.", "Usar apenas 2–3 pontos oculta o 'joelho' da curva. Use sempre pelo menos 6–8 frações amostrais."], ["Beware of Regime Shifts / Atenção a Mudanças de Regime", "Adding 10 years of pre-pandemic historical data can degrade a model if concept drift has occurred.", "Adicionar dados históricos pré-pandemia pode degradar o modelo caso ocorra quebra estrutural (drift)."]]}, {"id": "decision_matrix", "eyebrow": "11 · Synthesis / Matriz de Decisão", "title_en": "Master Decision Framework", "title_pt": "Matriz Mestra de Decisão", "subtitle_en": "Translate observed visual patterns into immediate, defensible engineering actions.", "subtitle_pt": "Traduza padrões visuais observados em ações imediatas e defensáveis de engenharia.", "cards": [["Pattern: Low + Low (Flat)", "Diagnosis: High Bias (Underfitting) | Action: Upgrade model capacity, engineer features. DO NOT collect data.", "Diagnóstico: Viés Alto (Subajuste) | Ação: Aumentar capacidade, criar features. NÃO coletar dados."], ["Pattern: High Train + Lower Val (Rising)", "Diagnosis: High Variance (Overfitting) | Action: Collect more data; apply regularization / dropout.", "Diagnóstico: Variância Alta (Sobreajuste) | Ação: Coletar mais dados; aplicar regularização / poda."], ["Pattern: High Train + High Val (Plateau)", "Diagnosis: Saturated Fit | Action: Stop collection; optimize deployment and inference latency.", "Diagnóstico: Modelo Saturado | Ação: Parar coleta; otimizar latência e infraestrutura."]]}, {"id": "quiz", "eyebrow": "12 · Interactive Knowledge Check / Checagem Interativa", "title_en": "Decision Scenario Challenge", "title_pt": "Desafio de Cenário de Decisão", "subtitle_en": "Test your diagnostic intuition against realistic production constraints.", "subtitle_pt": "Teste sua intuição diagnóstica frente a restrições reais de produção.", "type": "quiz"}, {"id": "conclusion", "eyebrow": "13 · Conclusion / Conclusão e Próximos Passos", "title_en": "From Curve Diagnostics to Capital Allocation", "title_pt": "Do Diagnóstico da Curva à Alocação de Capital", "subtitle_en": "Learning curves protect AI initiatives from expensive data collection mistakes.", "subtitle_pt": "Curvas de aprendizado blindam iniciativas de IA contra desperdícios financeiros de dados.", "cards": [["Class 11 Mastery", "Mastered empirical sample complexity diagnostics and the business economics of data acquisition.", "Domínio de diagnóstico de complexidade amostral e economia de aquisição de dados."], ["Upcoming: Class 12", "Model Comparison, Decision Thresholds & Calibration (Seleção de Modelos e Calibração).", "Comparação de Modelos Concorrentes, Limiares de Decisão e Calibração de Probabilidades."], ["Mindful AI Standard", "Ethical, human-centered, and economically rigorous artificial intelligence engineering.", "Engenharia de inteligência artificial ética, centrada no humano e economicamente rigorosa."]]}];
+    const CODE_SNIPPET = "import numpy as np\nfrom sklearn.model_selection import learning_curve\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.linear_model import LogisticRegression\n\n# 1. Pipeline strictly encapsulates transformers within each sub-split\npipeline = Pipeline([\n    (\"scaler\", StandardScaler()),\n    (\"classifier\", LogisticRegression(max_iter=1000, random_state=42))\n])\n\n# 2. Define 8 sample fractions from 10% to 100% of available training records\ntrain_sizes_fraction = np.linspace(0.1, 1.0, 8)\n\n# 3. Compute cross-validated learning curve without leakage\ntrain_sizes_abs, train_scores, val_scores = learning_curve(\n    estimator=pipeline,\n    X=X_train,\n    y=y_train,\n    train_sizes=train_sizes_fraction,\n    cv=5,\n    scoring=\"roc_auc\",\n    n_jobs=-1,\n    random_state=42\n)\n\n# 4. Aggregate across the 5 validation folds\ntrain_mean = np.mean(train_scores, axis=1)\ntrain_std  = np.std(train_scores, axis=1)\nval_mean   = np.mean(val_scores, axis=1)\nval_std    = np.std(val_scores, axis=1)\n\n# 5. Output decision table\nfor n, tr, va in zip(train_sizes_abs, train_mean, val_mean):\n    print(f\"N={n:5d} | Train ROC-AUC: {tr:.4f} | Val ROC-AUC: {va:.4f} | Gap: {tr - va:.4f}\")\n";
+
+    
+const { useState, useEffect, useRef } = React;
+
+const ICONS = {
+  home: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m3 10 9-7 9 7v10H3z" />
+      <path d="M9 21v-7h6v7" />
+    </svg>
+  ),
+  theme: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 3v18" />
+    </svg>
+  ),
+  full: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" />
+    </svg>
+  ),
+  help: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <path d="M12 17h.01" />
+    </svg>
+  ),
+  copy: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  ),
+  check: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  ),
+  arrowLeft: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  ),
+  arrowRight: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  )
+};
+
+function LearningCurveApp({ slides, codeSnippet }) {
+  const [current, setCurrent] = useState(0);
+  const [lang, setLang] = useState('en'); // 'en' | 'pt'
+  const [theme, setTheme] = useState('dark'); // 'dark' | 'light'
+  const [copied, setCopied] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [readingMode, setReadingMode] = useState(false);
+
+  // Simulator state
+  const [simRegime, setSimRegime] = useState('variance'); // 'variance' | 'bias' | 'saturated'
+  const [simN, setSimN] = useState(2000);
+
+  // Quiz state
+  const [quizAnswer, setQuizAnswer] = useState(null);
+
+  const slideRef = useRef(null);
+
+  const total = slides.length;
+  const slide = slides[current];
+
+  // Sync theme
+  useEffect(() => {
+    document.body.className = theme === 'light' ? 'light' : '';
+  }, [theme]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (showHelp) {
+        if (e.key === 'Escape') setShowHelp(false);
+        return;
+      }
+      if (['INPUT', 'TEXTAREA', 'BUTTON'].includes(e.target.tagName)) return;
+
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        setCurrent((prev) => Math.min(total - 1, prev + 1));
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        setCurrent((prev) => Math.max(0, prev - 1));
+      } else if (e.key === 'Home') {
+        setCurrent(0);
+      } else if (e.key === 'End') {
+        setCurrent(total - 1);
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      } else if (e.key.toLowerCase() === 't') {
+        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+      } else if (e.key.toLowerCase() === 'l') {
+        setLang((prev) => (prev === 'en' ? 'pt' : 'en'));
+      } else if (e.key === '?') {
+        setShowHelp(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [total, showHelp]);
+
+  // Touch Swipe
+  const touchStart = useRef({ x: 0, y: 0 });
+  const handleTouchStart = (e) => {
+    touchStart.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    };
+  };
+  const handleTouchEnd = (e) => {
+    const dx = e.changedTouches[0].clientX - touchStart.current.x;
+    const dy = e.changedTouches[0].clientY - touchStart.current.y;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) setCurrent((prev) => Math.min(total - 1, prev + 1));
+      else setCurrent((prev) => Math.max(0, prev - 1));
+    }
+  };
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (err) {
+      console.warn('Fullscreen error:', err);
+    }
+  };
+
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(codeSnippet);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (err) {
+      console.warn('Clipboard write error:', err);
+    }
+  };
+
+  // Simulator formula calculations
+  const calculateScores = (regime, n) => {
+    // Normalise n in [100, 4000]
+    const norm = (n - 100) / 3900;
+    if (regime === 'variance') {
+      // High variance: training high, validation starts low and climbs
+      const tr = 0.98 - 0.08 * Math.pow(norm, 0.7);
+      const va = 0.58 + 0.28 * Math.pow(norm, 0.6);
+      return { train: tr, val: va, gap: tr - va, slope: 'Positive (>0) · Data helps' };
+    } else if (regime === 'bias') {
+      // High bias: both converge to low plateau
+      const tr = 0.76 - 0.06 * Math.pow(norm, 0.8);
+      const va = 0.64 + 0.05 * Math.pow(norm, 0.4);
+      return { train: tr, val: va, gap: tr - va, slope: 'Flat (≈0) · Bottleneck is model' };
+    } else {
+      // Saturated: both converge to high plateau
+      const tr = 0.92 - 0.04 * Math.pow(norm, 0.8);
+      const va = 0.82 + 0.05 * (1 - Math.exp(-norm * 4));
+      return { train: tr, val: va, gap: tr - va, slope: 'Saturated (≈0) · Stop collection' };
+    }
+  };
+
+  const simData = calculateScores(simRegime, simN);
+
+  return (
+    <div className={`app-container ${readingMode ? 'reading-mode' : ''}`}>
+      {/* Top Progress Bar */}
+      <div
+        className="progress-bar"
+        style={{ width: `${((current + 1) / total) * 100}%` }}
+        aria-hidden="true"
+      />
+
+      {/* Header */}
+      <header className="site-header">
+        <div className="brand-group" onClick={() => setCurrent(0)} role="button" tabIndex={0}>
+          <span className="brand-symbol">ॐ</span>
+          <div className="brand-text">
+            <strong>Mindful AI</strong>
+            <small>CLASS 11 · LEARNING CURVES</small>
+          </div>
+        </div>
+
+        <div className="header-controls">
+          <div className="lang-toggle" role="group" aria-label="Language selection">
+            <button
+              type="button"
+              className={`control-btn ${lang === 'en' ? 'active' : ''}`}
+              onClick={() => setLang('en')}
+            >
+              🇬🇧 English
+            </button>
+            <button
+              type="button"
+              className={`control-btn ${lang === 'pt' ? 'active' : ''}`}
+              onClick={() => setLang('pt')}
+            >
+              🇧🇷 Português
+            </button>
+          </div>
+
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
+            title={lang === 'en' ? 'Toggle Theme (T)' : 'Alternar Tema (T)'}
+            aria-label="Toggle Theme"
+          >
+            {ICONS.theme}
+          </button>
+
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={toggleFullscreen}
+            title={lang === 'en' ? 'Toggle Fullscreen (F)' : 'Tela Cheia (F)'}
+            aria-label="Toggle Fullscreen"
+          >
+            {ICONS.full}
+          </button>
+
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={() => setShowHelp(true)}
+            title={lang === 'en' ? 'Keyboard Shortcuts (?)' : 'Atalhos de Teclado (?)'}
+            aria-label="Help"
+          >
+            {ICONS.help}
+          </button>
+
+          <button
+            type="button"
+            className={`control-btn reading-toggle ${readingMode ? 'active' : ''}`}
+            onClick={() => setReadingMode((prev) => !prev)}
+          >
+            {lang === 'en' ? (readingMode ? 'Slide View' : 'Reading Mode') : (readingMode ? 'Modo Slides' : 'Modo Leitura')}
+          </button>
+        </div>
+      </header>
+
+      {/* Main Layout */}
+      <div className="main-layout">
+        {/* Sidebar Index */}
+        {!readingMode && (
+          <aside className="slide-sidebar" aria-label="Slide list">
+            <div className="sidebar-header">
+              <span>{lang === 'en' ? 'CURRICULUM' : 'CONTEÚDO'}</span>
+              <span>{total} Slides</span>
+            </div>
+            <nav className="sidebar-nav">
+              {slides.map((s, idx) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  className={`sidebar-item ${idx === current ? 'active' : ''}`}
+                  onClick={() => setCurrent(idx)}
+                >
+                  <span className="item-num">{String(idx + 1).padStart(2, '0')}</span>
+                  <span className="item-title">{lang === 'en' ? s.title_en.split('\n')[0] : s.title_pt.split('\n')[0]}</span>
+                </button>
+              ))}
+            </nav>
+          </aside>
+        )}
+
+        {/* Content Area */}
+        <main
+          className="slide-viewport"
+          ref={slideRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {readingMode ? (
+            /* Reading Mode: All Slides in Continuous Flow */
+            <div className="continuous-flow">
+              {slides.map((s, idx) => (
+                <SlideComponent
+                  key={s.id}
+                  slide={s}
+                  index={idx}
+                  lang={lang}
+                  codeSnippet={codeSnippet}
+                  copied={copied}
+                  onCopy={copyCode}
+                  simRegime={simRegime}
+                  setSimRegime={setSimRegime}
+                  simN={simN}
+                  setSimN={setSimN}
+                  simData={simData}
+                  quizAnswer={quizAnswer}
+                  setQuizAnswer={setQuizAnswer}
+                />
+              ))}
+            </div>
+          ) : (
+            /* Standard Presentation Mode */
+            <SlideComponent
+              slide={slide}
+              index={current}
+              lang={lang}
+              codeSnippet={codeSnippet}
+              copied={copied}
+              onCopy={copyCode}
+              simRegime={simRegime}
+              setSimRegime={setSimRegime}
+              simN={simN}
+              setSimN={setSimN}
+              simData={simData}
+              quizAnswer={quizAnswer}
+              setQuizAnswer={setQuizAnswer}
+            />
+          )}
+        </main>
+      </div>
+
+      {/* Footer Navigation Bar */}
+      <footer className="site-footer">
+        <div className="footer-left">
+          <span className="slide-counter">
+            <strong>{String(current + 1).padStart(2, '0')}</strong> / {total}
+          </span>
+          <div className="step-dots" role="navigation" aria-label="Pagination dots">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className={`dot-btn ${idx === current ? 'active' : ''}`}
+                onClick={() => setCurrent(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Action Controls */}
+        <div className="footer-actions">
+          <button
+            type="button"
+            className="nav-btn"
+            disabled={current === 0}
+            onClick={() => setCurrent((prev) => Math.max(0, prev - 1))}
+          >
+            {ICONS.arrowLeft} {lang === 'en' ? 'Back' : 'Voltar'}
+          </button>
+
+          <button
+            type="button"
+            className="nav-btn text-only"
+            onClick={() => setCurrent(0)}
+          >
+            {lang === 'en' ? 'Start' : 'Início'}
+          </button>
+
+          <button
+            type="button"
+            className="nav-btn primary"
+            disabled={current === total - 1}
+            onClick={() => setCurrent((prev) => Math.min(total - 1, prev + 1))}
+          >
+            {lang === 'en' ? 'Next' : 'Avançar'} {ICONS.arrowRight}
+          </button>
+        </div>
+
+        <div className="footer-right">
+          <a
+            href="https://github.com/Mindful-AI-Research"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="repo-link"
+          >
+            <span>ॐ Mindful AI ⋆ Research & Consulting ↗</span>
+          </a>
+        </div>
+      </footer>
+
+      {/* Keyboard Shortcuts Dialog */}
+      {showHelp && (
+        <div className="modal-backdrop" onClick={() => setShowHelp(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{lang === 'en' ? 'Keyboard & Gesture Shortcuts' : 'Atalhos de Teclado e Gestos'}</h3>
+              <button type="button" className="icon-btn" onClick={() => setShowHelp(false)}>✕</button>
+            </div>
+            <div className="modal-grid">
+              <div className="shortcut-row"><kbd>→</kbd> / <kbd>Space</kbd> / <kbd>PgDn</kbd> <span>{lang === 'en' ? 'Next Slide' : 'Próximo Slide'}</span></div>
+              <div className="shortcut-row"><kbd>←</kbd> / <kbd>PgUp</kbd> <span>{lang === 'en' ? 'Previous Slide' : 'Slide Anterior'}</span></div>
+              <div className="shortcut-row"><kbd>Home</kbd> / <kbd>End</kbd> <span>{lang === 'en' ? 'First / Last Slide' : 'Primeiro / Último Slide'}</span></div>
+              <div className="shortcut-row"><kbd>F</kbd> <span>{lang === 'en' ? 'Toggle Fullscreen' : 'Alternar Tela Cheia'}</span></div>
+              <div className="shortcut-row"><kbd>T</kbd> <span>{lang === 'en' ? 'Toggle Theme (Dark/Light)' : 'Alternar Tema (Escuro/Claro)'}</span></div>
+              <div className="shortcut-row"><kbd>L</kbd> <span>{lang === 'en' ? 'Toggle Language (EN/PT)' : 'Alternar Idioma (EN/PT)'}</span></div>
+              <div className="shortcut-row"><kbd>Swipe</kbd> <span>{lang === 'en' ? 'Touch Navigation on Mobile' : 'Navegação por Toque em Mobile'}</span></div>
+            </div>
+            <button type="button" className="control-btn modal-close" onClick={() => setShowHelp(false)}>
+              {lang === 'en' ? 'Close Dialog' : 'Fechar Janela'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SlideComponent({
+  slide,
+  index,
+  lang,
+  codeSnippet,
+  copied,
+  onCopy,
+  simRegime,
+  setSimRegime,
+  simN,
+  setSimN,
+  simData,
+  quizAnswer,
+  setQuizAnswer
+}) {
+  const isEn = lang === 'en';
+
+  return (
+    <article className={`slide-container slide-${slide.type || 'standard'}`} id={slide.id}>
+      <div className="slide-eyebrow">{slide.eyebrow}</div>
+      <h1 className="slide-title">{isEn ? slide.title_en : slide.title_pt}</h1>
+      <p className="slide-subtitle">{isEn ? slide.subtitle_en : slide.subtitle_pt}</p>
+
+      {/* HERO METADATA */}
+      {slide.type === 'hero' && (
+        <div className="hero-details">
+          <div className="hero-tags">
+            <span className="tag">Class 11</span>
+            <span className="tag">Learning Curves</span>
+            <span className="tag">scikit-learn</span>
+            <span className="tag">ROI Analysis</span>
+          </div>
+          <div className="hero-meta-grid">
+            {slide.meta.map(([label, val], idx) => (
+              <div key={idx} className="meta-box">
+                <span className="meta-label">{label}</span>
+                <span className="meta-val">{val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* CARDS GRID */}
+      {slide.cards && (
+        <div className="cards-grid">
+          {slide.cards.map(([title, en, pt], idx) => (
+            <div key={idx} className="feature-card">
+              <div className="card-badge">0{idx + 1}</div>
+              <h3 className="card-heading">{title}</h3>
+              <p className="card-desc">{isEn ? en : pt}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* TABLE */}
+      {slide.table && (
+        <div className="table-wrapper">
+          <table className="custom-table">
+            <thead>
+              <tr>
+                {slide.table.headers.map((h, idx) => (
+                  <th key={idx}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {slide.table.rows.map((row, rIdx) => (
+                <tr key={rIdx}>
+                  {row.map((cell, cIdx) => (
+                    <td key={cIdx}>{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* FLOW / ARCHITECTURE */}
+      {slide.flow && (
+        <div className="flow-container">
+          {slide.flow.map(([en, pt], idx) => (
+            <React.Fragment key={idx}>
+              <div className="flow-step">
+                <div className="step-index">{idx + 1}</div>
+                <div className="step-name">{isEn ? en : pt}</div>
+              </div>
+              {idx < slide.flow.length - 1 && <div className="flow-arrow">→</div>}
+            </React.Fragment>
+          ))}
+        </div>
+      )}
+
+      {/* INTERACTIVE SIMULATOR */}
+      {slide.type === 'sim' && (
+        <div className="simulator-panel">
+          <div className="sim-controls">
+            <div className="sim-regime-picker">
+              <span className="ctrl-label">{isEn ? 'Select Diagnostic Regime:' : 'Selecione o Regime Diagnóstico:'}</span>
+              <div className="btn-group">
+                <button
+                  type="button"
+                  className={`regime-btn ${simRegime === 'variance' ? 'active' : ''}`}
+                  onClick={() => setSimRegime('variance')}
+                >
+                  {isEn ? 'High Variance (Data Helps)' : 'Variância Alta (Mais Dados Ajudam)'}
+                </button>
+                <button
+                  type="button"
+                  className={`regime-btn ${simRegime === 'bias' ? 'active' : ''}`}
+                  onClick={() => setSimRegime('bias')}
+                >
+                  {isEn ? 'High Bias (Model Bottleneck)' : 'Viés Alto (Gargalo no Modelo)'}
+                </button>
+                <button
+                  type="button"
+                  className={`regime-btn ${simRegime === 'saturated' ? 'active' : ''}`}
+                  onClick={() => setSimRegime('saturated')}
+                >
+                  {isEn ? 'Saturated Plateau' : 'Platô Saturado'}
+                </button>
+              </div>
+            </div>
+
+            <div className="sim-slider-row">
+              <label htmlFor="sim-n-slider" className="ctrl-label">
+                {isEn ? 'Training Sample Size (N):' : 'Tamanho do Treino (N):'} <strong>{simN.toLocaleString()}</strong>
+              </label>
+              <input
+                id="sim-n-slider"
+                type="range"
+                min="100"
+                max="4000"
+                step="50"
+                value={simN}
+                onChange={(e) => setSimN(Number(e.target.value))}
+                className="custom-range"
+              />
+            </div>
+          </div>
+
+          <div className="sim-visualization-grid">
+            <div className="sim-chart-box">
+              <svg viewBox="0 0 600 240" className="sim-svg" role="img" aria-label="Learning Curve Chart">
+                {/* Grid lines */}
+                {[0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map((val) => {
+                  const y = 210 - (val - 0.5) * 360;
+                  return (
+                    <g key={val}>
+                      <line x1="45" y1={y} x2="580" y2={y} stroke="var(--border-subtle)" strokeDasharray="3 3" />
+                      <text x="12" y={y + 4} fill="var(--text-muted)" fontSize="10">{val.toFixed(1)}</text>
+                    </g>
+                  );
+                })}
+                {/* X labels */}
+                {[100, 1000, 2000, 3000, 4000].map((sample) => {
+                  const x = 50 + ((sample - 100) / 3900) * 520;
+                  return (
+                    <text key={sample} x={x - 12} y="230" fill="var(--text-muted)" fontSize="10">{sample}</text>
+                  );
+                })}
+
+                {/* Trajectory Curves */}
+                <path
+                  d={generateSimPath(simRegime, 'train')}
+                  fill="none"
+                  stroke="var(--accent-teal)"
+                  strokeWidth="3.5"
+                />
+                <path
+                  d={generateSimPath(simRegime, 'val')}
+                  fill="none"
+                  stroke="var(--accent-blue)"
+                  strokeWidth="3.5"
+                />
+
+                {/* Current Sample Marker Indicator */}
+                {(() => {
+                  const currentX = 50 + ((simN - 100) / 3900) * 520;
+                  const currentYTr = 210 - (simData.train - 0.5) * 360;
+                  const currentYVa = 210 - (simData.val - 0.5) * 360;
+                  return (
+                    <g>
+                      <line x1={currentX} y1="20" x2={currentX} y2="210" stroke="var(--text-muted)" strokeDasharray="4 4" />
+                      <circle cx={currentX} cy={currentYTr} r="6" fill="var(--accent-teal)" />
+                      <circle cx={currentX} cy={currentYVa} r="6" fill="var(--accent-blue)" />
+                    </g>
+                  );
+                })()}
+              </svg>
+
+              <div className="chart-legend">
+                <span className="legend-item"><i className="legend-dot teal" /> {isEn ? 'Training Score' : 'Score de Treino'}</span>
+                <span className="legend-item"><i className="legend-dot blue" /> {isEn ? 'Cross-Validation Score' : 'Score de Validação'}</span>
+              </div>
+            </div>
+
+            <div className="sim-readouts">
+              <div className="readout-card">
+                <span className="readout-label">{isEn ? 'Training Score' : 'Score de Treino'}</span>
+                <span className="readout-val teal">{simData.train.toFixed(4)}</span>
+              </div>
+              <div className="readout-card">
+                <span className="readout-label">{isEn ? 'Validation Score' : 'Score de Validação'}</span>
+                <span className="readout-val blue">{simData.val.toFixed(4)}</span>
+              </div>
+              <div className="readout-card">
+                <span className="readout-label">{isEn ? 'Generalization Gap Δ(N)' : 'Gap de Generalização Δ(N)'}</span>
+                <span className="readout-val gold">{simData.gap.toFixed(4)}</span>
+              </div>
+              <div className="readout-card full">
+                <span className="readout-label">{isEn ? 'Slope Diagnosis & Prescription' : 'Diagnóstico de Inclinação'}</span>
+                <span className="readout-diagnosis">{simData.slope}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CODE BLOCK */}
+      {slide.type === 'code' && (
+        <div className="code-container">
+          <div className="code-header">
+            <span className="code-file">learning_curve_pipeline.py</span>
+            <button type="button" className="copy-btn" onClick={onCopy}>
+              {copied ? ICONS.check : ICONS.copy}
+              <span>{copied ? (isEn ? 'Copied!' : 'Copiado!') : (isEn ? 'Copy Code' : 'Copiar')}</span>
+            </button>
+          </div>
+          <pre className="code-pre">
+            <code>{codeSnippet}</code>
+          </pre>
+        </div>
+      )}
+
+      {/* INTERACTIVE QUIZ */}
+      {slide.type === 'quiz' && (
+        <div className="quiz-panel">
+          <p className="quiz-scenario">
+            {isEn
+              ? 'Scenario: An NLP classification model achieves Train ROC-AUC = 0.74 and Validation ROC-AUC = 0.72 at N = 10,000. The validation curve has been flat since N = 2,500. A product manager proposes spending $50,000 to label 50,000 additional reviews. What is your senior ML engineer decision?'
+              : 'Cenário: Um modelo de NLP atinge ROC-AUC de Treino = 0,74 e Validação = 0,72 com N = 10.000. A curva de validação está plana desde N = 2.500. O gerente de produto propõe gastar R$ 50.000 para rotular 50.000 novos textos. Qual é a sua decisão como engenheiro sênior de ML?'}
+          </p>
+
+          <div className="quiz-options">
+            {[
+              {
+                id: 'A',
+                en: 'Approve the budget: more data always improves statistical estimators.',
+                pt: 'Aprovar o orçamento: mais dados sempre melhoram estimadores estatísticos.',
+                correct: false,
+                feedback_en: 'Incorrect: When a model suffers from High Bias (early flat plateau), extra data cannot overcome hypothesis class limits.',
+                feedback_pt: 'Incorreto: Em Viés Alto (platô plano precoce), dados adicionais não superam as limitações da classe de hipóteses.'
+              },
+              {
+                id: 'B',
+                en: 'Reject budget; reallocate resources to feature engineering, embeddings, or transformer architecture.',
+                pt: 'Rejeitar o orçamento; realocar recursos em engenharia de features, embeddings ou arquitetura mais potente.',
+                correct: true,
+                feedback_en: 'Correct! The flat slope and low scores diagnose High Bias. The bottleneck is model representation, not sample size.',
+                feedback_pt: 'Correto! A inclinação nula e scores baixos diagnosticam Viés Alto. O gargalo é a representação do modelo, não a quantidade de dados.'
+              },
+              {
+                id: 'C',
+                en: 'Collect 100,000 samples instead to force convergence.',
+                pt: 'Coletar 100.000 amostras para forçar a convergência.',
+                correct: false,
+                feedback_en: 'Incorrect: Scaling data under high bias multiplies cloud expenditure with zero return on model performance.',
+                feedback_pt: 'Incorreto: Escalar dados sob viés alto apenas multiplica custos computacionais com retorno nulo.'
+              }
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                className={`quiz-opt-btn ${quizAnswer === opt.id ? (opt.correct ? 'correct' : 'incorrect') : ''}`}
+                onClick={() => setQuizAnswer(opt.id)}
+              >
+                <span className="opt-letter">{opt.id}</span>
+                <span className="opt-text">{isEn ? opt.en : opt.pt}</span>
+              </button>
+            ))}
+          </div>
+
+          {quizAnswer && (
+            <div className={`quiz-feedback ${quizAnswer === 'B' ? 'success' : 'warning'}`}>
+              <strong>{quizAnswer === 'B' ? (isEn ? 'Prescription Verified:' : 'Decisão Atestada:') : (isEn ? 'Warning:' : 'Atenção:')}</strong>{' '}
+              {isEn
+                ? quizAnswer === 'B'
+                  ? 'Correct! The flat slope and low scores diagnose High Bias. The bottleneck is model representation, not sample size.'
+                  : 'Incorrect. Analyze the validation slope before allocating data acquisition capital.'
+                : quizAnswer === 'B'
+                  ? 'Correto! A inclinação nula e scores baixos diagnosticam Viés Alto. O gargalo é a representação do modelo, não a quantidade de dados.'
+                  : 'Incorreto. Analise a inclinação da validação antes de alocar capital para aquisição de dados.'}
+            </div>
+          )}
+        </div>
+      )}
+    </article>
+  );
+}
+
+// Helper to generate SVG curve paths for simulator
+function generateSimPath(regime, type) {
+  const points = [];
+  for (let n = 100; n <= 4000; n += 100) {
+    const norm = (n - 100) / 3900;
+    let score;
+    if (regime === 'variance') {
+      score = type === 'train' ? 0.98 - 0.08 * Math.pow(norm, 0.7) : 0.58 + 0.28 * Math.pow(norm, 0.6);
+    } else if (regime === 'bias') {
+      score = type === 'train' ? 0.76 - 0.06 * Math.pow(norm, 0.8) : 0.64 + 0.05 * Math.pow(norm, 0.4);
+    } else {
+      score = type === 'train' ? 0.92 - 0.04 * Math.pow(norm, 0.8) : 0.82 + 0.05 * (1 - Math.exp(-norm * 4));
+    }
+    const x = 50 + norm * 520;
+    const y = 210 - (score - 0.5) * 360;
+    points.push(`${points.length === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`);
+  }
+  return points.join(' ');
+}
+
+
+    const rootElement = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<LearningCurveApp slides={SLIDES_DATA} codeSnippet={CODE_SNIPPET} />);
+  </script>
+</body>
+</html>
