@@ -1,5 +1,8 @@
 # 🎯 [Data Science & AI/ML]() ⥂ [Model Evaluation, Benchmarking & Selection]() ➝ [Class 11]() ➝ [Learning Curves]()
 
+
+<br>
+
 [**Institution:**]() Pontifical Catholic University of São Paulo (PUC-SP) <br>
 [**School:**]() FACEI — Computer Science Department <br>
 [**Course:**]() BSc in Human-Centered AI & Data Science • 6th Semester • 2026 <br>
@@ -17,9 +20,14 @@
 <img src="https://img.shields.io/badge/Framework-scikit--learn-134e4a?style=for-the-badge&labelColor=022c22" alt="scikit-learn">
 </p>
 
+
+
+<br><br>
+
 > **Class Context:** This master documentation synthesizes Class 11 (*Curvas de Aprendizado: Vale a pena coletar mais dados?*) from the Human-Centered AI & Data Science curriculum. It formalizes empirical sample complexity diagnostics, bias-variance identification, and data acquisition ROI analysis.
 
----
+
+<br><br>
 
 ## [Table of Contents]()
 
@@ -39,6 +47,10 @@
 14. [References](#references)
 15. [Conclusion](#conclusion)
 
+
+
+<br><br>
+
 ## [Repository Identity]()
 
 | Field | Value |
@@ -49,6 +61,11 @@
 | Lesson | Class 11 — Learning Curves: Is It Worth Collecting More Data? |
 | Ecosystem | Human Understanding (HU) / AI & Machine Learning Course Series |
 
+
+
+
+<br><br>
+
 ## [Source Audit and Class Context]()
 
 | Resource | Inspection Status | Scope / Role |
@@ -57,10 +74,20 @@
 | Slide Deck: *Ciência de Dados 1 · Curvas de Aprendizado (Aula 11)* | Verified via video frames. | Core structure: definition, bias/variance signatures, sample scaling table, scikit-learn API, common pitfalls. |
 | Prior Lessons (Class 06–10) | Cross-referenced for continuity. | Class 10 focused on Validation Curves (hyperparameter sensitivity); Class 11 focuses on Learning Curves (sample size sensitivity). |
 
+
+
+
+<br>
+
 ### Status Conventions
 - **Implemented / Demonstrated:** Explicitly taught and demonstrated in the Class 11 lecture video and slide deck.
 - **Conceptual:** Theoretical diagnostic frameworks and business decision economics.
 - **Recommended:** Engineering and MLOps best practices for production experimentation.
+
+
+
+<br><br>
+
 
 ## [Overview and Core Problem]()
 
@@ -70,6 +97,10 @@ In applied machine learning engineering, one of the most critical and expensive 
 2. **Premature Data Collection Termination:** Stopping data collection prematurely when an estimator with high variance is actively benefiting from larger sample sizes, leaving significant generalization performance uncaptured.
 
 **Learning Curves** solve this problem by empirically evaluating an estimator's training and out-of-fold validation performance as a mathematical function of **training dataset size** ($N$), providing concrete visual and quantitative evidence for data collection return on investment (ROI).
+
+
+
+<br><br>
 
 ## [Learning Curves vs. Validation Curves]()
 
@@ -86,7 +117,7 @@ A common point of confusion in model evaluation is conflating **Validation Curve
 ## [Mathematical Foundations and Asymptotic Theory]()
 
 ### 1. Empirical Formulation
-Let the full available labeled training set be denoted by $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^M$, where $x_i \in \mathbb{R}^d$ represents the feature vector and $y_i \in \mathcal{Y}$ represents the ground-truth target.
+Let the full available labeled training set be denoted by $\mathcal{D} $ =  $\{(x_i, y_i)\}_{i=1}^M$, where $x_i \in \mathbb{R}^d$ represents the feature vector and $y_i \in \mathcal{Y}$ represents the ground-truth target.
 
 We evaluate an ordered discrete sequence of $S$ sample sizes:
 
@@ -94,7 +125,7 @@ $$
 N_1 < N_2 < \dots < N_S \le M
 $$
 
-For a $K$-fold cross-validation scheme, the dataset $\mathcal{D}$ is partitioned into $K$ disjoint subsets $\{V_k\}_{k=1}^K$, with corresponding training partitions $T_k = \mathcal{D} \setminus V_k$. For each sample size $N_j$ and each fold $k \in \{1, \dots, K\}$, a sub-sampled training partition $T_{k, N_j} \subset T_k$ of cardinality $|T_{k, N_j}| = N_j$ is drawn.
+For a $K$-fold cross-validation scheme, the dataset $\mathcal{D}$ is partitioned into $K$ disjoint subsets $\{V_k\}_{k=1}^K$, with corresponding training partitions $T_k = \mathcal{D} \setminus V_k$. For each sample size $N_j$ and each fold $k \in \{1, \dots, K\}$, a sub-sampled training partition $T_{k, N_j} \subset T_k$ of cardinality $|T_{k, N_j}|$ =  $N_j$ is drawn.
 
 The estimator is trained exclusively on this sub-sample:
 
@@ -103,6 +134,10 @@ f_{N_j, k} = \operatorname*{arg\,min}_{f \in \mathcal{H}} \left( \frac{1}{N_j}\s
 $$
 
 where $\mathcal{L}(\cdot)$ is the task-specific loss function, $\mathcal{H}$ is the hypothesis class, and $\Omega(f)$ is a regularization penalty.
+
+
+<br>
+
 
 ### 2. Metric Computation Across Folds
 For an arbitrary evaluation metric $\mathcal{M}(f, \mathcal{S})$ (e.g., ROC-AUC, Average Precision, Negative Log-Loss, Accuracy):
@@ -134,6 +169,7 @@ $$
 $$
 
 ### 3. Generalization Gap and Asymptotic Limits
+
 The empirical generalization gap at sample size $N_j$ is defined as:
 
 $$
@@ -155,6 +191,12 @@ $$
 s^*_{\mathrm{Bayes}} - s^*_{\mathcal{H}} = \text{Approximation Error (Bias)}
 $$
 
+
+
+<br><br>
+
+
+
 ## [Detailed Technical Explanations of Core Concepts]()
 
 
@@ -166,7 +208,8 @@ $$
 - **Limitations:** If the training score drops abruptly below task-acceptable levels at small $N$, the optimization algorithm may be failing to converge.
 - **Component Relationship:** Governs the narrowing of the generalization gap $\Delta(N)$ before convergence.
 
----
+
+<br>
 
 ### 2. High Bias (Underfitting) Signature
 - **What It Is:** An asymptotic regime where both training and validation curves converge early to an unacceptably low score plateau with a negligible gap $\Delta(N) \approx 0$.
@@ -176,17 +219,25 @@ $$
 - **Limitations:** A low score plateau can occasionally result from extreme label noise rather than model inflexibility; data quality audits must accompany this diagnosis.
 - **Component Relationship:** Resolved upstream by feature engineering, increasing model complexity (e.g., switching from linear models to GBDTs/neural networks), or reducing regularization penalties.
 
----
+
+<br>
 
 ### 3. High Variance (Overfitting) Signature
-- **What It Is:** An asymptotic regime characterized by a high training score, a substantially lower validation score (large gap $\Delta(N) \gg 0$), and a **positive validation slope** ($\frac{d\bar{s}_{\mathrm{val}}}{dN} > 0$) at the maximum available $N$.
+- **What It Is:** An asymptotic regime characterized by a high training score, a substantially lower validation score (large gap $\Delta(N) \gg 0$), and a **positive validation slope** ($\frac{d\bar{s}_{\mathrm{val}}}{dN} $ >  $0$) at the maximum available $N$.
+  
 - **How It Works:** The model has sufficient capacity to capture complex interactions, but the number of available observations is insufficient to tightly constrain all free parameters, leading to variance across sample draws.
+- 
 - **Why It Matters:** Serves as empirical proof that **investing in additional training data will directly yield performance gains**.
+- 
 - **When It Is Useful:** Justifying data collection budgets, active learning initiatives, or synthetic data generation pipelines.
+- 
 - **Limitations:** If acquiring additional data is impossible or cost-prohibitive, high variance must be mitigated through inductive bias (regularization, dropout, pruning).
+- 
 - **Component Relationship:** Directly connected to model regularization and feature selection strategies.
 
----
+
+<br>
+
 
 ### 4. Saturated Learning Regime (Diminishing Marginal Returns)
 - **What It Is:** The state where the validation curve has reached a flat horizontal slope ($\frac{d\bar{s}_{\mathrm{val}}}{dN} \approx 0$) at an acceptable performance level.
@@ -195,6 +246,11 @@ $$
 - **When It Is Useful:** Establishing stopping criteria for data labeling and setting baseline dataset sizes for production retraining pipelines.
 - **Limitations:** A plateau is relative to the current feature set and model family; a radically different architecture (e.g., large pretrained foundation model) might establish a new, higher ceiling.
 - **Component Relationship:** Triggers the transition from exploratory experimentation to deployment, inference latency optimization, and MLOps monitoring.
+
+
+
+
+<br><br>
 
 ## [Empirical Sample Scaling Economics]()
 
@@ -208,13 +264,27 @@ Consider the concrete quantitative experiment presented in the Class 11 lecture,
 | **2,000** | $0.850$ | $+0.010$ ($+1.0\%$) | $2\times$ previous ($20\times$ base) | **Inflection Point:** Slower returns; near optimal plateau |
 | **4,000** | $0.855$ | $+0.005$ ($+0.5\%$) | $2\times$ previous ($40\times$ base) | **Diminishing Returns:** $2\times$ compute cost for $+0.005$ gain |
 
+
+
+
+<br>
+
 ### Economic Decision Analysis
+
 $$
 \text{Marginal ROI} = \frac{\Delta \bar{s}_{\mathrm{val}}}{\Delta \text{Cost}(N)}
 $$
+
+
+<br>
+
 - Doubling data from $100 \to 500$ yields $+10\%$ improvement for moderate labeling expense.
 - Doubling data from $2,000 \to 4,000$ requires doubling cloud memory, storage, GPU/CPU hours, and labeling payroll for a negligible gain of $+0.005$.
 - **Strategic Decision:** Terminating data acquisition at $N = 1,000$ or $N = 2,000$ represents the optimal engineering and financial trade-off.
+
+
+
+<br><br>
 
 ## [Master Decision Matrix]()
 
@@ -223,6 +293,10 @@ $$
 | **Low training score, low validation score, small gap, early flat plateau** | **High Bias** *(Underfitting)* | Hypothesis class $\mathcal{H}$ lacks capacity; insufficient features | **DO NOT collect more data.** Switch to more expressive model, engineer domain features, reduce regularization. |
 | **High training score, lower validation score, large gap, positive validation slope** | **High Variance** *(Overfitting)* | Sample size $N$ is insufficient to constrain model parameters | **COLLECT MORE DATA.** If cost-prohibitive, apply L1/L2 regularization, feature selection, or tree pruning. |
 | **High training score, high validation score, small gap, horizontal plateau** | **Optimal Fit** *(Saturated)* | Model has extracted maximum signal for current feature space | **STOP data collection.** Freeze dataset size, optimize inference latency, proceed to deployment. |
+
+
+
+<br><br>
 
 ## [Architecture and ML Pipeline]()
 
@@ -253,9 +327,15 @@ flowchart TD
     class L,M,N,O branch;
 ```
 
+
+
+<br><br>
+
 ## [Executable Code Implementation]()
 
 The following production-ready Python implementation utilizes scikit-learn's `learning_curve` strictly encapsulated inside a `Pipeline` to prevent data leakage during subsampling:
+
+<br>
 
 ```python
 import numpy as np
@@ -299,10 +379,22 @@ for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
     print(f"{n:10d} | {tr:14.4f} | {va:14.4f} | {tr - va:10.4f}")
 ```
 
+
+
+<br>
+
 ### Explanatory Implementation Details
+
 - **`train_sizes=np.linspace(0.1, 1.0, 8)`:** Evaluates 8 discrete training sizes. Using at least 6–8 evaluation points ensures a smooth, readable curve that clearly exposes saturation knees.
+
 - **`cv=5`:** Performs 5-fold cross-validation at each subsample size, ensuring that validation scores reflect true out-of-fold generalization rather than random split noise.
-- **`Pipeline` Encapsulation:** Enforces that feature scalers and transformers are fitted *only* on the active subsampled training slice $T_{k, N_j}$, eliminating optimistic distribution leakage into held-out validation folds.
+
+'- **`Pipeline` Encapsulation:** Enforces that feature scalers and transformers are fitted *only* on the active subsampled training slice $T_{k, N_j}$, eliminating optimistic distribution leakage into held-out validation folds.
+
+
+
+<br><br>
+
 
 ## [Common Pitfalls and Best Practices]()
 
@@ -313,12 +405,27 @@ for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
 4. **Constructing learning curves outside a Pipeline:** Applying transformations (e.g., standard scaling, one-hot encoding, imputation) prior to subsampling leaks distribution parameters into the validation folds.
 5. **Ignoring temporal regime changes (concept drift):** In time-dependent domains, training on 10 years of historical data (e.g., pre-pandemic records) can degrade generalization if underlying consumer behavior has shifted.
 
+
+
+
+<br><br>
+
 ### Best Practices Checklist
+
+
+<br>
+
 - [x] Inspect the **final validation slope** ($\frac{d\bar{s}_{\mathrm{val}}}{dN}$) at the maximum data point before requesting budget.
 - [x] Perform formal bias vs. variance diagnosis **before** committing resources to data acquisition campaigns.
 - [x] Use at least 6–8 evaluation sample points along the $X$-axis for smooth curvature.
 - [x] Wrap estimators and transformers in a `Pipeline` for every evaluation fold.
 - [x] Translate statistical curves into tangible **business decisions** (cost of labeling vs. marginal KPI gain).
+
+
+
+
+
+<br><br>
 
 ## [Technology Stack]()
 
@@ -329,6 +436,11 @@ for n, tr, va in zip(train_sizes_abs, train_mean, val_mean):
 | **Data Processing** | NumPy, Pandas | Array slicing, linear spacing, table generation |
 | **Visualization** | Matplotlib / Seaborn | Diagnostic dual-curve visualization |
 | **Architecture** | Git / GitHub | Reproducible technical documentation and version control |
+
+
+
+<br><br>
+
 
 ## [Installation and Usage]()
 
@@ -346,18 +458,34 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install scikit-learn numpy pandas matplotlib
 ```
 
+
+
+<br><br>
+
 ### Execution
+
 Run the standalone diagnostic script or Jupyter notebook:
+
+
 ```bash
 python scripts/run_learning_curve.py
 ```
 
-## [References]()
+
+<br><br>
+
+
+'## [References]()
 
 1. Thibes Vieira, G. G. T. *Ciência de Dados 1 · Curvas de Aprendizado: Vale a pena coletar mais dados? (Aula 11)*. Pontifical Catholic University of São Paulo (PUC-SP), 2026.
 2. Scikit-Learn Documentation. *Validation curves and learning curves: Plotting scores to evaluate models*. [https://scikit-learn.org/stable/modules/learning_curve.html](https://scikit-learn.org/stable/modules/learning_curve.html).
 3. Scikit-Learn API Reference. `sklearn.model_selection.learning_curve`. [https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.learning_curve.html](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.learning_curve.html).
 4. Hastie, T., Tibshirani, R., & Friedman, J. *The Elements of Statistical Learning: Data Mining, Inference, and Prediction*. Springer, 2nd ed., 2009.
+
+
+
+<br><br
+
 
 ## [Conclusion]()
 
