@@ -19,3 +19,5 @@
 - [class_10](https://symphonious-pegasus-931006.netlify.app) - Validation Curve II
 - [class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve I
 
+- - [class_111](https://exquisite-raindrop-438ea7.netlify.app/) - Learning Curves - is it worth collecting more data?
+
