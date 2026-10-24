@@ -104,6 +104,16 @@ https://github.com/user-attachments/assets/ba85dd3e-37e8-4f16-a3e3-7222d03ed011
 <br><br>
 
 
+[Class 11]() - Learning Curves - is it worth collecting more data ?
+
+
+
+### 📺 [You Tube](https://youtu.be/YTBqip5UqK4?si=FCIcKaDs6VSCiBtY)
+
+<br><br>
+
+
+
 <!--
 ## Week 3 — Classification Metrics I
 
