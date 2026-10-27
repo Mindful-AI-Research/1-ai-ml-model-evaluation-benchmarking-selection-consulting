@@ -120,7 +120,7 @@ This hub is designed to:
 
 <br><br>
 
-## [Table of Contents]()
+## Table of Contents
 
 - [Repository Mission](#repository-mission)
 - [Why This Course Matters](#why-this-course-matters)
