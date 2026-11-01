@@ -1,4 +1,4 @@
-# CD1 — Aula 11: Curvas de aprendizado
+Aula 11: Curvas de aprendizado
 
 ## Gabarito
 
@@ -23,14 +23,8 @@ Registro do gabarito apresentado na conversa. As alternativas seguem a ordem inf
 | 15 | 3ª | Observar a inclinação final da validação: se ainda sobe, mais dados podem render; se estabilizou, o ganho tende a ser pequeno. |
 | 16 | 4ª | Pedir mais dados quando as curvas estão juntas num patamar baixo, indicando viés alto. |
 
-## Observação sobre a questão 16
 
-O item acima reproduz o gabarito anterior. Sem o enunciado completo, não é possível determinar se a questão pede uma conduta correta ou a identificação de um erro.
-
-## Sugestão para o campo de dúvida
+Dúvida
 
 > Como podemos verificar se a melhora na validação ao aumentar os dados é real ou apenas variação entre as dobras, especialmente quando as faixas de desvio-padrão se sobrepõem?
 
-## Origem
-
-Material transcrito da resposta anterior nesta conversa, referente ao formulário “CD1 — Aula 11: Curvas de aprendizado”. Não constitui gabarito oficial.
