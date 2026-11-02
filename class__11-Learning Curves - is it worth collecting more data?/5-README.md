@@ -475,7 +475,7 @@ python scripts/run_learning_curve.py
 <br><br>
 
 
-'## [References]()
+## [References]()
 
 1. Thibes Vieira, G. G. T. *Ciência de Dados 1 · Curvas de Aprendizado: Vale a pena coletar mais dados? (Aula 11)*. Pontifical Catholic University of São Paulo (PUC-SP), 2026.
 2. Scikit-Learn Documentation. *Validation curves and learning curves: Plotting scores to evaluate models*. [https://scikit-learn.org/stable/modules/learning_curve.html](https://scikit-learn.org/stable/modules/learning_curve.html).
