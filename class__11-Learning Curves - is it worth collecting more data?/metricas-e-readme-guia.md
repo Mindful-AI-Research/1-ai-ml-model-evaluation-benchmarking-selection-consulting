@@ -2,7 +2,7 @@
 
 Este guia apresenta de forma clara e estruturada os conceitos essenciais para a avaliação de modelos de classificação em ciência de dados e a criação de documentações de projetos no GitHub utilizando Markdown e LaTeX.
 
----
+<br><br>
 
 ## 1. Avaliação de Modelos de Classificação
 
@@ -22,7 +22,7 @@ A Matriz de Confusão categoriza os resultados do modelo em quatro cenários fun
 *   **Falso Positivo ($FP$):** Instância negativa incorretamente prevista como positiva.
 *   **Falso Negativo ($FN$):** Instância positiva incorretamente prevista como negativa.
 
----
+<br><br>
 
 ### 1.2. Principais Métricas de Desempenho
 
@@ -66,7 +66,7 @@ $$
 F_1 = 2 \cdot \frac{\text{Precisão} \cdot \text{Recall}}{\text{Precisão} + \text{Recall}}
 $$
 
----
+<br><br>
 
 ### 1.3. A Métrica F-beta ($F_\beta$)
 
@@ -80,7 +80,7 @@ $$
 *   **$\beta > 1$ (ex: $F_2$):** Confere maior peso ao **recall**, priorizando a redução de Falsos Negativos ($FN$).
 *   **$\beta < 1$ (ex: $F_{0.5}$):** Confere maior peso à **precisão**, priorizando a redução de Falsos Positivos ($FP$).
 
----
+<br><br>
 
 ### 1.4. Limiar de Decisão (Decision Threshold)
 
@@ -89,45 +89,3 @@ O limiar de decisão define o valor de probabilidade acima do qual a classe posi
 *   **Reduzir o limiar:** Aumenta o **recall** e reduz os Falsos Negativos, mas reduz a **precisão**.
 *   **Aumentar o limiar:** Aumenta a **precisão** e reduz os Falsos Positivos, mas reduz o **recall**.
 
----
-
-## 2. Guia Prático para Escrita de README no GitHub
-
-Um arquivo `README.md` de qualidade organiza o projeto de forma acessível para colaboradores e revisores.
-
-### 2.1. Estrutura Recomendada
-
-1.  **Título e Descrição:** Objetivo principal e contexto do projeto.
-2.  **Badges:** Selos com status de compilação, versão e licença.
-3.  **Funcionalidades:** Recursos e capacidades do software.
-4.  **Instalação e Uso:** Comandos claros passo a passo para execução do ambiente.
-5.  **Tecnologias:** Linguagens, bibliotecas e frameworks utilizados.
-
----
-
-### 2.2. Sintaxe de Formatação Markdown
-
-| Elemento | Sintaxe Markdown | Exemplo de Uso |
-| :--- | :--- | :--- |
-| **Título** | `# Título` | `# Meu Projeto` |
-| **Subtítulo** | `## Subtítulo` | `## Instalação` |
-| **Negrito** | `**Texto**` | `**Importante**` |
-| **Itálico** | `*Texto*` | `*Destaque*` |
-| **Código Inline** | `` `código` `` | `` `python main.py` `` |
-| **Link** | `[Texto](URL)` | `[GitHub](https://example.com)` |
-| **Lista** | `- Item` | `- Primeira etapa` |
-
----
-
-### 2.3. Equações em LaTeX no GitHub
-
-No GitHub Flavored Markdown, a notação matemática é renderizada nativamente:
-
-*   **Inline:** `$ ... $` para fórmulas no corpo do texto.
-*   **Bloco (Display):** `$$ ... $$` em linhas separadas para destacar fórmulas centralizadas.
-
-Exemplo de bloco de fórmula matemática em Markdown:
-
-$$
-F_\beta = (1 + \beta^2) \cdot \frac{\text{Precisão} \cdot \text{Recall}}{(\beta^2 \cdot \text{Precisão}) + \text{Recall}}
-$$
