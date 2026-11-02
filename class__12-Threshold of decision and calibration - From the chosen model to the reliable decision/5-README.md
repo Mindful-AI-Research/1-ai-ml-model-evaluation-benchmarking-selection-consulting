@@ -12,10 +12,10 @@
 <br><br>
 
 <p align="center">
-<img src="[https://img.shields.io/badge/Class-12-101f2f?style=for-the-badge&labelColor=022c22](https://img.shields.io/badge/Class-12-101f2f?style=for-the-badge&labelColor=022c22)" alt="Class 12">
-<img src="[https://img.shields.io/badge/Topic-Decision%20Threshold%20%26%20Calibration-0f766e?style=for-the-badge&labelColor=022c22](https://img.shields.io/badge/Topic-Decision%20Threshold%20%26%20Calibration-0f766e?style=for-the-badge&labelColor=022c22)" alt="Topic: Decision Threshold & Calibration">
-<img src="[https://img.shields.io/badge/Decision-Cost--Sensitive%20Optimization-123445?style=for-the-badge&labelColor=022c22](https://img.shields.io/badge/Decision-Cost--Sensitive%20Optimization-123445?style=for-the-badge&labelColor=022c22)" alt="Cost-Sensitive Optimization">
-<img src="[https://img.shields.io/badge/Framework-scikit--learn-134e4a?style=for-the-badge&labelColor=022c22](https://img.shields.io/badge/Framework-scikit--learn-134e4a?style=for-the-badge&labelColor=022c22)" alt="scikit-learn">
+  <img src="https://img.shields.io/badge/Class-12-101f2f?style=for-the-badge&amp;labelColor=022c22" alt="Class 12">
+  <img src="https://img.shields.io/badge/Topic-Decision%20Threshold%20%26%20Calibration-0f766e?style=for-the-badge&amp;labelColor=022c22" alt="Topic: Decision Threshold &amp; Calibration">
+  <img src="https://img.shields.io/badge/Decision-Cost--Sensitive%20Optimization-123445?style=for-the-badge&amp;labelColor=022c22" alt="Cost-Sensitive Optimization">
+  <img src="https://img.shields.io/badge/Framework-scikit--learn-134e4a?style=for-the-badge&amp;labelColor=022c22" alt="scikit-learn">
 </p>
 
 > **Class Context:** This master repository documents Class 12 (*Decision Threshold and Model Calibration — From the Chosen Model to the Reliable Business Decision*) from the Human-Centered AI & Data Science curriculum. It establishes the mathematical, architectural, and engineering pipeline to decouple raw ranking capability ($\text{ROC-AUC}$) from probability calibration and cost-sensitive decision threshold tuning.
