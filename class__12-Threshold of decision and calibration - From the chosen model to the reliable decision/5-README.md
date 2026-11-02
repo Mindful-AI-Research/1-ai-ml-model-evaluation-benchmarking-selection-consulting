@@ -20,7 +20,7 @@
 
 > **Class Context:** This master repository documents Class 12 (*Decision Threshold and Model Calibration — From the Chosen Model to the Reliable Business Decision*) from the Human-Centered AI & Data Science curriculum. It establishes the mathematical, architectural, and engineering pipeline to decouple raw ranking capability ($\text{ROC-AUC}$) from probability calibration and cost-sensitive decision threshold tuning.
 
-***
+<br><br>
 
 ## 📋 Table of Contents
 
@@ -42,7 +42,7 @@
 16. [References](#16-references)
 17. [Conclusion](#17-conclusion)
 
-***
+<br><br>
 
 ## 1. Repository Identity
 
@@ -54,7 +54,7 @@
 | **Lesson** | Class 12 — Decision Threshold and Calibration: From the Chosen Model to the Reliable Decision |
 | **Ecosystem** | Human Understanding (HU) / AI & Machine Learning Course Series |
 
-***
+<br><br>
 
 ## 2. Source Audit & Evidence Boundaries
 
@@ -70,7 +70,7 @@
 - **Conceptual:** Mathematical derivation of ROC-AUC integral, Brier Score decomposition, Platt scaling, and isotonic regression theory.
 - **Recommended:** Single-pass holdout test evaluation, automated calibration validation in MLOps CI/CD pipelines, and clinical recall safety constraints ($\text{Recall} \ge 90\%$).
 
-***
+<br><br>
 
 ## 3. Overview & The Core Engineering Dilemma
 
@@ -87,7 +87,7 @@ To build reliable decision systems, ML engineers must decouple model evaluation 
 - **Pillar 1: Pure Ranking Ability (Discrimination):** How well the model separates positive cases from negative cases across all possible decision boundaries, measured via $\text{ROC-AUC}$.
 - **Pillar 2: Probabilistic Honesty (Calibration):** Whether a predicted confidence of $80\%$ genuinely corresponds to an empirical $80\%$ positive rate, measured via Reliability Diagrams (`calibration_curve`).
 
-***
+<br><br>
 
 ## 4. Mathematical Foundations & Metrics Formulation
 
@@ -111,7 +111,7 @@ $$\text{F}_\beta = (1 + \beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall
 - $\beta = 2$: Prioritizes **Recall** by penalizing False Negatives ($\text{FN}$) more heavily.
 - $\beta = 0.5$: Prioritizes **Precision** by penalizing False Positives ($\text{FP}$) more heavily.
 
-***
+<br><br>
 
 ### 4.2 Receiver Operating Characteristic & AUC Derivation
 The Receiver Operating Characteristic ($\text{ROC}$) curve plots the True Positive Rate ($\text{TPR}$) against the False Positive Rate ($\text{FPR}$) across the continuum of decision thresholds $\tau \in $:[0][1]
@@ -124,7 +124,7 @@ $$\text{ROC-AUC} = P(f(x^+) > f(x^-)) = \int_{0}^{1} \text{TPR}\left(\text{FPR}^
 
 Because $\text{ROC-AUC}$ evaluates ranking across all thresholds, it is invariant to the choice of operating threshold $\tau$ and immune to class imbalance skew.
 
-***
+<br><br>
 
 ### 4.3 Asymmetric Operational Cost Function
 In business and medical systems, decision boundaries must minimize expected financial and operational loss:
@@ -139,7 +139,7 @@ The optimal decision threshold $\tau^*$ is obtained via empirical risk minimizat
 
 $$\tau^* = \operatorname*{arg\,min}_{\tau \in (0, 1)} \left[ 1.0 \cdot \text{FP}(\tau) + 5.0 \cdot \text{FN}(\tau) \right]$$
 
-***
+<br><br>
 
 ### 4.4 Logarithmic Loss & Brier Score Calibration Metric
 Probabilistic accuracy is evaluated via Logarithmic Loss (Binary Cross-Entropy):
@@ -154,11 +154,12 @@ $$\text{BS} = \frac{1}{N} \sum_{i=1}^{N} (\hat{p}_i - y_i)^2 = \text{Reliability
 
 A perfectly calibrated model achieves a Reliability component of zero.
 
-***
+<br><br>
 
 ## 5. Detailed Technical Explanations of Core Concepts
 
-### 1. Separation of Ranking from Thresholding
+### 5.1. Separation of Ranking from Thresholding
+
 - **What It Is:** The architectural rule that model selection must be based on raw score ranking ($\text{ROC-AUC}$), while decision boundary placement ($\tau$) is a distinct post-training optimization step.
 - **How It Works:** We train candidate models and compare their $\text{ROC-AUC}$ on cross-validation folds. Once the top-ranking architecture is selected, we sweep $\tau \in [0.01, 0.99]$ against the business cost matrix.
 - **Why It Matters:** Eliminates the arbitrary $0.50$ cutoff artifact and prevents discarding high-performing models whose default threshold happens to be mismatched with class priors.
@@ -166,9 +167,10 @@ A perfectly calibrated model achieves a Reliability component of zero.
 - **Limitations:** A model with high ROC-AUC may still produce uncalibrated probability values; calibration must be verified independently.
 - **Component Relationship:** Forms the foundation of Step 1 in the MLOps evaluation lifecycle.
 
-***
+<br><br>
 
-### 2. Cost-Sensitive Threshold Sweeping
+### 5.2. Cost-Sensitive Threshold Sweeping
+
 - **What It Is:** An algorithmic optimization procedure that sweeps decision cutoff $\tau$ on validation data to identify the point of minimum financial or clinical loss.
 - **How It Works:** For each candidate threshold $\tau_j$, predicted probabilities $\hat{p}_i$ are converted to binary labels $\hat{y}_i = \mathbb{I}(\hat{p}_i \ge \tau_j)$. Confusion matrix elements $\{\text{TN}, \text{FP}, \text{FN}, \text{TP}\}$ are computed, and total operational cost is calculated. The threshold minimizing total cost is selected as $\tau^*$.
 - **Why It Matters:** In the demonstrated clinical case study, shifting from $\tau = 0.50$ to $\tau = 0.14$ reduced total error cost from **182 to 102 (a 44% reduction)**, increasing disease recall from **47.8% to 89.6%**.
@@ -176,9 +178,10 @@ A perfectly calibrated model achieves a Reliability component of zero.
 - **Limitations:** $\tau^*$ must be computed **strictly on validation data**. Tuning $\tau^*$ directly on the test set causes threshold data leakage and overly optimistic performance estimates.
 - **Component Relationship:** Bridges model outputs to downstream decision engines and automation workflows.
 
-***
+<br><br>
 
-### 3. Probability Calibration & Reliability Diagrams
+### 5.3. Probability Calibration & Reliability Diagrams
+
 - **What It Is:** The degree of agreement between predicted risk estimates $\hat{p}$ and true empirical event frequency $P(Y=1 | \hat{p}=p)$.
 - **How It Works:** Predicted probabilities are partitioned into $M$ discrete bins (e.g., $10$ bins spanning $[0.0, 0.1], [0.1, 0.2], \dots$). For each bin, the mean predicted probability is plotted against the empirical fraction of positives. A perfectly calibrated model aligns with the $45^\circ$ diagonal.
 - **Why It Matters:** Clinicians and risk officers make dosing and underwriting decisions based on actual percentage estimates (e.g., "80% risk"). A model with $0.95$ ROC-AUC whose 80% predictions only correspond to 40% true illness creates critical operational liability.
@@ -186,19 +189,24 @@ A perfectly calibrated model achieves a Reliability component of zero.
 - **Limitations:** Binning requires sufficient sample sizes per bin to avoid noisy estimates.
 - **Component Relationship:** Governs the validity of Step 2 before applying cost thresholding.
 
-***
+<br><br>
 
-### 4. Ensemble Probability Compression
+### 5.4. Ensemble Probability Compression
+
 - **What It Is:** The mathematical tendency of bagging ensembles (e.g., Random Forests with 200 trees) to compress predicted probabilities toward the baseline prevalence rate, rarely outputting extreme values ($> 0.70$ or $< 0.10$).
+  
 - **How It Works:** A Random Forest prediction is the arithmetic mean of individual tree votes:
+  
   $$\hat{p}_{\text{RF}}(x) = \frac{1}{B} \sum_{b=1}^{B} \hat{p}_b(x)$$
+  
   For $\hat{p}_{\text{RF}}$ to reach $0.95$, nearly all 200 trees must unanimously predict $1.0$. Due to bootstrap sample variance and feature subsampling, some trees will inevitably disagree, compressing probabilities into the $[\sim 0.15, 0.67]$ range.
+  
 - **Why It Matters:** Explains why complex ensembles often exhibit severe miscalibration despite superior ROC-AUC.
 - **When It Is Useful:** Diagnosing why ensemble predictions feel "timid" or unconfident in critical cases.
 - **Limitations:** Can be recalibrated post-hoc (via Isotonic Regression or Platt Scaling), but post-hoc recalibration adds complexity and sample variance.
 - **Component Relationship:** Informs the engineering guideline: *prefer naturally calibrated architectures (`LogisticRegression`) over complex ensembles requiring post-hoc repairs when probabilistic honesty is paramount.*
 
-***
+<br><br>
 
 ## 6. Model Benchmarking & Selection (ROC-AUC)
 
@@ -217,7 +225,7 @@ $$\text{Threshold}_{\text{cutoff}} = \text{Top Mean} - 1\sigma = 0.960 - 0.014 =
 
 The upper bound of Random Forest ($0.945 + 0.025 = 0.970$) overlaps with the top performer. However, **Logistic Regression** is definitively selected as the production champion due to its significantly lower variance ($\sigma = 0.014$ vs. $0.025$) and native probabilistic calibration.
 
-***
+<br><br>
 
 ## 7. Cost-Sensitive Decision Threshold Optimization
 
@@ -245,7 +253,7 @@ Cost
        0.05    0.14    0.20    0.35    0.50    0.80
 ```
 
-***
+<br><br>
 
 ## 8. Probability Calibration & Model Honesty
 
@@ -265,7 +273,7 @@ Empirical P(Y=1)
 - **`LogisticRegression`:** Follows the 45° diagonal almost perfectly. When it predicts $80\%$ probability, exactly $80$ out of $100$ patients possess the condition.
 - **`RandomForestClassifier`:** Suffers from ensemble probability compression. Even for patients with severe symptoms, predictions rarely exceed $67\%$ because unanimous agreement across 200 bootstrap trees is statistically rare.
 
-***
+<br><br>
 
 ## 9. MLOps Evaluation Architecture & Workflow
 
@@ -305,7 +313,7 @@ flowchart TD
     class C locked;
 ```
 
-***
+<br><br>
 
 ## 10. End-to-End Executable Implementation
 
@@ -371,7 +379,7 @@ print(f"Default Cutoff (0.50) -> Total Cost: {cost_default_test:3.0f} | Cost/Pat
 print(f"Optimal Cutoff ({optimal_tau:.2f}) -> Total Cost: {cost_optimal_test:3.0f} | Cost/Patient: {cost_optimal_test/len(y_test):.4f}")
 ```
 
-***
+<br><br>
 
 ## 11. Empirical Results & Test Set Verification
 
@@ -386,24 +394,26 @@ $$\text{Cost per Patient} = \frac{\text{Total Operational Cost}}{N_{\text{evalua
 | **Holdout Test Set (Default)** | $0.50$ | 46 | 0.307 | Unseen Verification |
 | **Holdout Test Set (Optimal $\tau^*$)** | **$0.14$** | **25** | **0.167** | **Generalization Confirmed (45.6% Reduction)** |
 
-***
+<br><br>
 
 ## 12. Common Pitfalls & Engineering Best Practices
 
 ### Common Pitfalls
+
 1. **Blindly applying $\tau = 0.50$:** Assuming the default framework cutoff is optimal for imbalanced or high-stakes business environments.
 2. **Threshold Tuning on the Test Set:** Sweeping $\tau$ on test data constitutes threshold data leakage, destroying the statistical independence of the final evaluation.
 3. **Conflating Ranking with Calibration:** Believing that an ROC-AUC of $0.96$ implies well-calibrated probabilities. Tree ensembles often rank well while emitting severely compressed probabilities.
 4. **Optimizing Accuracy on Imbalanced Data:** A model predicting $100\%$ negative on a $15\%$ prevalence dataset achieves $85\%$ accuracy while killing all clinical utility.
 
 ### Best Practices Checklist
+
 - [x] Select model architecture based on **ROC-AUC** across cross-validation folds.
 - [x] Plot a **Reliability Diagram (`calibration_curve`)** to audit probability honesty.
 - [x] Formulate an explicit **Operational Cost Function** with domain stakeholders.
 - [x] Sweep and lock optimal threshold $\tau^*$ **strictly on validation data**.
 - [x] Perform a **single-pass audit** on the untouched holdout test partition.
 
-***
+<br><br>
 
 ## 13. Responsible AI & Clinical Governance
 
@@ -411,7 +421,7 @@ $$\text{Cost per Patient} = \frac{\text{Total Operational Cost}}{N_{\text{evalua
 2. **Probability Honesty & Human-in-the-Loop:** Doctors, credit underwriters, and judges make nuanced decisions based on calibrated risk percentages. Miscalibrated probability outputs create direct legal and ethical liability.
 3. **Data Governance & Transparency:** All thresholds, cost matrices, and calibration plots must be versioned and auditable within MLOps model cards under HIPAA/LGPD compliance frameworks.
 
-***
+<br><br>
 
 ## 14. Technology Stack
 
@@ -423,7 +433,7 @@ $$\text{Cost per Patient} = \frac{\text{Total Operational Cost}}{N_{\text{evalua
 | **Visualization & Reporting** | `Matplotlib`, `Seaborn` | Reliability diagrams, ROC curves, operational cost curves |
 | **Architecture & Diagrams** | `Mermaid.js` | MLOps sequential evaluation flowcharts |
 
-***
+<br><br>
 
 ## 15. Installation & Usage
 
@@ -446,7 +456,7 @@ pip install scikit-learn numpy pandas matplotlib
 python scripts/run_calibration_and_threshold.py
 ```
 
-***
+<br><br>
 
 ## 16. References
 
