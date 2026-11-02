@@ -240,6 +240,10 @@ Sweeping decision boundary $\tau$ across validation folds under the asymmetric c
 | 0.35 | 532 | 15 | 22 | 45 | 0.750 | 0.672 | $15 + 5(22) = \mathbf{125}$ |
 | **0.50 (Default Cutoff)** | **540** | **7** | **35** | **32** | **0.821** | **0.478** | **$7 + 5(35) = \mathbf{182}$** |
 
+
+<br><br>
+
+
 ```
 Operational Cost Curve vs. Decision Threshold tau:
 Cost
@@ -269,6 +273,10 @@ Empirical P(Y=1)
     0.0      0.2      0.4      0.6      0.8      1.0
 ```
 
+
+<br><br>
+
+
 ### Architectural Comparison
 - **`LogisticRegression`:** Follows the 45° diagonal almost perfectly. When it predicts $80\%$ probability, exactly $80$ out of $100$ patients possess the condition.
 - **`RandomForestClassifier`:** Suffers from ensemble probability compression. Even for patients with severe symptoms, predictions rarely exceed $67\%$ because unanimous agreement across 200 bootstrap trees is statistically rare.
@@ -278,6 +286,8 @@ Empirical P(Y=1)
 ## 9. MLOps Evaluation Architecture & Workflow
 
 To eliminate data leakage, the decision threshold $\tau^*$ and probability calibration must be optimized strictly within cross-validation folds before a single final evaluation on the untouched test set:
+
+<br><br>
 
 ```mermaid
 flowchart TD
@@ -316,6 +326,8 @@ flowchart TD
 <br><br>
 
 ## 10. End-to-End Executable Implementation
+
+<br><br>
 
 ```python
 import numpy as np
@@ -467,7 +479,7 @@ python scripts/run_calibration_and_threshold.py
 5. **Zadrozny, B., & Elkan, C.** (2002). *Transforming classifier scores into accurate multiclass probability estimates*. ACM SIGKDD.
 6. **Pedregosa, F., et al.** (2011). *Scikit-learn: Machine Learning in Python*. Journal of Machine Learning Research (JMLR).
 
-***
+<br><br>
 
 ## 17. Conclusion
 
