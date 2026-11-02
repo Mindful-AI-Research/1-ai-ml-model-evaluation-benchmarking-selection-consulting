@@ -1,3 +1,6 @@
+O código completo do **`index.html`** da **Class 12 — Decision Threshold Optimization & Probability Calibration** está estruturado em **React 18 Modular** em arquivo único e autocontido:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,14 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Class 12 · Decision Threshold & Probability Calibration · Mindful AI</title>
   <meta name="description" content="Interactive React Presentation for Class 12 — Decision Threshold Optimization & Probability Calibration. PUC-SP & Mindful AI Research." />
-
+  
   <!-- React 18 & Babel Standalone via CDN -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-
 :root {
   --bg-primary: #03070c;
   --bg-card: #0c1826;
@@ -170,6 +172,12 @@ html, body {
 .custom-table tr:last-child td { border-bottom: none; }
 .custom-table tr:hover td { background: rgba(255, 255, 255, 0.02); color: var(--text-primary); }
 
+.highlight-row td {
+  background: rgba(100, 224, 205, 0.08) !important;
+  color: var(--accent-teal) !important;
+  font-weight: 500;
+}
+
 .flow-container { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 26px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 18px; margin-top: 16px; }
 .flow-step { flex: 1; min-width: 140px; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px 12px; text-align: center; }
 .step-index { font-size: 10.5px; font-family: var(--font-mono); color: var(--accent-teal); margin-bottom: 4px; }
@@ -189,6 +197,15 @@ html, body {
 .legend-dot.teal { background: var(--accent-teal); }
 .legend-dot.blue { background: var(--accent-blue); }
 .legend-dot.gold { background: var(--accent-gold); }
+
+.optimal-badge {
+  display: inline-block; background: rgba(100, 224, 205, 0.15); border: 1px solid var(--accent-teal);
+  color: var(--accent-teal); padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-left: 10px;
+}
+.default-badge {
+  display: inline-block; background: rgba(255, 107, 107, 0.15); border: 1px solid var(--accent-red);
+  color: var(--accent-red); padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-left: 10px;
+}
 
 .sim-readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .readout-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; }
@@ -259,321 +276,498 @@ kbd { background: var(--bg-surface); border: 1px solid var(--border-subtle); pad
   .footer-right { display: none; }
   .nav-btn { padding: 8px 12px; font-size: 12px; }
 }
-
-
-.highlight-row td {
-  background: rgba(100, 224, 205, 0.08) !important;
-  color: var(--accent-teal) !important;
-  font-weight: 500;
-}
-
-.optimal-badge {
-  display: inline-block;
-  background: rgba(100, 224, 205, 0.15);
-  border: 1px solid var(--accent-teal);
-  color: var(--accent-teal);
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  margin-left: 10px;
-}
-
-.default-badge {
-  display: inline-block;
-  background: rgba(255, 107, 107, 0.15);
-  border: 1px solid var(--accent-red);
-  color: var(--accent-red);
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  margin-left: 10px;
-}
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const SLIDES_DATA = [{"id": "hero", "eyebrow": "PUC-SP · FACEI · Human-Centered AI & Data Science", "title_en": "Decision Threshold & Calibration\nFrom the Chosen Model to the Reliable Decision", "title_pt": "Limiar de Decisão e Calibração\nDo Modelo Escolhido à Decisão Confiável no Negócio", "subtitle_en": "Bridging raw ROC-AUC discrimination with probability calibration and cost-sensitive decision optimization.", "subtitle_pt": "Unindo capacidade de ordenação ROC-AUC com calibração probabilística e otimização de limiares por custo.", "type": "hero", "meta": [["Course / Disciplina", "Data Science & AI/ML · Model Evaluation, Benchmarking & Selection"], ["Professor", "✨ Giovani Giulio Tristão Thibes Vieira"], ["Author / Autoria", "Fabiana ⚡️ Campanari (2026)"]]}, {"id": "motivation", "eyebrow": "01 · Overview & Motivation / Visão Geral", "title_en": "The Fallacy of the Default 0.50 Threshold", "title_pt": "A Falácia do Limiar Neutro de 0,50", "subtitle_en": "Standard software defaults fail under class imbalance and asymmetric real-world error costs.", "subtitle_pt": "Cortes padrões de software falham sob desbalanceamento de classes e custos assimétricos de erro.", "cards": [["The 0.50 Blindspot / O Ponto Cego do 0,50", "Assuming a 0.50 cutoff assumes 50/50 balanced data and equal costs. In medical triage (15% prevalence), 0.50 misses >52% of sick patients.", "Assumir corte de 0,50 pressupõe dados 50/50 e custos iguais. Na triagem médica (15% prevalência), 0,50 perde >52% dos doentes."], ["Asymmetric Costs / Custos Assimétricos", "False Positive (holding healthy patient for tests = Cost 1.0) vs. False Negative (sending sick patient home = Cost 5.0). Cost(FN) >> Cost(FP).", "Falso Positivo (reter saudável = Custo 1.0) vs. Falso Negativo (enviar doente para casa = Custo 5.0). Custo(FN) >> Custo(FP)."], ["The Two Pillars / Dois Pilares", "1. Pure Ranking Ability (ROC-AUC) + 2. Probabilistic Honesty (Reliability Diagram calibration_curve). Both are essential.", "1. Capacidade de Ordenação (ROC-AUC) + 2. Honestidade Probabilística (Diagrama de Confiabilidade). Ambos são vitais."]]}, {"id": "benchmark", "eyebrow": "02 · Model Selection / Benchmarking", "title_en": "Model Benchmarking & Selection (ROC-AUC)", "title_pt": "Benchmarking e Seleção de Modelos (ROC-AUC)", "subtitle_en": "Logistic Regression wins the benchmark due to superior ranking capability and statistical stability.", "subtitle_pt": "A Regressão Logística vence o benchmark por alta capacidade de ordenação e maior estabilidade estatística.", "table": {"headers": ["Algorithm / Modelo", "Validation ROC-AUC", "Std Deviation (σ)", "Status / Decisão"], "rows": [["Logistic Regression", "0.960", "±0.014", "SELECTED (Winner & Highest Stability)"], ["Random Forest (200 Trees)", "0.945", "±0.025", "Statistical Tie (Higher Variance)"], ["K-Nearest Neighbors (K=15)", "0.940", "±0.021", "Eliminated"], ["Decision Tree", "0.803", "±0.038", "Eliminated"]]}}, {"id": "cost_optimization", "eyebrow": "03 · Threshold Optimization / Otimização por Custo", "title_en": "Sweeping Threshold for Minimal Operational Cost", "title_pt": "Otimização do Limiar por Matriz de Custo", "subtitle_en": "Shifting decision threshold from τ = 0.50 to τ = 0.14 reduces total error cost by 44%.", "subtitle_pt": "Reduzir o limiar de τ = 0,50 para τ = 0,14 reduz o custo operacional de erro em 44%.", "table": {"headers": ["Threshold (τ)", "TN (VN)", "FP (FP)", "FN (FN)", "TP (VP)", "Precision", "Recall", "Total Cost (1·FP + 5·FN)"], "rows": [["0.05", "390", "157", "2", "65", "0.293", "0.970", "157 + 5(2) = 167"], ["0.14 (Optimal τ*)", "480", "67", "7", "60", "0.472", "0.896", "67 + 5(7) = 102 (44% Reduction)"], ["0.20", "510", "37", "14", "53", "0.589", "0.791", "37 + 5(14) = 107"], ["0.35", "532", "15", "22", "45", "0.750", "0.672", "15 + 5(22) = 125"], ["0.50 (Default)", "540", "7", "35", "32", "0.821", "0.478", "7 + 5(35) = 182 (Misses 35 sick!)"]]}}, {"id": "simulator", "eyebrow": "04 · Interactive Simulator / Simulador Interativo", "title_en": "Simulate Cost Curve & Threshold Dynamics", "title_pt": "Simulador de Curva de Custo e Limiar", "subtitle_en": "Drag the decision cutoff slider τ to observe confusion matrix trade-offs and operational loss.", "subtitle_pt": "Arraste o limiar τ para observar as trocas na matriz de confusão e o custo operacional total.", "type": "sim"}, {"id": "calibration", "eyebrow": "05 · Probability Calibration / Calibração", "title_en": "Probability Honesty & Reliability Diagrams", "title_pt": "Honestidade Probabilística e Diagrama de Confiabilidade", "subtitle_en": "High ROC-AUC does not guarantee calibrated probabilities. Understanding ensemble probability compression.", "subtitle_pt": "Alta ROC-AUC não garante probabilidades honestas. Entendendo a compressão em ensembles.", "cards": [["Logistic Regression (Naturally Calibrated)", "Follows the 45° diagonal almost perfectly. When it predicts 80% risk, exactly 80 out of 100 patients have the disease. Outputs are honest.", "Segue quase perfeitamente a diagonal de 45°. Quando prevê 80% de risco, exatamente 80 em cada 100 pacientes têm a doença. Probabilidades honestas."], ["Random Forest (Probability Compression)", "Averaging 200 trees pulls probabilities toward the center (~0.15 - 0.67). It rarely exceeds 67% even for critical cases because unanimous tree agreement is rare.", "A média de 200 árvores puxa as probabilidades para o centro (~0,15 - 0,67). Raramente supera 67% mesmo para casos graves por falta de unanimidade."], ["MLOps Architecture Rule", "Prefer a naturally calibrated model (Logistic Regression) over post-hoc recalibration hacks on severely distorted models.", "Prefira uma arquitetura naturalmente calibrada (Regressão Logística) a tentar consertar pós-hoc modelos distorcidos."]]}, {"id": "pipeline", "eyebrow": "06 · MLOps Architecture / Arquitetura de Produção", "title_en": "Leakage-Free Decision Engineering Pipeline", "title_pt": "Pipeline de Avaliação Livre de Vazamento", "subtitle_en": "Strict sequential order: Selection → Calibration Audit → Threshold Tuning → Single-Pass Test.", "subtitle_pt": "Ordem sequencial rigorosa: Seleção → Auditoria de Calibração → Ajuste de Limiar → Teste Único.", "flow": [["1. Select Architecture (ROC-AUC)", "1. Selecionar Arquitetura (ROC-AUC)"], ["2. Audit Calibration Curve", "2. Auditar Curva de Calibração"], ["3. Sweep Threshold on Validation", "3. Varrer Limiar na Validação"], ["4. Single-Pass Holdout Test", "4. Avaliação Única no Teste"]]}, {"id": "code_lab", "eyebrow": "07 · Executable Code / Código Prático", "title_en": "End-to-End scikit-learn Implementation", "title_pt": "Implementação Completa em scikit-learn", "subtitle_en": "Copy-paste ready Python code implementing model fitting, threshold sweep, and test evaluation.", "subtitle_pt": "Código Python pronto para execução com treino, varredura de limiar e teste holdout.", "type": "code"}, {"id": "test_verification", "eyebrow": "08 · Empirical Results / Resultados Empíricos", "title_en": "Holdout Test Set Generalization Audit", "title_pt": "Auditoria de Generalização no Teste Holdout", "subtitle_en": "Comparing normalized cost per patient between validation and untouched holdout test partition.", "subtitle_pt": "Comparando o custo normalizado por paciente entre validação e teste holdout intocado.", "table": {"headers": ["Partition / Partição", "Threshold (τ)", "Total Error Cost", "Normalized Cost / Patient", "Impact / Conclusão"], "rows": [["Validation Set (Default)", "0.50", "182", "0.303", "Baseline (High FN penalty)"], ["Validation Set (Optimal τ*)", "0.14", "102", "0.170", "44% Cost Reduction"], ["Holdout Test Set (Default)", "0.50", "46", "0.307", "Unseen Verification"], ["Holdout Test Set (Optimal τ*)", "0.14", "25", "0.167", "Confirmed Generalization (45.6% Gain)"]]}}, {"id": "quiz", "eyebrow": "09 · Knowledge Check / Desafio Interativo", "title_en": "Decision Engineering Scenario", "title_pt": "Desafio de Cenário de Decisão", "subtitle_en": "Test your diagnostic intuition on threshold tuning and data leakage.", "subtitle_pt": "Teste sua intuição técnica sobre ajuste de limiar e vazamento de dados.", "type": "quiz"}, {"id": "conclusion", "eyebrow": "10 · Conclusion / Conclusão e Melhores Práticas", "title_en": "From Raw Models to Reliable Decisions", "title_pt": "Do Modelo Estatístico à Decisão Confiável", "subtitle_en": "Summary of core principles for human-centered, cost-effective machine learning deployment.", "subtitle_pt": "Resumo dos princípios fundamentais para implantação de ML ético e orientado ao custo real.", "cards": [["Never Use 0.50 Blindly / Pare de Usar 0,50 Cegamente", "Default cutoffs assume 50/50 balance and symmetric loss. Always tune τ against a business cost matrix or clinical recall target.", "Cortes default pressupõem dados 50/50 e perdas iguais. Sempre ajuste τ contra a matriz de custo real."], ["Decouple Ranking from Calibration", "ROC-AUC measures pure ranking; calibration_curve measures honesty. Both are required for safety-critical systems.", "ROC-AUC mede ordenação pura; calibration_curve mede honestidade. Ambos são necessários."], ["Never Tune Threshold on Test Data", "Threshold tuning is a hyperparameter optimization. Doing it on test data destroys statistical evaluation independence.", "O ajuste de limiar é uma otimização de hiperparâmetro. Fazer no teste destrói a independência estatística."]]}];
-    const CODE_SNIPPET = "import numpy as np\nimport pandas as pd\nfrom sklearn.datasets import make_classification\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import roc_auc_score, confusion_matrix\n\n# 1. Synthesize Imbalanced Clinical Triage Dataset (15% Prevalence)\nX, y = make_classification(\n    n_samples=3000, n_features=12, n_informative=8,\n    weights=[0.85, 0.15], random_state=42\n)\n\n# 2. Strict Data Partitioning (Train: 60%, Val: 20%, Test: 20%)\nX_train_val, X_test, y_train_val, y_test = train_test_split(\n    X, y, test_size=0.20, random_state=42, stratify=y\n)\nX_train, X_val, y_train, y_val = train_test_split(\n    X_train_val, y_train_val, test_size=0.25, random_state=42, stratify=y_train_val\n)\n\n# 3. Fit Selected Architecture (Logistic Regression)\nmodel = LogisticRegression(C=1.0, solver='lbfgs', max_iter=1000, random_state=42)\nmodel.fit(X_train, y_train)\n\n# 4. Evaluate Ranking Capability (ROC-AUC) on Validation Data\ny_val_proba = model.predict_proba(X_val)[:, 1]\nval_auc = roc_auc_score(y_val, y_val_proba)\nprint(f\"Validation ROC-AUC: {val_auc:.4f}\")\n\n# 5. Cost-Sensitive Threshold Sweep (C_FP = 1.0, C_FN = 5.0)\nthresholds = np.linspace(0.01, 0.99, 100)\ncosts = []\n\nfor tau in thresholds:\n    y_val_pred = (y_val_proba >= tau).astype(int)\n    tn, fp, fn, tp = confusion_matrix(y_val, y_val_pred).ravel()\n    costs.append((1.0 * fp) + (5.0 * fn))\n\noptimal_tau = thresholds[np.argmin(costs)]\nprint(f\"Optimal Threshold (tau*): {optimal_tau:.2f} | Min Validation Cost: {min(costs):.1f}\")\n\n# 6. Single-Pass Verification on Unseen Holdout Test Set\ny_test_proba = model.predict_proba(X_test)[:, 1]\n\n# Default Cutoff (0.50)\ntn_def, fp_def, fn_def, tp_def = confusion_matrix(y_test, (y_test_proba >= 0.50).astype(int)).ravel()\ncost_default_test = (1.0 * fp_def) + (5.0 * fn_def)\n\n# Optimal Cutoff (0.14)\ntn_opt, fp_opt, fn_opt, tp_opt = confusion_matrix(y_test, (y_test_proba >= optimal_tau).astype(int)).ravel()\ncost_optimal_test = (1.0 * fp_opt) + (5.0 * fn_opt)\n\nprint(f\"Default Cutoff (0.50) -> Test Cost: {cost_default_test} | Cost/Patient: {cost_default_test/len(y_test):.4f}\")\nprint(f\"Optimal Cutoff ({optimal_tau:.2f}) -> Test Cost: {cost_optimal_test} | Cost/Patient: {cost_optimal_test/len(y_test):.4f}\")\n";
-
-    
-const { useState, useEffect, useRef } = React;
-
-const ICONS = {
-  home: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m3 10 9-7 9 7v10H3z" />
-      <path d="M9 21v-7h6v7" />
-    </svg>
-  ),
-  theme: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 3v18" />
-    </svg>
-  ),
-  full: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" />
-    </svg>
-  ),
-  help: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-      <path d="M12 17h.01" />
-    </svg>
-  ),
-  copy: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-    </svg>
-  ),
-  check: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  ),
-  arrowLeft: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m15 18-6-6 6-6" />
-    </svg>
-  ),
-  arrowRight: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  )
-};
-
-function ThresholdApp({ slides, codeSnippet }) {
-  const [current, setCurrent] = useState(0);
-  const [lang, setLang] = useState('en'); // 'en' | 'pt'
-  const [theme, setTheme] = useState('dark'); // 'dark' | 'light'
-  const [copied, setCopied] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
-  const [readingMode, setReadingMode] = useState(false);
-
-  // Simulator state: Decision cutoff tau in [0.01, 0.99]
-  const [simTau, setSimTau] = useState(0.14);
-
-  // Quiz state
-  const [quizAnswer, setQuizAnswer] = useState(null);
-
-  const total = slides.length;
-  const slide = slides[current];
-
-  // Sync theme
-  useEffect(() => {
-    document.body.className = theme === 'light' ? 'light' : '';
-  }, [theme]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (showHelp) {
-        if (e.key === 'Escape') setShowHelp(false);
-        return;
+    const SLIDES_DATA = [
+      {
+        "id": "hero",
+        "eyebrow": "PUC-SP · FACEI · Human-Centered AI & Data Science",
+        "title_en": "Decision Threshold & Calibration\nFrom the Chosen Model to the Reliable Decision",
+        "title_pt": "Limiar de Decisão e Calibração\nDo Modelo Escolhido à Decisão Confiável no Negócio",
+        "subtitle_en": "Bridging raw ROC-AUC discrimination with probability calibration and cost-sensitive decision optimization.",
+        "subtitle_pt": "Unindo capacidade de ordenação ROC-AUC com calibração probabilística e otimização de limiares por custo.",
+        "type": "hero",
+        "meta": [
+          ["Course / Disciplina", "Data Science & AI/ML · Model Evaluation, Benchmarking & Selection"],
+          ["Professor", "✨ Giovani Giulio Tristão Thibes Vieira"],
+          ["Author / Autoria", "Fabiana ⚡️ Campanari (2026)"]
+        ]
+      },
+      {
+        "id": "motivation",
+        "eyebrow": "01 · Overview & Motivation / Visão Geral",
+        "title_en": "The Fallacy of the Default 0.50 Threshold",
+        "title_pt": "A Falácia do Limiar Neutro de 0,50",
+        "subtitle_en": "Standard software defaults fail under class imbalance and asymmetric real-world error costs.",
+        "subtitle_pt": "Cortes padrões de software falham sob desbalanceamento de classes e custos assimétricos de erro.",
+        "cards": [
+          ["The 0.50 Blindspot / O Ponto Cego do 0,50", "Assuming a 0.50 cutoff assumes 50/50 balanced data and equal costs. In medical triage (15% prevalence), 0.50 misses >52% of sick patients.", "Assumir corte de 0,50 pressupõe dados 50/50 e custos iguais. Na triagem médica (15% prevalência), 0,50 perde >52% dos doentes."],
+          ["Asymmetric Costs / Custos Assimétricos", "False Positive (holding healthy patient for tests = Cost 1.0) vs. False Negative (sending sick patient home = Cost 5.0). Cost(FN) >> Cost(FP).", "Falso Positivo (reter saudável = Custo 1.0) vs. Falso Negativo (enviar doente para casa = Custo 5.0). Custo(FN) >> Custo(FP)."],
+          ["The Two Pillars / Dois Pilares", "1. Pure Ranking Ability (ROC-AUC) + 2. Probabilistic Honesty (Reliability Diagram calibration_curve). Both are essential.", "1. Capacidade de Ordenação (ROC-AUC) + 2. Honestidade Probabilística (Diagrama de Confiabilidade). Ambos são vitais."]
+        ]
+      },
+      {
+        "id": "benchmark",
+        "eyebrow": "02 · Model Selection / Benchmarking",
+        "title_en": "Model Benchmarking & Selection (ROC-AUC)",
+        "title_pt": "Benchmarking e Seleção de Modelos (ROC-AUC)",
+        "subtitle_en": "Logistic Regression wins the benchmark due to superior ranking capability and statistical stability.",
+        "subtitle_pt": "A Regressão Logística vence o benchmark por alta capacidade de ordenação e maior estabilidade estatística.",
+        "table": {
+          "headers": ["Algorithm / Modelo", "Validation ROC-AUC", "Std Deviation (σ)", "Status / Decisão"],
+          "rows": [
+            ["Logistic Regression", "0.960", "±0.014", "SELECTED (Winner & Highest Stability)"],
+            ["Random Forest (200 Trees)", "0.945", "±0.025", "Statistical Tie (Higher Variance)"],
+            ["K-Nearest Neighbors (K=15)", "0.940", "±0.021", "Eliminated"],
+            ["Decision Tree", "0.803", "±0.038", "Eliminated"]
+          ]
+        }
+      },
+      {
+        "id": "cost_optimization",
+        "eyebrow": "03 · Threshold Optimization / Otimização por Custo",
+        "title_en": "Sweeping Threshold for Minimal Operational Cost",
+        "title_pt": "Otimização do Limiar por Matriz de Custo",
+        "subtitle_en": "Shifting decision threshold from τ = 0.50 to τ = 0.14 reduces total error cost by 44%.",
+        "subtitle_pt": "Reduzir o limiar de τ = 0,50 para τ = 0,14 reduz o custo operacional de erro em 44%.",
+        "table": {
+          "headers": ["Threshold (τ)", "TN (VN)", "FP (FP)", "FN (FN)", "TP (VP)", "Precision", "Recall", "Total Cost (1·FP + 5·FN)"],
+          "rows": [
+            ["0.05", "390", "157", "2", "65", "0.293", "0.970", "157 + 5(2) = 167"],
+            ["0.14 (Optimal τ*)", "480", "67", "7", "60", "0.472", "0.896", "67 + 5(7) = 102 (44% Reduction)"],
+            ["0.20", "510", "37", "14", "53", "0.589", "0.791", "37 + 5(14) = 107"],
+            ["0.35", "532", "15", "22", "45", "0.750", "0.672", "15 + 5(22) = 125"],
+            ["0.50 (Default)", "540", "7", "35", "32", "0.821", "0.478", "7 + 5(35) = 182 (Misses 35 sick!)"]
+          ]
+        }
+      },
+      {
+        "id": "simulator",
+        "eyebrow": "04 · Interactive Simulator / Simulador Interativo",
+        "title_en": "Simulate Cost Curve & Threshold Dynamics",
+        "title_pt": "Simulador de Curva de Custo e Limiar",
+        "subtitle_en": "Drag the decision cutoff slider τ to observe confusion matrix trade-offs and operational loss.",
+        "subtitle_pt": "Arraste o limiar τ para observar as trocas na matriz de confusão e o custo operacional total.",
+        "type": "sim"
+      },
+      {
+        "id": "calibration",
+        "eyebrow": "05 · Probability Calibration / Calibração",
+        "title_en": "Probability Honesty & Reliability Diagrams",
+        "title_pt": "Honestidade Probabilística e Diagrama de Confiabilidade",
+        "subtitle_en": "High ROC-AUC does not guarantee calibrated probabilities. Understanding ensemble probability compression.",
+        "subtitle_pt": "Alta ROC-AUC não garante probabilidades honestas. Entendendo a compressão em ensembles.",
+        "cards": [
+          ["Logistic Regression (Naturally Calibrated)", "Follows the 45° diagonal almost perfectly. When it predicts 80% risk, exactly 80 out of 100 patients have the disease. Outputs are honest.", "Segue quase perfeitamente a diagonal de 45°. Quando prevê 80% de risco, exatamente 80 em cada 100 pacientes têm a doença. Probabilidades honestas."],
+          ["Random Forest (Probability Compression)", "Averaging 200 trees pulls probabilities toward the center (~0.15 - 0.67). It rarely exceeds 67% even for critical cases because unanimous tree agreement is rare.", "A média de 200 árvores puxa as probabilidades para o centro (~0,15 - 0,67). Raramente supera 67% mesmo para casos graves por falta de unanimidade."],
+          ["MLOps Architecture Rule", "Prefer a naturally calibrated model (Logistic Regression) over post-hoc recalibration hacks on severely distorted models.", "Prefira uma arquitetura naturalmente calibrada (Regressão Logística) a tentar consertar pós-hoc modelos distorcidos."]
+        ]
+      },
+      {
+        "id": "pipeline",
+        "eyebrow": "06 · MLOps Architecture / Arquitetura de Produção",
+        "title_en": "Leakage-Free Decision Engineering Pipeline",
+        "title_pt": "Pipeline de Avaliação Livre de Vazamento",
+        "subtitle_en": "Strict sequential order: Selection → Calibration Audit → Threshold Tuning → Single-Pass Test.",
+        "subtitle_pt": "Ordem sequencial rigorosa: Seleção → Auditoria de Calibração → Ajuste de Limiar → Teste Único.",
+        "flow": [
+          ["1. Select Architecture (ROC-AUC)", "1. Selecionar Arquitetura (ROC-AUC)"],
+          ["2. Audit Calibration Curve", "2. Auditar Curva de Calibração"],
+          ["3. Sweep Threshold on Validation", "3. Varrer Limiar na Validação"],
+          ["4. Single-Pass Holdout Test", "4. Avaliação Única no Teste"]
+        ]
+      },
+      {
+        "id": "code_lab",
+        "eyebrow": "07 · Executable Code / Código Prático",
+        "title_en": "End-to-End scikit-learn Implementation",
+        "title_pt": "Implementação Completa em scikit-learn",
+        "subtitle_en": "Copy-paste ready Python code implementing model fitting, threshold sweep, and test evaluation.",
+        "subtitle_pt": "Código Python pronto para execução com treino, varredura de limiar e teste holdout.",
+        "type": "code"
+      },
+      {
+        "id": "test_verification",
+        "eyebrow": "08 · Empirical Results / Resultados Empíricos",
+        "title_en": "Holdout Test Set Generalization Audit",
+        "title_pt": "Auditoria de Generalização no Teste Holdout",
+        "subtitle_en": "Comparing normalized cost per patient between validation and untouched holdout test partition.",
+        "subtitle_pt": "Comparando o custo normalizado por paciente entre validação e teste holdout intocado.",
+        "table": {
+          "headers": ["Partition / Partição", "Threshold (τ)", "Total Error Cost", "Normalized Cost / Patient", "Impact / Conclusão"],
+          "rows": [
+            ["Validation Set (Default)", "0.50", "182", "0.303", "Baseline (High FN penalty)"],
+            ["Validation Set (Optimal τ*)", "0.14", "102", "0.170", "44% Cost Reduction"],
+            ["Holdout Test Set (Default)", "0.50", "46", "0.307", "Unseen Verification"],
+            ["Holdout Test Set (Optimal τ*)", "0.14", "25", "0.167", "Confirmed Generalization (45.6% Gain)"]
+          ]
+        }
+      },
+      {
+        "id": "quiz",
+        "eyebrow": "09 · Knowledge Check / Desafio Interativo",
+        "title_en": "Decision Engineering Scenario",
+        "title_pt": "Desafio de Cenário de Decisão",
+        "subtitle_en": "Test your diagnostic intuition on threshold tuning and data leakage.",
+        "subtitle_pt": "Teste sua intuição técnica sobre ajuste de limiar e vazamento de dados.",
+        "type": "quiz"
+      },
+      {
+        "id": "conclusion",
+        "eyebrow": "10 · Conclusion / Conclusão e Melhores Práticas",
+        "title_en": "From Raw Models to Reliable Decisions",
+        "title_pt": "Do Modelo Estatístico à Decisão Confiável",
+        "subtitle_en": "Summary of core principles for human-centered, cost-effective machine learning deployment.",
+        "subtitle_pt": "Resumo dos princípios fundamentais para implantação de ML ético e orientado ao custo real.",
+        "cards": [
+          ["Never Use 0.50 Blindly / Pare de Usar 0,50 Cegamente", "Default cutoffs assume 50/50 balance and symmetric loss. Always tune τ against a business cost matrix or clinical recall target.", "Cortes default pressupõem dados 50/50 e perdas iguais. Sempre ajuste τ contra a matriz de custo real."],
+          ["Decouple Ranking from Calibration", "ROC-AUC measures pure ranking; calibration_curve measures honesty. Both are required for safety-critical systems.", "ROC-AUC mede ordenação pura; calibration_curve mede honestidade. Ambos são necessários."],
+          ["Never Tune Threshold on Test Data", "Threshold tuning is a hyperparameter optimization. Doing it on test data destroys statistical evaluation independence.", "O ajuste de limiar é uma otimização de hiperparâmetro. Fazer no teste destrói a independência estatística."]
+        ]
       }
-      if (['INPUT', 'TEXTAREA', 'BUTTON'].includes(e.target.tagName)) return;
+    ];
 
-      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
-        e.preventDefault();
-        setCurrent((prev) => Math.min(total - 1, prev + 1));
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        setCurrent((prev) => Math.max(0, prev - 1));
-      } else if (e.key === 'Home') {
-        setCurrent(0);
-      } else if (e.key === 'End') {
-        setCurrent(total - 1);
-      } else if (e.key.toLowerCase() === 'f') {
-        toggleFullscreen();
-      } else if (e.key.toLowerCase() === 't') {
-        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-      } else if (e.key.toLowerCase() === 'l') {
-        setLang((prev) => (prev === 'en' ? 'pt' : 'en'));
-      } else if (e.key === '?') {
-        setShowHelp(true);
-      }
+    const CODE_SNIPPET = `import numpy as np
+import pandas as pd
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score, confusion_matrix
+
+# 1. Synthesize Imbalanced Clinical Triage Dataset (15% Prevalence)
+X, y = make_classification(
+    n_samples=3000, n_features=12, n_informative=8,
+    weights=[0.85, 0.15], random_state=42
+)
+
+# 2. Strict Data Partitioning (Train: 60%, Val: 20%, Test: 20%)
+X_train_val, X_test, y_train_val, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42, stratify=y
+)
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train_val, y_train_val, test_size=0.25, random_state=42, stratify=y_train_val
+)
+
+# 3. Fit Selected Architecture (Logistic Regression)
+model = LogisticRegression(C=1.0, solver='lbfgs', max_iter=1000, random_state=42)
+model.fit(X_train, y_train)
+
+# 4. Evaluate Ranking Capability (ROC-AUC) on Validation Data
+y_val_proba = model.predict_proba(X_val)[:, 1]
+val_auc = roc_auc_score(y_val, y_val_proba)
+print(f"Validation ROC-AUC: {val_auc:.4f}")
+
+# 5. Cost-Sensitive Threshold Sweep (C_FP = 1.0, C_FN = 5.0)
+thresholds = np.linspace(0.01, 0.99, 100)
+costs = []
+
+for tau in thresholds:
+    y_val_pred = (y_val_proba >= tau).astype(int)
+    tn, fp, fn, tp = confusion_matrix(y_val, y_val_pred).ravel()
+    costs.append((1.0 * fp) + (5.0 * fn))
+
+optimal_tau = thresholds[np.argmin(costs)]
+print(f"Optimal Threshold (tau*): {optimal_tau:.2f} | Min Validation Cost: {min(costs):.1f}")
+
+# 6. Single-Pass Verification on Unseen Holdout Test Set
+y_test_proba = model.predict_proba(X_test)[:, 1]
+
+# Default Cutoff (0.50)
+tn_def, fp_def, fn_def, tp_def = confusion_matrix(y_test, (y_test_proba >= 0.50).astype(int)).ravel()
+cost_default_test = (1.0 * fp_def) + (5.0 * fn_def)
+
+# Optimal Cutoff (0.14)
+tn_opt, fp_opt, fn_opt, tp_opt = confusion_matrix(y_test, (y_test_proba >= optimal_tau).astype(int)).ravel()
+cost_optimal_test = (1.0 * fp_opt) + (5.0 * fn_opt)
+
+print(f"Default Cutoff (0.50) -> Test Cost: {cost_default_test} | Cost/Patient: {cost_default_test/len(y_test):.4f}")
+print(f"Optimal Cutoff ({optimal_tau:.2f}) -> Test Cost: {cost_optimal_test} | Cost/Patient: {cost_optimal_test/len(y_test):.4f}")`;
+
+    const { useState, useEffect, useRef } = React;
+
+    const ICONS = {
+      home: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m3 10 9-7 9 7v10H3z" />
+          <path d="M9 21v-7h6v7" />
+        </svg>
+      ),
+      theme: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3v18" />
+        </svg>
+      ),
+      full: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" />
+        </svg>
+      ),
+      help: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <path d="M12 17h.01" />
+        </svg>
+      ),
+      copy: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+      ),
+      check: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      ),
+      arrowLeft: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      ),
+      arrowRight: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      )
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [total, showHelp]);
 
-  // Touch Swipe
-  const touchStart = useRef({ x: 0, y: 0 });
-  const handleTouchStart = (e) => {
-    touchStart.current = {
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
-    };
-  };
-  const handleTouchEnd = (e) => {
-    const dx = e.changedTouches[0].clientX - touchStart.current.x;
-    const dy = e.changedTouches[0].clientY - touchStart.current.y;
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      if (dx < 0) setCurrent((prev) => Math.min(total - 1, prev + 1));
-      else setCurrent((prev) => Math.max(0, prev - 1));
-    }
-  };
+    function ThresholdApp({ slides, codeSnippet }) {
+      const [current, setCurrent] = useState(0);
+      const [lang, setLang] = useState('en');
+      const [theme, setTheme] = useState('dark');
+      const [copied, setCopied] = useState(false);
+      const [showHelp, setShowHelp] = useState(false);
+      const [readingMode, setReadingMode] = useState(false);
 
-  const toggleFullscreen = async () => {
-    try {
-      if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
-      } else {
-        await document.exitFullscreen();
-      }
-    } catch (err) {
-      console.warn('Fullscreen error:', err);
-    }
-  };
+      const [simTau, setSimTau] = useState(0.14);
+      const [quizAnswer, setQuizAnswer] = useState(null);
 
-  const copyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(codeSnippet);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch (err) {
-      console.warn('Clipboard write error:', err);
-    }
-  };
+      const total = slides.length;
+      const slide = slides[current];
 
-  // Cost calculation function based on clinical benchmark (N_pos=67, N_neg=547)
-  const calculateCostMetrics = (tau) => {
-    // Model empirical curves for TP, FP, FN, TN
-    const tp = Math.round(67 * Math.pow(1 - tau, 0.45));
-    const fn = 67 - tp;
-    const fp = Math.round(547 * Math.exp(-tau * 7.5));
-    const tn = 547 - fp;
+      useEffect(() => {
+        document.body.className = theme === 'light' ? 'light' : '';
+      }, [theme]);
 
-    const costFP = 1.0;
-    const costFN = 5.0;
-    const totalCost = (costFP * fp) + (costFN * fn);
-    const recall = tp / 67;
-    const precision = (tp + fp) > 0 ? tp / (tp + fp) : 1.0;
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (showHelp) {
+            if (e.key === 'Escape') setShowHelp(false);
+            return;
+          }
+          if (['INPUT', 'TEXTAREA', 'BUTTON'].includes(e.target.tagName)) return;
 
-    return { tp, fn, fp, tn, totalCost, recall, precision };
-  };
+          if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+            e.preventDefault();
+            setCurrent((prev) => Math.min(total - 1, prev + 1));
+          } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            setCurrent((prev) => Math.max(0, prev - 1));
+          } else if (e.key === 'Home') {
+            setCurrent(0);
+          } else if (e.key === 'End') {
+            setCurrent(total - 1);
+          } else if (e.key.toLowerCase() === 'f') {
+            toggleFullscreen();
+          } else if (e.key.toLowerCase() === 't') {
+            setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+          } else if (e.key.toLowerCase() === 'l') {
+            setLang((prev) => (prev === 'en' ? 'pt' : 'en'));
+          } else if (e.key === '?') {
+            setShowHelp(true);
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [total, showHelp]);
 
-  const simData = calculateCostMetrics(simTau);
+      const touchStart = useRef({ x: 0, y: 0 });
+      const handleTouchStart = (e) => {
+        touchStart.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY
+        };
+      };
+      const handleTouchEnd = (e) => {
+        const dx = e.changedTouches[0].clientX - touchStart.current.x;
+        const dy = e.changedTouches[0].clientY - touchStart.current.y;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          if (dx < 0) setCurrent((prev) => Math.min(total - 1, prev + 1));
+          else setCurrent((prev) => Math.max(0, prev - 1));
+        }
+      };
 
-  return (
-    <div className={`app-container ${readingMode ? 'reading-mode' : ''}`}>
-      {/* Top Progress Bar */}
-      <div
-        className="progress-bar"
-        style={{ width: `${((current + 1) / total) * 100}%` }}
-        aria-hidden="true"
-      />
+      const toggleFullscreen = async () => {
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch (err) {
+          console.warn('Fullscreen error:', err);
+        }
+      };
 
-      {/* Header */}
-      <header className="site-header">
-        <div className="brand-group" onClick={() => setCurrent(0)} role="button" tabIndex={0}>
-          <span className="brand-symbol">ॐ</span>
-          <div className="brand-text">
-            <strong>Mindful AI</strong>
-            <small>CLASS 12 · THRESHOLD & CALIBRATION</small>
-          </div>
-        </div>
+      const copyCode = async () => {
+        try {
+          await navigator.clipboard.writeText(codeSnippet);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2500);
+        } catch (err) {
+          console.warn('Clipboard write error:', err);
+        }
+      };
 
-        <div className="header-controls">
-          <div className="lang-toggle" role="group" aria-label="Language selection">
-            <button
-              type="button"
-              className={`control-btn ${lang === 'en' ? 'active' : ''}`}
-              onClick={() => setLang('en')}
-            >
-              🇬🇧 English
-            </button>
-            <button
-              type="button"
-              className={`control-btn ${lang === 'pt' ? 'active' : ''}`}
-              onClick={() => setLang('pt')}
-            >
-              🇧🇷 Português
-            </button>
-          </div>
+      const calculateCostMetrics = (tau) => {
+        const tp = Math.round(67 * Math.pow(1 - tau, 0.45));
+        const fn = 67 - tp;
+        const fp = Math.round(547 * Math.exp(-tau * 7.5));
+        const tn = 547 - fp;
 
-          <button
-            type="button"
-            className="icon-btn"
-            onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
-            title={lang === 'en' ? 'Toggle Theme (T)' : 'Alternar Tema (T)'}
-            aria-label="Toggle Theme"
-          >
-            {ICONS.theme}
-          </button>
+        const costFP = 1.0;
+        const costFN = 5.0;
+        const totalCost = (costFP * fp) + (costFN * fn);
+        const recall = tp / 67;
+        const precision = (tp + fp) > 0 ? tp / (tp + fp) : 1.0;
 
-          <button
-            type="button"
-            className="icon-btn"
-            onClick={toggleFullscreen}
-            title={lang === 'en' ? 'Toggle Fullscreen (F)' : 'Tela Cheia (F)'}
-            aria-label="Toggle Fullscreen"
-          >
-            {ICONS.full}
-          </button>
+        return { tp, fn, fp, tn, totalCost, recall, precision };
+      };
 
-          <button
-            type="button"
-            className="icon-btn"
-            onClick={() => setShowHelp(true)}
-            title={lang === 'en' ? 'Keyboard Shortcuts (?)' : 'Atalhos de Teclado (?)'}
-            aria-label="Help"
-          >
-            {ICONS.help}
-          </button>
+      const simData = calculateCostMetrics(simTau);
 
-          <button
-            type="button"
-            className={`control-btn reading-toggle ${readingMode ? 'active' : ''}`}
-            onClick={() => setReadingMode((prev) => !prev)}
-          >
-            {lang === 'en' ? (readingMode ? 'Slide View' : 'Reading Mode') : (readingMode ? 'Modo Slides' : 'Modo Leitura')}
-          </button>
-        </div>
-      </header>
+      return (
+        <div className={`app-container ${readingMode ? 'reading-mode' : ''}`}>
+          <div
+            className="progress-bar"
+            style={{ width: `${((current + 1) / total) * 100}%` }}
+            aria-hidden="true"
+          />
 
-      {/* Main Layout */}
-      <div className="main-layout">
-        {!readingMode && (
-          <aside className="slide-sidebar" aria-label="Slide list">
-            <div className="sidebar-header">
-              <span>{lang === 'en' ? 'CURRICULUM' : 'CONTEÚDO'}</span>
-              <span>{total} Slides</span>
+          <header className="site-header">
+            <div className="brand-group" onClick={() => setCurrent(0)} role="button" tabIndex={0}>
+              <span className="brand-symbol">ॐ</span>
+              <div className="brand-text">
+                <strong>Mindful AI</strong>
+                <small>CLASS 12 · THRESHOLD & CALIBRATION</small>
+              </div>
             </div>
-            <nav className="sidebar-nav">
-              {slides.map((s, idx) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  className={`sidebar-item ${idx === current ? 'active' : ''}`}
-                  onClick={() => setCurrent(idx)}
-                >
-                  <span className="item-num">{String(idx + 1).padStart(2, '0')}</span>
-                  <span className="item-title">{lang === 'en' ? s.title_en.split('\n')[0] : s.title_pt.split('\n')[0]}</span>
-                </button>
-              ))}
-            </nav>
-          </aside>
-        )}
 
-        <main
-          className="slide-viewport"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {readingMode ? (
-            <div className="continuous-flow">
-              {slides.map((s, idx) => (
+            <div className="header-controls">
+              <div className="lang-toggle" role="group" aria-label="Language selection">
+                <button
+                  type="button"
+                  className={`control-btn ${lang === 'en' ? 'active' : ''}`}
+                  onClick={() => setLang('en')}
+                >
+                  🇬🇧 English
+                </button>
+                <button
+                  type="button"
+                  className={`control-btn ${lang === 'pt' ? 'active' : ''}`}
+                  onClick={() => setLang('pt')}
+                >
+                  🇧🇷 Português
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="icon-btn"
+                onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
+                title={lang === 'en' ? 'Toggle Theme (T)' : 'Alternar Tema (T)'}
+                aria-label="Toggle Theme"
+              >
+                {ICONS.theme}
+              </button>
+
+              <button
+                type="button"
+                className="icon-btn"
+                onClick={toggleFullscreen}
+                title={lang === 'en' ? 'Toggle Fullscreen (F)' : 'Tela Cheia (F)'}
+                aria-label="Toggle Fullscreen"
+              >
+                {ICONS.full}
+              </button>
+
+              <button
+                type="button"
+                className="icon-btn"
+                onClick={() => setShowHelp(true)}
+                title={lang === 'en' ? 'Keyboard Shortcuts (?)' : 'Atalhos de Teclado (?)'}
+                aria-label="Help"
+              >
+                {ICONS.help}
+              </button>
+
+              <button
+                type="button"
+                className={`control-btn reading-toggle ${readingMode ? 'active' : ''}`}
+                onClick={() => setReadingMode((prev) => !prev)}
+              >
+                {lang === 'en' ? (readingMode ? 'Slide View' : 'Reading Mode') : (readingMode ? 'Modo Slides' : 'Modo Leitura')}
+              </button>
+            </div>
+          </header>
+
+          <div className="main-layout">
+            {!readingMode && (
+              <aside className="slide-sidebar" aria-label="Slide list">
+                <div className="sidebar-header">
+                  <span>{lang === 'en' ? 'CURRICULUM' : 'CONTEÚDO'}</span>
+                  <span>{total} Slides</span>
+                </div>
+                <nav className="sidebar-nav">
+                  {slides.map((s, idx) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className={`sidebar-item ${idx === current ? 'active' : ''}`}
+                      onClick={() => setCurrent(idx)}
+                    >
+                      <span className="item-num">{String(idx + 1).padStart(2, '0')}</span>
+                      <span className="item-title">{lang === 'en' ? s.title_en.split('\n')[0] : s.title_pt.split('\n')[0]}</span>
+                    </button>
+                  ))}
+                </nav>
+              </aside>
+            )}
+
+            <main
+              className="slide-viewport"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              {readingMode ? (
+                <div className="continuous-flow">
+                  {slides.map((s, idx) => (
+                    <SlideComponent
+                      key={s.id}
+                      slide={s}
+                      index={idx}
+                      lang={lang}
+                      codeSnippet={codeSnippet}
+                      copied={copied}
+                      onCopy={copyCode}
+                      simTau={simTau}
+                      setSimTau={setSimTau}
+                      simData={simData}
+                      quizAnswer={quizAnswer}
+                      setQuizAnswer={setQuizAnswer}
+                    />
+                  ))}
+                </div>
+              ) : (
                 <SlideComponent
-                  key={s.id}
-                  slide={s}
-                  index={idx}
+                  slide={slide}
+                  index={current}
                   lang={lang}
                   codeSnippet={codeSnippet}
                   copied={copied}
@@ -584,388 +778,358 @@ function ThresholdApp({ slides, codeSnippet }) {
                   quizAnswer={quizAnswer}
                   setQuizAnswer={setQuizAnswer}
                 />
-              ))}
-            </div>
-          ) : (
-            <SlideComponent
-              slide={slide}
-              index={current}
-              lang={lang}
-              codeSnippet={codeSnippet}
-              copied={copied}
-              onCopy={copyCode}
-              simTau={simTau}
-              setSimTau={setSimTau}
-              simData={simData}
-              quizAnswer={quizAnswer}
-              setQuizAnswer={setQuizAnswer}
-            />
-          )}
-        </main>
-      </div>
-
-      {/* Footer Navigation Bar */}
-      <footer className="site-footer">
-        <div className="footer-left">
-          <span className="slide-counter">
-            <strong>{String(current + 1).padStart(2, '0')}</strong> / {total}
-          </span>
-          <div className="step-dots" role="navigation" aria-label="Pagination dots">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                className={`dot-btn ${idx === current ? 'active' : ''}`}
-                onClick={() => setCurrent(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
+              )}
+            </main>
           </div>
-        </div>
 
-        <div className="footer-actions">
-          <button
-            type="button"
-            className="nav-btn"
-            disabled={current === 0}
-            onClick={() => setCurrent((prev) => Math.max(0, prev - 1))}
-          >
-            {ICONS.arrowLeft} {lang === 'en' ? 'Back' : 'Voltar'}
-          </button>
-
-          <button
-            type="button"
-            className="nav-btn text-only"
-            onClick={() => setCurrent(0)}
-          >
-            {lang === 'en' ? 'Start' : 'Início'}
-          </button>
-
-          <button
-            type="button"
-            className="nav-btn primary"
-            disabled={current === total - 1}
-            onClick={() => setCurrent((prev) => Math.min(total - 1, prev + 1))}
-          >
-            {lang === 'en' ? 'Next' : 'Avançar'} {ICONS.arrowRight}
-          </button>
-        </div>
-
-        <div className="footer-right">
-          <a
-            href="https://github.com/Mindful-AI-Research"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="repo-link"
-          >
-            <span>ॐ Mindful AI ⋆ Research & Consulting ↗</span>
-          </a>
-        </div>
-      </footer>
-
-      {/* Keyboard Shortcuts Dialog */}
-      {showHelp && (
-        <div className="modal-backdrop" onClick={() => setShowHelp(false)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>{lang === 'en' ? 'Keyboard & Gesture Shortcuts' : 'Atalhos de Teclado e Gestos'}</h3>
-              <button type="button" className="icon-btn" onClick={() => setShowHelp(false)}>✕</button>
-            </div>
-            <div className="modal-grid">
-              <div className="shortcut-row"><kbd>→</kbd> / <kbd>Space</kbd> / <kbd>PgDn</kbd> <span>{lang === 'en' ? 'Next Slide' : 'Próximo Slide'}</span></div>
-              <div className="shortcut-row"><kbd>←</kbd> / <kbd>PgUp</kbd> <span>{lang === 'en' ? 'Previous Slide' : 'Slide Anterior'}</span></div>
-              <div className="shortcut-row"><kbd>Home</kbd> / <kbd>End</kbd> <span>{lang === 'en' ? 'First / Last Slide' : 'Primeiro / Último Slide'}</span></div>
-              <div className="shortcut-row"><kbd>F</kbd> <span>{lang === 'en' ? 'Toggle Fullscreen' : 'Alternar Tela Cheia'}</span></div>
-              <div className="shortcut-row"><kbd>T</kbd> <span>{lang === 'en' ? 'Toggle Theme (Dark/Light)' : 'Alternar Tema (Escuro/Claro)'}</span></div>
-              <div className="shortcut-row"><kbd>L</kbd> <span>{lang === 'en' ? 'Toggle Language (EN/PT)' : 'Alternar Idioma (EN/PT)'}</span></div>
-              <div className="shortcut-row"><kbd>Swipe</kbd> <span>{lang === 'en' ? 'Touch Navigation on Mobile' : 'Navegação por Toque em Mobile'}</span></div>
-            </div>
-            <button type="button" className="control-btn modal-close" onClick={() => setShowHelp(false)}>
-              {lang === 'en' ? 'Close Dialog' : 'Fechar Janela'}
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SlideComponent({
-  slide,
-  index,
-  lang,
-  codeSnippet,
-  copied,
-  onCopy,
-  simTau,
-  setSimTau,
-  simData,
-  quizAnswer,
-  setQuizAnswer
-}) {
-  const isEn = lang === 'en';
-
-  return (
-    <article className={`slide-container slide-${slide.type || 'standard'}`} id={slide.id}>
-      <div className="slide-eyebrow">{slide.eyebrow}</div>
-      <h1 className="slide-title">{isEn ? slide.title_en : slide.title_pt}</h1>
-      <p className="slide-subtitle">{isEn ? slide.subtitle_en : slide.subtitle_pt}</p>
-
-      {/* HERO SECTION */}
-      {slide.type === 'hero' && (
-        <div className="hero-details">
-          <div className="hero-tags">
-            <span className="tag">Class 12</span>
-            <span className="tag">Decision Threshold τ</span>
-            <span className="tag">Probability Calibration</span>
-            <span className="tag">ROC-AUC Benchmarking</span>
-          </div>
-          <div className="hero-meta-grid">
-            {slide.meta.map(([label, val], idx) => (
-              <div key={idx} className="meta-box">
-                <span className="meta-label">{label}</span>
-                <span className="meta-val">{val}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* CARDS GRID */}
-      {slide.cards && (
-        <div className="cards-grid">
-          {slide.cards.map(([title, en, pt], idx) => (
-            <div key={idx} className="feature-card">
-              <div className="card-badge">0{idx + 1}</div>
-              <h3 className="card-heading">{title}</h3>
-              <p className="card-desc">{isEn ? en : pt}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* TABLE */}
-      {slide.table && (
-        <div className="table-wrapper">
-          <table className="custom-table">
-            <thead>
-              <tr>
-                {slide.table.headers.map((h, idx) => (
-                  <th key={idx}>{h}</th>
+          <footer className="site-footer">
+            <div className="footer-left">
+              <span className="slide-counter">
+                <strong>{String(current + 1).padStart(2, '0')}</strong> / {total}
+              </span>
+              <div className="step-dots" role="navigation" aria-label="Pagination dots">
+                {slides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`dot-btn ${idx === current ? 'active' : ''}`}
+                    onClick={() => setCurrent(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {slide.table.rows.map((row, rIdx) => (
-                <tr key={rIdx} className={row[0].includes('0.14') || row[0].includes('Logistic') ? 'highlight-row' : ''}>
-                  {row.map((cell, cIdx) => (
-                    <td key={cIdx}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* ARCHITECTURE FLOW */}
-      {slide.flow && (
-        <div className="flow-container">
-          {slide.flow.map(([en, pt], idx) => (
-            <React.Fragment key={idx}>
-              <div className="flow-step">
-                <div className="step-index">STEP 0{idx + 1}</div>
-                <div className="step-name">{isEn ? en : pt}</div>
-              </div>
-              {idx < slide.flow.length - 1 && <div className="flow-arrow">→</div>}
-            </React.Fragment>
-          ))}
-        </div>
-      )}
-
-      {/* THRESHOLD COST SIMULATOR */}
-      {slide.type === 'sim' && (
-        <div className="simulator-panel">
-          <div className="sim-controls">
-            <div className="sim-slider-row">
-              <label htmlFor="sim-tau-slider" className="ctrl-label">
-                {isEn ? 'Operating Decision Cutoff (τ):' : 'Limiar de Decisão Operacional (τ):'} <strong>{simTau.toFixed(2)}</strong>
-                {simTau === 0.14 && <span className="optimal-badge">{isEn ? '★ Optimal τ* (Lowest Cost)' : '★ Limiar Ótimo τ* (Menor Custo)'}</span>}
-                {simTau === 0.50 && <span className="default-badge">{isEn ? 'Default 0.50 (High FN Penalty)' : 'Padrão 0,50 (Penalidade Alta FN)'}</span>}
-              </label>
-              <input
-                id="sim-tau-slider"
-                type="range"
-                min="0.02"
-                max="0.80"
-                step="0.01"
-                value={simTau}
-                onChange={(e) => setSimTau(Number(e.target.value))}
-                className="custom-range"
-              />
-            </div>
-          </div>
-
-          <div className="sim-visualization-grid">
-            <div className="sim-chart-box">
-              <svg viewBox="0 0 600 240" className="sim-svg" role="img" aria-label="Cost vs Threshold Curve">
-                {/* Y Grid */}
-                {[100, 150, 200, 250, 300].map((val) => {
-                  const y = 210 - (val - 80) * 0.8;
-                  return (
-                    <g key={val}>
-                      <line x1="45" y1={y} x2="580" y2={y} stroke="var(--border-subtle)" strokeDasharray="3 3" />
-                      <text x="12" y={y + 4} fill="var(--text-muted)" fontSize="10">{val}</text>
-                    </g>
-                  );
-                })}
-                {/* X labels */}
-                {[0.05, 0.14, 0.20, 0.35, 0.50, 0.70].map((tVal) => {
-                  const x = 50 + ((tVal - 0.02) / 0.78) * 520;
-                  return (
-                    <text key={tVal} x={x - 10} y="230" fill="var(--text-muted)" fontSize="10">{tVal.toFixed(2)}</text>
-                  );
-                })}
-
-                {/* Simulated Cost Curve Path */}
-                <path
-                  d={generateCostCurvePath()}
-                  fill="none"
-                  stroke="var(--accent-gold)"
-                  strokeWidth="3.5"
-                />
-
-                {/* Marker for current tau */}
-                {(() => {
-                  const currentX = 50 + ((simTau - 0.02) / 0.78) * 520;
-                  const currentY = 210 - (simData.totalCost - 80) * 0.8;
-                  return (
-                    <g>
-                      <line x1={currentX} y1="20" x2={currentX} y2="210" stroke="var(--text-muted)" strokeDasharray="4 4" />
-                      <circle cx={currentX} cy={currentY} r="7" fill="var(--accent-teal)" stroke="#ffffff" strokeWidth="2" />
-                    </g>
-                  );
-                })()}
-              </svg>
-
-              <div className="chart-legend">
-                <span className="legend-item"><i className="legend-dot gold" /> {isEn ? 'Total Error Cost = 1.0·FP + 5.0·FN' : 'Custo Operacional Total = 1,0·FP + 5,0·FN'}</span>
               </div>
             </div>
 
-            <div className="sim-readouts">
-              <div className="readout-card">
-                <span className="readout-label">{isEn ? 'False Positives (FP)' : 'Falsos Positivos (FP)'}</span>
-                <span className="readout-val teal">{simData.fp} cases</span>
-              </div>
-              <div className="readout-card">
-                <span className="readout-label">{isEn ? 'False Negatives (FN)' : 'Falsos Negativos (FN)'}</span>
-                <span className="readout-val red">{simData.fn} cases</span>
-              </div>
-              <div className="readout-card">
-                <span className="readout-label">{isEn ? 'Disease Recall' : 'Sensibilidade (Recall)'}</span>
-                <span className="readout-val blue">{(simData.recall * 100).toFixed(1)}%</span>
-              </div>
-              <div className="readout-card">
-                <span className="readout-label">{isEn ? 'Total Error Cost' : 'Custo Total de Erro'}</span>
-                <span className="readout-val gold">{simData.totalCost} units</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* CODE BLOCK */}
-      {slide.type === 'code' && (
-        <div className="code-container">
-          <div className="code-header">
-            <span className="code-file">threshold_and_calibration.py</span>
-            <button type="button" className="copy-btn" onClick={onCopy}>
-              {copied ? ICONS.check : ICONS.copy}
-              <span>{copied ? (isEn ? 'Copied!' : 'Copiado!') : (isEn ? 'Copy Code' : 'Copiar')}</span>
-            </button>
-          </div>
-          <pre className="code-pre">
-            <code>{codeSnippet}</code>
-          </pre>
-        </div>
-      )}
-
-      {/* QUIZ */}
-      {slide.type === 'quiz' && (
-        <div className="quiz-panel">
-          <p className="quiz-scenario">
-            {isEn
-              ? 'Scenario: A data scientist tunes the decision cutoff threshold tau on the holdout test set to achieve minimal error cost, then reports this score in the executive deployment summary. What critical MLOps violation occurred?'
-              : 'Cenário: Um cientista de dados ajusta o limiar de decisão tau diretamente no conjunto de teste holdout para atingir o menor custo e apresenta o resultado como estimativa de produção. Qual violação crítica de MLOps ocorreu?'}
-          </p>
-
-          <div className="quiz-options">
-            {[
-              {
-                id: 'A',
-                en: 'No violation: the test set is designed to evaluate decision performance.',
-                pt: 'Nenhuma violação: o conjunto de teste existe exatamente para avaliar decisões.',
-                correct: false
-              },
-              {
-                id: 'B',
-                en: 'Threshold Data Leakage: Decision cutoff tuning is a hyperparameter optimization and MUST occur strictly on validation data before a single-pass test audit.',
-                pt: 'Vazamento de Dados no Limiar: O ajuste de corte é uma otimização de hiperparâmetro e DEVE ocorrer estritamente na validação antes de um teste único.',
-                correct: true
-              },
-              {
-                id: 'C',
-                en: 'Miscalibration: The test set should only be evaluated using accuracy.',
-                pt: 'Descalibração: O conjunto de teste deveria ser avaliado apenas por acurácia.',
-                correct: false
-              }
-            ].map((opt) => (
+            <div className="footer-actions">
               <button
-                key={opt.id}
                 type="button"
-                className={`quiz-opt-btn ${quizAnswer === opt.id ? (opt.correct ? 'correct' : 'incorrect') : ''}`}
-                onClick={() => setQuizAnswer(opt.id)}
+                className="nav-btn"
+                disabled={current === 0}
+                onClick={() => setCurrent((prev) => Math.max(0, prev - 1))}
               >
-                <span className="opt-letter">{opt.id}</span>
-                <span className="opt-text">{isEn ? opt.en : opt.pt}</span>
+                {ICONS.arrowLeft} {lang === 'en' ? 'Back' : 'Voltar'}
               </button>
-            ))}
-          </div>
 
-          {quizAnswer && (
-            <div className={`quiz-feedback ${quizAnswer === 'B' ? 'success' : 'warning'}`}>
-              <strong>{quizAnswer === 'B' ? (isEn ? 'Correct:' : 'Correto:') : (isEn ? 'Warning:' : 'Atenção:')}</strong>{' '}
-              {isEn
-                ? quizAnswer === 'B'
-                  ? 'Threshold tuning is an empirical optimization step. Performing it on test data invalidates evaluation independence.'
-                  : 'Incorrect. Never sweep thresholds on the test partition.'
-                : quizAnswer === 'B'
-                  ? 'O ajuste do limiar é uma etapa de otimização empírica. Fazer isso no teste invalida a independência estatística da avaliação.'
-                  : 'Incorreto. Nunca faça varredura de limiar na partição de teste.'}
+              <button
+                type="button"
+                className="nav-btn text-only"
+                onClick={() => setCurrent(0)}
+              >
+                {lang === 'en' ? 'Start' : 'Início'}
+              </button>
+
+              <button
+                type="button"
+                className="nav-btn primary"
+                disabled={current === total - 1}
+                onClick={() => setCurrent((prev) => Math.min(total - 1, prev + 1))}
+              >
+                {lang === 'en' ? 'Next' : 'Avançar'} {ICONS.arrowRight}
+              </button>
+            </div>
+
+            <div className="footer-right">
+              <a
+                href="https://github.com/Mindful-AI-Research"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="repo-link"
+              >
+                <span>ॐ Mindful AI ⋆ Research & Consulting ↗</span>
+              </a>
+            </div>
+          </footer>
+
+          {showHelp && (
+            <div className="modal-backdrop" onClick={() => setShowHelp(false)}>
+              <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h3>{lang === 'en' ? 'Keyboard & Gesture Shortcuts' : 'Atalhos de Teclado e Gestos'}</h3>
+                  <button type="button" className="icon-btn" onClick={() => setShowHelp(false)}>✕</button>
+                </div>
+                <div className="modal-grid">
+                  <div className="shortcut-row"><kbd>→</kbd> / <kbd>Space</kbd> / <kbd>PgDn</kbd> <span>{lang === 'en' ? 'Next Slide' : 'Próximo Slide'}</span></div>
+                  <div className="shortcut-row"><kbd>←</kbd> / <kbd>PgUp</kbd> <span>{lang === 'en' ? 'Previous Slide' : 'Slide Anterior'}</span></div>
+                  <div className="shortcut-row"><kbd>Home</kbd> / <kbd>End</kbd> <span>{lang === 'en' ? 'First / Last Slide' : 'Primeiro / Último Slide'}</span></div>
+                  <div className="shortcut-row"><kbd>F</kbd> <span>{lang === 'en' ? 'Toggle Fullscreen' : 'Alternar Tela Cheia'}</span></div>
+                  <div className="shortcut-row"><kbd>T</kbd> <span>{lang === 'en' ? 'Toggle Theme (Dark/Light)' : 'Alternar Tema (Escuro/Claro)'}</span></div>
+                  <div className="shortcut-row"><kbd>L</kbd> <span>{lang === 'en' ? 'Toggle Language (EN/PT)' : 'Alternar Idioma (EN/PT)'}</span></div>
+                  <div className="shortcut-row"><kbd>Swipe</kbd> <span>{lang === 'en' ? 'Touch Navigation on Mobile' : 'Navegação por Toque em Mobile'}</span></div>
+                </div>
+                <button type="button" className="control-btn modal-close" onClick={() => setShowHelp(false)}>
+                  {lang === 'en' ? 'Close Dialog' : 'Fechar Janela'}
+                </button>
+              </div>
             </div>
           )}
         </div>
-      )}
-    </article>
-  );
-}
+      );
+    }
 
-function generateCostCurvePath() {
-  const points = [];
-  for (let t = 0.02; t <= 0.80; t += 0.02) {
-    const tp = Math.round(67 * Math.pow(1 - t, 0.45));
-    const fn = 67 - tp;
-    const fp = Math.round(547 * Math.exp(-t * 7.5));
-    const cost = (1.0 * fp) + (5.0 * fn);
+    function SlideComponent({
+      slide,
+      index,
+      lang,
+      codeSnippet,
+      copied,
+      onCopy,
+      simTau,
+      setSimTau,
+      simData,
+      quizAnswer,
+      setQuizAnswer
+    }) {
+      const isEn = lang === 'en';
 
-    const x = 50 + ((t - 0.02) / 0.78) * 520;
-    const y = 210 - (cost - 80) * 0.8;
-    points.push(`${points.length === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`);
-  }
-  return points.join(' ');
-}
+      return (
+        <article className={`slide-container slide-${slide.type || 'standard'}`} id={slide.id}>
+          <div className="slide-eyebrow">{slide.eyebrow}</div>
+          <h1 className="slide-title">{isEn ? slide.title_en : slide.title_pt}</h1>
+          <p className="slide-subtitle">{isEn ? slide.subtitle_en : slide.subtitle_pt}</p>
 
+          {slide.type === 'hero' && (
+            <div className="hero-details">
+              <div className="hero-tags">
+                <span className="tag">Class 12</span>
+                <span className="tag">Decision Threshold τ</span>
+                <span className="tag">Probability Calibration</span>
+                <span className="tag">ROC-AUC Benchmarking</span>
+              </div>
+              <div className="hero-meta-grid">
+                {slide.meta.map(([label, val], idx) => (
+                  <div key={idx} className="meta-box">
+                    <span className="meta-label">{label}</span>
+                    <span className="meta-val">{val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {slide.cards && (
+            <div className="cards-grid">
+              {slide.cards.map(([title, en, pt], idx) => (
+                <div key={idx} className="feature-card">
+                  <div className="card-badge">0{idx + 1}</div>
+                  <h3 className="card-heading">{title}</h3>
+                  <p className="card-desc">{isEn ? en : pt}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {slide.table && (
+            <div className="table-wrapper">
+              <table className="custom-table">
+                <thead>
+                  <tr>
+                    {slide.table.headers.map((h, idx) => (
+                      <th key={idx}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {slide.table.rows.map((row, rIdx) => (
+                    <tr key={rIdx} className={row[0].includes('0.14') || row[0].includes('Logistic') ? 'highlight-row' : ''}>
+                      {row.map((cell, cIdx) => (
+                        <td key={cIdx}>{cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {slide.flow && (
+            <div className="flow-container">
+              {slide.flow.map(([en, pt], idx) => (
+                <React.Fragment key={idx}>
+                  <div className="flow-step">
+                    <div className="step-index">STEP 0{idx + 1}</div>
+                    <div className="step-name">{isEn ? en : pt}</div>
+                  </div>
+                  {idx < slide.flow.length - 1 && <div className="flow-arrow">→</div>}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+
+          {slide.type === 'sim' && (
+            <div className="simulator-panel">
+              <div className="sim-controls">
+                <div className="sim-slider-row">
+                  <label htmlFor="sim-tau-slider" className="ctrl-label">
+                    {isEn ? 'Operating Decision Cutoff (τ):' : 'Limiar de Decisão Operacional (τ):'} <strong>{simTau.toFixed(2)}</strong>
+                    {simTau === 0.14 && <span className="optimal-badge">{isEn ? '★ Optimal τ* (Lowest Cost)' : '★ Limiar Ótimo τ* (Menor Custo)'}</span>}
+                    {simTau === 0.50 && <span className="default-badge">{isEn ? 'Default 0.50 (High FN Penalty)' : 'Padrão 0,50 (Penalidade Alta FN)'}</span>}
+                  </label>
+                  <input
+                    id="sim-tau-slider"
+                    type="range"
+                    min="0.02"
+                    max="0.80"
+                    step="0.01"
+                    value={simTau}
+                    onChange={(e) => setSimTau(Number(e.target.value))}
+                    className="custom-range"
+                  />
+                </div>
+              </div>
+
+              <div className="sim-visualization-grid">
+                <div className="sim-chart-box">
+                  <svg viewBox="0 0 600 240" className="sim-svg" role="img" aria-label="Cost vs Threshold Curve">
+                    {[100, 150, 200, 250, 300].map((val) => {
+                      const y = 210 - (val - 80) * 0.8;
+                      return (
+                        <g key={val}>
+                          <line x1="45" y1={y} x2="580" y2={y} stroke="var(--border-subtle)" strokeDasharray="3 3" />
+                          <text x="12" y={y + 4} fill="var(--text-muted)" fontSize="10">{val}</text>
+                        </g>
+                      );
+                    })}
+                    {[0.05, 0.14, 0.20, 0.35, 0.50, 0.70].map((tVal) => {
+                      const x = 50 + ((tVal - 0.02) / 0.78) * 520;
+                      return (
+                        <text key={tVal} x={x - 10} y="230" fill="var(--text-muted)" fontSize="10">{tVal.toFixed(2)}</text>
+                      );
+                    })}
+
+                    <path
+                      d={generateCostCurvePath()}
+                      fill="none"
+                      stroke="var(--accent-gold)"
+                      strokeWidth="3.5"
+                    />
+
+                    {(() => {
+                      const currentX = 50 + ((simTau - 0.02) / 0.78) * 520;
+                      const currentY = 210 - (simData.totalCost - 80) * 0.8;
+                      return (
+                        <g>
+                          <line x1={currentX} y1="20" x2={currentX} y2="210" stroke="var(--text-muted)" strokeDasharray="4 4" />
+                          <circle cx={currentX} cy={currentY} r="7" fill="var(--accent-teal)" stroke="#ffffff" strokeWidth="2" />
+                        </g>
+                      );
+                    })()}
+                  </svg>
+
+                  <div className="chart-legend">
+                    <span className="legend-item"><i className="legend-dot gold" /> {isEn ? 'Total Error Cost = 1.0·FP + 5.0·FN' : 'Custo Operacional Total = 1,0·FP + 5,0·FN'}</span>
+                  </div>
+                </div>
+
+                <div className="sim-readouts">
+                  <div className="readout-card">
+                    <span className="readout-label">{isEn ? 'False Positives (FP)' : 'Falsos Positivos (FP)'}</span>
+                    <span className="readout-val teal">{simData.fp} cases</span>
+                  </div>
+                  <div className="readout-card">
+                    <span className="readout-label">{isEn ? 'False Negatives (FN)' : 'Falsos Negativos (FN)'}</span>
+                    <span className="readout-val red">{simData.fn} cases</span>
+                  </div>
+                  <div className="readout-card">
+                    <span className="readout-label">{isEn ? 'Disease Recall' : 'Sensibilidade (Recall)'}</span>
+                    <span className="readout-val blue">{(simData.recall * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="readout-card">
+                    <span className="readout-label">{isEn ? 'Total Error Cost' : 'Custo Total de Erro'}</span>
+                    <span className="readout-val gold">{simData.totalCost} units</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {slide.type === 'code' && (
+            <div className="code-container">
+              <div className="code-header">
+                <span className="code-file">threshold_and_calibration.py</span>
+                <button type="button" className="copy-btn" onClick={onCopy}>
+                  {copied ? ICONS.check : ICONS.copy}
+                  <span>{copied ? (isEn ? 'Copied!' : 'Copiado!') : (isEn ? 'Copy Code' : 'Copiar')}</span>
+                </button>
+              </div>
+              <pre className="code-pre">
+                <code>{codeSnippet}</code>
+              </pre>
+            </div>
+          )}
+
+          {slide.type === 'quiz' && (
+            <div className="quiz-panel">
+              <p className="quiz-scenario">
+                {isEn
+                  ? 'Scenario: A data scientist tunes the decision cutoff threshold tau on the holdout test set to achieve minimal error cost, then reports this score in the executive deployment summary. What critical MLOps violation occurred?'
+                  : 'Cenário: Um cientista de dados ajusta o limiar de decisão tau diretamente no conjunto de teste holdout para atingir o menor custo e apresenta o resultado como estimativa de produção. Qual violação crítica de MLOps ocorreu?'}
+              </p>
+
+              <div className="quiz-options">
+                {[
+                  {
+                    id: 'A',
+                    en: 'No violation: the test set is designed to evaluate decision performance.',
+                    pt: 'Nenhuma violação: o conjunto de teste existe exatamente para avaliar decisões.',
+                    correct: false
+                  },
+                  {
+                    id: 'B',
+                    en: 'Threshold Data Leakage: Decision cutoff tuning is a hyperparameter optimization and MUST occur strictly on validation data before a single-pass test audit.',
+                    pt: 'Vazamento de Dados no Limiar: O ajuste de corte é uma otimização de hiperparâmetro e DEVE ocorrer estritamente na validação antes de um teste único.',
+                    correct: true
+                  },
+                  {
+                    id: 'C',
+                    en: 'Miscalibration: The test set should only be evaluated using accuracy.',
+                    pt: 'Descalibração: O conjunto de teste deveria ser avaliado apenas por acurácia.',
+                    correct: false
+                  }
+                ].map((opt) => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    className={`quiz-opt-btn ${quizAnswer === opt.id ? (opt.correct ? 'correct' : 'incorrect') : ''}`}
+                    onClick={() => setQuizAnswer(opt.id)}
+                  >
+                    <span className="opt-letter">{opt.id}</span>
+                    <span className="opt-text">{isEn ? opt.en : opt.pt}</span>
+                  </button>
+                ))}
+              </div>
+
+              {quizAnswer && (
+                <div className={`quiz-feedback ${quizAnswer === 'B' ? 'success' : 'warning'}`}>
+                  <strong>{quizAnswer === 'B' ? (isEn ? 'Correct:' : 'Correto:') : (isEn ? 'Warning:' : 'Atenção:')}</strong>{' '}
+                  {isEn
+                    ? quizAnswer === 'B'
+                      ? 'Threshold tuning is an empirical optimization step. Performing it on test data invalidates evaluation independence.'
+                      : 'Incorrect. Never sweep thresholds on the test partition.'
+                    : quizAnswer === 'B'
+                      ? 'O ajuste do limiar é uma etapa de otimização empírica. Fazer isso no teste invalida a independência estatística da avaliação.'
+                      : 'Incorreto. Nunca faça varredura de limiar na partição de teste.'}
+                </div>
+              )}
+            </div>
+          )}
+        </article>
+      );
+    }
+
+    function generateCostCurvePath() {
+      const points = [];
+      for (let t = 0.02; t <= 0.80; t += 0.02) {
+        const tp = Math.round(67 * Math.pow(1 - t, 0.45));
+        const fn = 67 - tp;
+        const fp = Math.round(547 * Math.exp(-t * 7.5));
+        const cost = (1.0 * fp) + (5.0 * fn);
+
+        const x = 50 + ((t - 0.02) / 0.78) * 520;
+        const y = 210 - (cost - 80) * 0.8;
+        points.push(`${points.length === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`);
+      }
+      return points.join(' ');
+    }
 
     const rootElement = document.getElementById('root');
     const root = ReactDOM.createRoot(rootElement);
@@ -973,3 +1137,4 @@ function generateCostCurvePath() {
   </script>
 </body>
 </html>
+```
