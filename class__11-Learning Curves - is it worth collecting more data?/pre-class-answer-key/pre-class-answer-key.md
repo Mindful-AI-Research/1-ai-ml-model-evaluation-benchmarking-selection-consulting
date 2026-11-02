@@ -1,8 +1,6 @@
-# CD1 — Lesson 11: Learning Curves
+#  Lesson 11: Learning Curves
 
 ## Answer Key
-
-This document records the answer key previously provided in the conversation. Answer choices follow the order stated earlier and have not been rechecked against the form.
 
 | Question | Answer choice | Answer |
 | --- | --- | --- |
@@ -23,14 +21,12 @@ This document records the answer key previously provided in the conversation. An
 | 15 | 3rd | Examine the final slope of the validation curve: if it is still rising, more data may help; if it has plateaued, the expected gain is small. |
 | 16 | 4th | Request more data when the curves are close together at a low performance level, indicating high bias. |
 
-## Note on Question 16
 
-The entry above reproduces the previous answer key. Without the full question, it is not possible to determine whether it asks for a correct action or the identification of a mistake.
 
-## Suggested Question for the Feedback Field
+##  Feedback Field
 
 > How can we determine whether an improvement in validation performance as we add more data is real or merely variation across cross-validation folds, especially when the standard-deviation bands overlap?
 
-## Source
+
 
 Translated from the previous response in this conversation concerning the form “CD1 — Aula 11: Curvas de aprendizado” (CD1 — Lesson 11: Learning Curves). This is not an official answer key.
