@@ -465,11 +465,10 @@ Class 12 completes the transition from offline model training to **operational A
 
 <br><br>
 
-<!-- ========= Start GITHUB BADGE ========= -->
+<!-- ========= START GITHUB BADGE ========= -->
 <p align="center">
-<a href="[https://github.com/Mindful-AI-Research](https://github.com/Mindful-AI-Research)">
-<img src="[https://img.shields.io/badge/GitHub%20%C2%B7%20%E0%A5%90%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90-07111F?style=for-the-badge&logo=github&logoColor=white&labelColor=3A424C](https://img.shields.io/badge/GitHub%20%C2%B7%20%E0%A5%90%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90-07111F?style=for-the-badge&logo=github&logoColor=white&labelColor=3A424C)" alt="GitHub · ॐ Mindful AI ⋆ Research & Consulting 𖤐" height="36">
-</a>
+  <a href="https://github.com/Mindful-AI-Research">
+    <img src="https://img.shields.io/badge/GitHub%20%C2%B7%20%E0%A5%90%20Mindful%20AI%20%E2%8B%86%20Research%20%26%20Consulting%20%F0%96%A4%90-07111F?style=for-the-badge&amp;logo=github&amp;logoColor=white&amp;labelColor=3A424C" alt="GitHub · ॐ Mindful AI ⋆ Research &amp; Consulting 𖤐" height="36">
+  </a>
 </p>
 <!-- ========= END GITHUB BADGE ========= -->
-'''
