@@ -22,6 +22,6 @@
 
 - [class_11](https://exquisite-raindrop-438ea7.netlify.app/) - Learning Curves - is it worth collecting more data?
 
-- [class_12 e 13]() - 
+- [class_12 e 13](https://threshod-and-calibration.netlify.app/) - Threshod and Calibration
 
-- - [class_14](https://target-leakage-and-reproducibility.netlify.app/) - Target Leakage and Reproducibility
+- [class_14](https://target-leakage-and-reproducibility.netlify.app/) - Target Leakage and Reproducibility
