@@ -16,8 +16,12 @@
 
 - [class 9](https://taupe-tarsier-591729.netlify.app/) - Random Search and autoML Optimization
 
-- [class_10](https://symphonious-pegasus-931006.netlify.app) - Validation Curve II
-- [class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve I
+- [class_10](https://symphonious-pegasus-931006.netlify.app) - Validation Curve I
+  
+- [class_10](https://clinquant-strudel-639b1b.netlify.app/) - Validation Curve II
 
-- - [class_111](https://exquisite-raindrop-438ea7.netlify.app/) - Learning Curves - is it worth collecting more data?
+- [class_11](https://exquisite-raindrop-438ea7.netlify.app/) - Learning Curves - is it worth collecting more data?
 
+- [class_12 e 13]() - 
+
+- - [class_14](https://target-leakage-and-reproducibility.netlify.app/) - Target Leakage and Reproducibility
