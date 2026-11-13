@@ -1,3 +1,1 @@
-
-
-[Threshold and Calibration](https://threshod-and-calibration.netlify.app/)
+- [class_12 e 13](https://threshod-and-calibration.netlify.app/) - Threshod and Calibration
