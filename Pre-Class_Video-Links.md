@@ -114,7 +114,7 @@ https://github.com/user-attachments/assets/17732736-a136-4dc2-8bd3-a5702f2dd297
 <br><br>
 
 
-[Class 12]() -    Threshold of decision and calibration - From the chosen model to the reliable decision
+[Class 12 and Class 13]() -    Threshold of decision and calibration - From the chosen model to the reliable decision
 
 
 https://github.com/user-attachments/assets/1160aa15-a1e5-49da-a28d-6545a9881176
